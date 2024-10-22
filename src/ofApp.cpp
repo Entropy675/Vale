@@ -4,12 +4,15 @@
 ofApp::~ofApp()
 {
     ofRemoveListener(ofEvents().mouseMoved, this, &ofApp::mouseMoved);
+    for (Entity* ptr : entities)
+    	delete ptr;
 }
 
 //--------------------------------------------------------------
 void ofApp::update() 
 {
-	ocean.update();
+    for (Entity* ptr : entities)
+    	ptr->update();
     
 	// Threshold values for the camera's Y position
 	float minY = 10.0f;   
@@ -65,12 +68,17 @@ void ofApp::setup()
 
     sun.setSpecularColor(0.8);
     sun.setSpotConcentration(30);
-    sun.setGlobalPosition(330, 3830, 700);
+    sun.setGlobalPosition(330, 1830, 1700);
     sun.enable();
     
     // object (entitiy) setups
-    ocean.setup();
+    OceanObject* oceanObj = new OceanObject(glm::vec3(400, 400, 10));
+    oceanObj->setFacingRotation(glm::vec4(1, 0, 0, 90));
+    entities.push_back(oceanObj);
     
+    for (Entity* ptr : entities)
+    	ptr->setup();
+	
     material.setShininess(10);
     material.setSpecularColor(ofColor(255, 255, 255, 255));
     material.setEmissiveColor(ofColor(0, 0, 0, 255));
@@ -78,9 +86,9 @@ void ofApp::setup()
     material.setAmbientColor(ofColor(255, 255, 255, 255));
     
     // Set up wood material
-    woodMaterial.setDiffuseColor(ofColor(139, 69, 19)); // Brown color for wood
-    woodMaterial.setSpecularColor(ofColor(255, 255, 255)); // White specular highlights
-    woodMaterial.setShininess(64); // Set shininess for specular highlights
+    stoneMaterial.setDiffuseColor(ofColor(139, 139, 139)); // Brown color for wood
+    stoneMaterial.setSpecularColor(ofColor(255, 255, 255)); // White specular highlights
+    stoneMaterial.setShininess(64); // Set shininess for specular highlights
 
     // Setup the sand material
     sandMaterial.setDiffuseColor(ofColor(194, 178, 128));  // Sand-like color (light brown/beige)
@@ -90,6 +98,8 @@ void ofApp::setup()
     
     // setup mesh
     setupSandIslandMesh(sandIslandMesh, 700, 64, 10, 3.5);
+    
+    
     
 	// cam
     cam.move(0, 400, 0);
@@ -123,7 +133,6 @@ void ofApp::setupSandIslandMesh(ofMesh& sandMesh, float radius, int resolution, 
         vertex.x += noiseValue * spread;  // You can scale this value to control roughness
         vertex.y += noiseValue * spread * 10 - 500;
         vertex.z += noiseValue * spread;
-        std::cout << vertex << std::endl;
         
         sandMesh.setVertex(i, vertex);
     }
@@ -186,8 +195,9 @@ void ofApp::draw()
 
     cam.begin();
     
+    for (Entity* ptr : entities)
+    	ptr->draw();
     drawIslandMesh(sandIslandMesh);
-    ocean.draw();
     cam.end();
 }
 
@@ -196,7 +206,9 @@ void ofApp::drawIslandMesh(ofMesh& islandMesh)
     ofPushMatrix();
     glm::vec3 scale(4, 1, 4);
     ofScale(scale);
+    stoneMaterial.begin();
     ofDrawSphere(0, -70, 0, 400); // center platform
+    stoneMaterial.end();
     ofPopMatrix();
     
     ofPushMatrix();

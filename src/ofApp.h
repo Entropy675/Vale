@@ -32,12 +32,12 @@ public:
     ofLight sun;
     
     // objects (entities)
-    OceanObject ocean;
+    std::vector<Entity*> entities;
     
     // material
     ofMaterial material;
 	ofMaterial sandMaterial;
-	ofMaterial woodMaterial;
+	ofMaterial stoneMaterial;
 	ofMaterial fireMaterial;
 	
 	// cam

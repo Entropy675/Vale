@@ -8,11 +8,11 @@ OceanObject::~OceanObject() {}
 
 void OceanObject::setup() 
 {
-	material.setShininess(10);
-    material.setSpecularColor(ofColor(255, 255, 255, 255));
+	material.setShininess(1);
+    material.setSpecularColor(ofColor(220, 220, 220, 255));
     material.setEmissiveColor(ofColor(0, 0, 0, 255));
-    material.setDiffuseColor(ofColor(255, 255, 255, 255));
-    material.setAmbientColor(ofColor(255, 255, 255, 255));
+    material.setDiffuseColor(ofColor(100, 100, 200, 145));
+    material.setAmbientColor(ofColor(90, 90, 160, 255));
     
     // Create the terrain mesh
     mesh.setMode(OF_PRIMITIVE_TRIANGLES);

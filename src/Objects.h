@@ -13,7 +13,7 @@ class OceanObject : public Entity
 	float generateWaveHeight(float x, float y);
 
 public:
-    OceanObject(glm::vec3 dim = glm::vec3(100, 100, 10), float nScale = 3.5f, float sp = 130.0f);
+    OceanObject(glm::vec3 dim = glm::vec3(100, 100, 10), float nScale = 3.8f, float sp = 130.0f);
 	~OceanObject();
 	
     void setup() override;
