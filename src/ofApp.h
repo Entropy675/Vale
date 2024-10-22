@@ -3,6 +3,7 @@
 
 #include "ofMain.h"
 #include "ofTexture.h"
+#include "Objects.h"
 
 #define EYEBALLS 7
 #define NUM_BLOOD_SPLATTERS 20
@@ -30,9 +31,11 @@ public:
 	// light
     ofLight sun;
     
+    // objects (entities)
+    OceanObject ocean;
+    
     // material
     ofMaterial material;
-    ofMaterial waterMaterial;
 	ofMaterial sandMaterial;
 	ofMaterial woodMaterial;
 	ofMaterial fireMaterial;
@@ -52,24 +55,14 @@ public:
     bool keys[256]; // to track which keys are pressed
 	
 	// objects
-    ofMesh bucketWaterMesh;
     ofMesh sandIslandMesh;
-    ofMesh bonfireMesh;
     float noiseScale;
     float noiseZ;
-    float bonfireNoiseOffset = 0;
     
 private:
 	glm::vec3 generateRandomVector(float totalDistance);
 	void followPath(std::vector<glm::vec3>& pathPoints);
-	
 	void setupSandIslandMesh(ofMesh& sandMesh, float radius, int resolution, float spread, float noiseScale);
-	void setupWaterMesh(ofMesh& waterMesh, glm::vec2 waterDimensions, float spread, float noiseScale);
-	
-	float generateWaveBallHeight(float x, float y);
-	void updateWaterMesh(ofMesh& waterMesh, glm::vec2 size);
-	
-	void drawWaterMesh(ofMesh& waterMesh);
 	void drawIslandMesh(ofMesh& islandMesh);
 };
 

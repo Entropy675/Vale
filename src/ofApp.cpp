@@ -9,7 +9,7 @@ ofApp::~ofApp()
 //--------------------------------------------------------------
 void ofApp::update() 
 {
-	updateWaterMesh(bucketWaterMesh, glm::vec2(400, 400));
+	ocean.update();
     
 	// Threshold values for the camera's Y position
 	float minY = 10.0f;   
@@ -45,31 +45,6 @@ void ofApp::update()
     */
 }
 
-void ofApp::updateWaterMesh(ofMesh& waterMesh, glm::vec2 size)
-{
-    noiseZ += 0.03f;
-    for (int y = 0; y < size.y; y++) 
-    {
-        for (int x = 0; x < size.x; x++) 
-        {
-            // Calculate the index for the current vertex
-            std::size_t index = x + y * size.x;
-
-            // Generate the wave height
-            float waveHeight = generateWaveBallHeight(x + ofGetElapsedTimef() * 20, y + ofGetElapsedTimef() * 20);
-            float z = waveHeight + ofNoise(x * noiseScale, y * noiseScale, noiseZ) * 70.0f;
-
-            // Get the current vertex, apply rotation, translation, and update the z value
-            ofPoint vertex = waterMesh.getVertex(index);
-            //vertex = rotationMatrix * vertex; // Apply rotation
-            //vertex += translation;             // Apply translation
-            vertex.z = z;                     // Update z with wave height
-
-            // Set the updated vertex back to the mesh
-            waterMesh.setVertex(index, vertex);
-        }
-    }
-}
 
 //--------------------------------------------------------------
 //-----------------------SETUP-FUNCTIIONS-----------------------
@@ -93,11 +68,8 @@ void ofApp::setup()
     sun.setGlobalPosition(330, 3830, 700);
     sun.enable();
     
-	waterMaterial.setShininess(10);
-    waterMaterial.setSpecularColor(ofColor(255, 255, 255, 255));
-    waterMaterial.setEmissiveColor(ofColor(0, 0, 0, 255));
-    waterMaterial.setDiffuseColor(ofColor(255, 255, 255, 255));
-    waterMaterial.setAmbientColor(ofColor(255, 255, 255, 255));
+    // object (entitiy) setups
+    ocean.setup();
     
     material.setShininess(10);
     material.setSpecularColor(ofColor(255, 255, 255, 255));
@@ -110,11 +82,6 @@ void ofApp::setup()
     woodMaterial.setSpecularColor(ofColor(255, 255, 255)); // White specular highlights
     woodMaterial.setShininess(64); // Set shininess for specular highlights
 
-    // Set up fire material
-    fireMaterial.setDiffuseColor(ofColor(255, 165, 0)); // Orange color for fire
-    fireMaterial.setSpecularColor(ofColor(255, 255, 0)); // Yellow specular highlights
-    fireMaterial.setShininess(32); // Set shininess for fire
-    
     // Setup the sand material
     sandMaterial.setDiffuseColor(ofColor(194, 178, 128));  // Sand-like color (light brown/beige)
     sandMaterial.setAmbientColor(ofColor(190, 170, 120));  // Slightly darker ambient color
@@ -122,7 +89,6 @@ void ofApp::setup()
     sandMaterial.setShininess(10);  // Low shininess for a matte, rough look
     
     // setup mesh
-    setupWaterMesh(bucketWaterMesh, glm::vec2(400,400), 130, 3.5f);
     setupSandIslandMesh(sandIslandMesh, 700, 64, 10, 3.5);
     
 	// cam
@@ -164,37 +130,6 @@ void ofApp::setupSandIslandMesh(ofMesh& sandMesh, float radius, int resolution, 
 }
 
 
-void ofApp::setupWaterMesh(ofMesh& waterMesh, glm::vec2 waterDimensions, float spread, float noiseScale)
-{
-    // Create the terrain mesh
-    waterMesh.setMode(OF_PRIMITIVE_TRIANGLES);
-    for (int y = 0; y < waterDimensions.y; y++) 
-	{
-        for (int x = 0; x < waterDimensions.x; x++) 
-		{
-            float z = ofNoise(x * noiseScale, y * noiseScale, noiseZ) * 400.0f;
-            waterMesh.addVertex(glm::vec3(x * spread, y * spread, z));
-            waterMesh.addNormal(glm::vec3(0, 0, 1));
-            waterMesh.addColor(ofFloatColor(0.2, 0.8, 0.2 + z*0.4));
-        }
-    }
-
-    for (int y = 0; y < waterDimensions.y - 1; y++) 
-	{
-        for (int x = 0; x < waterDimensions.x - 1; x++) 
-		{
-            int i = x + y * waterDimensions.x;
-            waterMesh.addIndex(i);
-            waterMesh.addIndex(i + 1);
-            waterMesh.addIndex(i + waterDimensions.x);
-
-            waterMesh.addIndex(i + 1);
-            waterMesh.addIndex(i + 1 + waterDimensions.x);
-            waterMesh.addIndex(i + waterDimensions.x);
-        }
-    }
-}
-
 
 //--------------------------------------------------------------
 //----------------------HELPER-FUNCTIIONS-----------------------
@@ -216,13 +151,6 @@ glm::vec3 ofApp::generateRandomVector(float totalDistance)
     return glm::vec3(x, y, z);
 }
 
-// sinosodal function generates height at a given position 
-float ofApp::generateWaveBallHeight(float x, float y)
-{
-	float wx = sin(x * 0.1f) * 50.0f;
-	float wy = sin(y * 0.1f) * 50.0f;
-	return wx + wy;
-}
 
 void ofApp::followPath(std::vector<glm::vec3>& pathPoints) 
 {
@@ -259,7 +187,7 @@ void ofApp::draw()
     cam.begin();
     
     drawIslandMesh(sandIslandMesh);
-    drawWaterMesh(bucketWaterMesh);
+    ocean.draw();
     cam.end();
 }
 
@@ -279,24 +207,6 @@ void ofApp::drawIslandMesh(ofMesh& islandMesh)
     sandMaterial.end();
     ofPopMatrix();
 }
-
-void ofApp::drawWaterMesh(ofMesh& waterMesh)
-{	// this should be members in a class
-    glm::vec3 translation(-400.01f * 0.5f * 130 , -400.01f * 0.5f * 130, 10.0f);
-	glm::vec3 scale = glm::vec3(1, 1, 1);
-	ofMatrix4x4 rotationMatrix;
-	rotationMatrix.rotate(90, 1, 0, 0);  
-	
-    waterMaterial.begin();
-    ofPushMatrix();
-	ofMultMatrix(rotationMatrix);
-	ofTranslate(translation);
-	ofScale(scale);
-    bucketWaterMesh.draw();
-    ofPopMatrix();
-    waterMaterial.end();
-}
-
 
 //--------------------------------------------------------------
 //-----------------------INPUT-FUNCTIONS------------------------
