@@ -57,7 +57,7 @@ void ofApp::updateWaterMesh(ofMesh& waterMesh, glm::vec2 size)
 
             // Generate the wave height
             float waveHeight = generateWaveBallHeight(x + ofGetElapsedTimef() * 20, y + ofGetElapsedTimef() * 20);
-            float z = waveHeight + ofNoise(x * noiseScale, y * noiseScale, noiseZ) * 90.0f;
+            float z = waveHeight + ofNoise(x * noiseScale, y * noiseScale, noiseZ) * 70.0f;
 
             // Get the current vertex, apply rotation, translation, and update the z value
             ofPoint vertex = waterMesh.getVertex(index);
