@@ -25,3 +25,17 @@ void Scene::loadScene(std::vector<Entity*>* list)
 {
 	 // Does nothing, inherit/overwrite to add your scene objects here
 }
+
+
+// TODO: make a format for loading entities from a file.
+bool Scene::loadSceneFromFile(std::string& path)
+{
+	// nothing for now, any scene can load more entities	
+	return false;
+}
+
+bool Scene::saveSceneToFile(std::string& path)
+{
+	// save current scene to a file
+	return false;
+}

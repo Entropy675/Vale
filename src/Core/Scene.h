@@ -15,7 +15,8 @@ public:
 	virtual ~Scene();
 
 	virtual void loadScene(std::vector<Entity*>* list);
-	bool loadSceneFromFile(std::string& path);
+	bool loadSceneFromFile(std::string& path); // TODO not done yet...
+	bool saveSceneToFile(std::string& path);
 };
 
 

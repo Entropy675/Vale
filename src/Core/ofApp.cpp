@@ -4,19 +4,13 @@
 ofApp::~ofApp()
 {
     ofRemoveListener(ofEvents().mouseMoved, this, &ofApp::mouseMoved);
-    for (Entity* ptr : entities)
-    	delete ptr;
+    for (Entity* ptr : entities) delete ptr;
 }
 
 //--------------------------------------------------------------
 void ofApp::update() 
 {
-    for (Entity* ptr : entities)
-    	ptr->update();
-    
-	// Threshold values for the camera's Y position
-	float minY = 10.0f;   
-	
+    for (Entity* ptr : entities) ptr->update();
 	if (!path.empty())
 	{
 		for (const auto& point : path) 
@@ -40,6 +34,8 @@ void ofApp::update()
 	if (keys[' ']) cam.move(0, moveSpeed, 0); // Move up (Space key)
 	
 	/*
+    // Gravity
+	float minY = 10.0f; // Threshold values for the camera's Y position
 	if (cam.getPosition().y < minY) // floor
 	    cam.move(0, minY - cam.getPosition().y, 0);
 	
@@ -71,15 +67,13 @@ void ofApp::setup()
     
     // object / scene setups
     islandMap.loadScene(&entities);
-    
-    for (Entity* ptr : entities)
-    	ptr->setup();
+    for (Entity* ptr : entities) ptr->setup();
 
 	// cam
     cam.move(0, 400, 0);
     cam.setFov(60);
     cam.setNearClip(1.0f);  // Minimum distance from the camera to render objects (near clipping plane)
-	cam.setFarClip(10000.0f);
+	cam.setFarClip(20000.0f);
     moveSpeed = 30.0f;
     memset(keys, 0, sizeof(keys));
 
@@ -149,8 +143,7 @@ void ofApp::draw()
 
     cam.begin();
     
-    for (Entity* ptr : entities)
-    	ptr->draw();
+    for (Entity* ptr : entities) ptr->draw();
     cam.end();
 }
 
