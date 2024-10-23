@@ -48,7 +48,6 @@ void ofApp::update()
     */
 }
 
-
 //--------------------------------------------------------------
 //-----------------------SETUP-FUNCTIIONS-----------------------
 //--------------------------------------------------------------
@@ -58,7 +57,6 @@ void ofApp::setup()
     cameraFloor = 0;
     cameraSpeed = 5.0f;
     currentTargetIndex = 0;
-    noiseScale = 0.1f;
     
     // Light setup
     sun.setPointLight();
@@ -71,36 +69,12 @@ void ofApp::setup()
     sun.setGlobalPosition(330, 1830, 1700);
     sun.enable();
     
-    // object (entitiy) setups
-    OceanObject* oceanObj = new OceanObject(glm::vec3(400, 400, 10));
-    oceanObj->setFacingRotation(glm::vec4(1, 0, 0, 90));
-    entities.push_back(oceanObj);
+    // object / scene setups
+    islandMap.loadScene(&entities);
     
     for (Entity* ptr : entities)
     	ptr->setup();
-	
-    material.setShininess(10);
-    material.setSpecularColor(ofColor(255, 255, 255, 255));
-    material.setEmissiveColor(ofColor(0, 0, 0, 255));
-    material.setDiffuseColor(ofColor(255, 255, 255, 255));
-    material.setAmbientColor(ofColor(255, 255, 255, 255));
-    
-    // Set up wood material
-    stoneMaterial.setDiffuseColor(ofColor(139, 139, 139)); // Brown color for wood
-    stoneMaterial.setSpecularColor(ofColor(255, 255, 255)); // White specular highlights
-    stoneMaterial.setShininess(64); // Set shininess for specular highlights
 
-    // Setup the sand material
-    sandMaterial.setDiffuseColor(ofColor(194, 178, 128));  // Sand-like color (light brown/beige)
-    sandMaterial.setAmbientColor(ofColor(190, 170, 120));  // Slightly darker ambient color
-    sandMaterial.setSpecularColor(ofColor(200, 200, 200)); // Specular highlights
-    sandMaterial.setShininess(10);  // Low shininess for a matte, rough look
-    
-    // setup mesh
-    setupSandIslandMesh(sandIslandMesh, 700, 64, 10, 3.5);
-    
-    
-    
 	// cam
     cam.move(0, 400, 0);
     cam.setFov(60);
@@ -116,26 +90,6 @@ void ofApp::setup()
     
 	// listeners
     ofAddListener(ofEvents().mouseMoved, this, &ofApp::mouseMoved);
-}
-
-void ofApp::setupSandIslandMesh(ofMesh& sandMesh, float radius, int resolution, float spread, float noiseScale)
-{
-    // Create a sphere mesh
-    sandMesh = ofMesh::sphere(radius, resolution);
-    
-    // Loop through all vertices and apply noise to z-coordinate (height)
-    for (std::size_t i = 0; i < sandMesh.getNumVertices(); i++) 
-    {
-        glm::vec3 vertex = sandMesh.getVertex(i);
-        
-        // Apply Perlin noise to perturb the vertex position
-        float noiseValue = ofNoise(vertex.x * noiseScale, vertex.y * noiseScale, vertex.z * noiseScale);
-        vertex.x += noiseValue * spread;  // You can scale this value to control roughness
-        vertex.y += noiseValue * spread * 10 - 500;
-        vertex.z += noiseValue * spread;
-        
-        sandMesh.setVertex(i, vertex);
-    }
 }
 
 
@@ -197,27 +151,7 @@ void ofApp::draw()
     
     for (Entity* ptr : entities)
     	ptr->draw();
-    drawIslandMesh(sandIslandMesh);
     cam.end();
-}
-
-void ofApp::drawIslandMesh(ofMesh& islandMesh)
-{	// this should be members in a class
-    ofPushMatrix();
-    glm::vec3 scale(4, 1, 4);
-    ofScale(scale);
-    stoneMaterial.begin();
-    ofDrawSphere(0, -70, 0, 400); // center platform
-    stoneMaterial.end();
-    ofPopMatrix();
-    
-    ofPushMatrix();
-    scale = glm::vec3(10, 1, 10);
-    ofScale(scale);
-    sandMaterial.begin();
-    sandIslandMesh.draw();
-    sandMaterial.end();
-    ofPopMatrix();
 }
 
 //--------------------------------------------------------------

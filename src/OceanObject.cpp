@@ -1,7 +1,10 @@
-#include "Objects.h"
+#include "IslandScene.h"
 
 OceanObject::OceanObject(glm::vec3 dim, float nScale, float sp)
-	: Entity(dim), noiseScale(nScale), spread(sp) {}
+	: Entity(dim), noiseScale(nScale), spread(sp) 
+{
+	noiseZ = 0.0f;
+}
 
 OceanObject::~OceanObject() {}
 

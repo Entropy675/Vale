@@ -3,7 +3,7 @@
 
 #include "ofMain.h"
 #include "ofTexture.h"
-#include "Objects.h"
+#include "IslandScene.h"
 
 #define EYEBALLS 7
 #define NUM_BLOOD_SPLATTERS 20
@@ -33,12 +33,10 @@ public:
     
     // objects (entities)
     std::vector<Entity*> entities;
-    
-    // material
-    ofMaterial material;
-	ofMaterial sandMaterial;
-	ofMaterial stoneMaterial;
-	ofMaterial fireMaterial;
+	
+	// scenes (loads into entities)
+	IslandScene islandMap;
+	
 	
 	// cam
     ofCamera cam;
@@ -50,14 +48,9 @@ public:
 	glm::vec3 cameraPosition;
 	bool followPathBlindly = true;
 	
-	// misc
+	// controls
 	bool isCursorHidden = false;
     bool keys[256]; // to track which keys are pressed
-	
-	// objects
-    ofMesh sandIslandMesh;
-    float noiseScale;
-    float noiseZ;
     
 private:
 	glm::vec3 generateRandomVector(float totalDistance);
