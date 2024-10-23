@@ -73,7 +73,7 @@ void ofApp::setup()
     cam.move(0, 400, 0);
     cam.setFov(60);
     cam.setNearClip(1.0f);  // Minimum distance from the camera to render objects (near clipping plane)
-	cam.setFarClip(20000.0f);
+	cam.setFarClip(21000.0f);
     moveSpeed = 30.0f;
     memset(keys, 0, sizeof(keys));
 
