@@ -18,6 +18,9 @@ void IslandObject::setup()
     material.setSpecularColor(ofColor(200, 200, 200)); // Specular highlights
     material.setShininess(10);  // Low shininess for a matte, rough look
     
+    stone.setRadius(400);
+    stone.setResolution(64);
+    
     mesh = ofMesh::sphere(radius, resolution);
     
     // Loop through all vertices and apply noise to z-coordinate (height)
@@ -54,8 +57,10 @@ void IslandObject::draw()
 	
     ofPushMatrix();
     ofScale(glm::vec3(4, 1, 4));
+    ofTranslate(glm::vec3(0, -70, 0));
     stoneMaterial.begin();
-    ofDrawSphere(0, -70, 0, 400); // center platform
+    //ofDrawSphere(0, -70, 0, 400); // center platform
+    stone.draw();
     stoneMaterial.end();
     ofPopMatrix();
     

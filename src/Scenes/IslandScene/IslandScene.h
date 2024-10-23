@@ -24,6 +24,7 @@ public:
 
 class IslandObject : public Entity
 {
+    ofSpherePrimitive stone;
 	ofMaterial stoneMaterial;
     float radius;
     int resolution;
