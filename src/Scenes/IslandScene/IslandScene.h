@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include <vector>
 
+// ---------- Scene objects ----------
 class OceanObject : public Entity
 {
     float noiseScale; // how big is noise
@@ -45,14 +46,33 @@ public:
 };
 
 
+// ---------- Scene definition ----------
 class IslandScene : public Scene
 {
 public:
 	OceanObject* ocean;
 	IslandObject* island;
 	
-	IslandScene();
-	void loadScene(std::vector<Entity*>* list) override;
+	IslandScene() {}; // since this is unique to each scene, 
+	void buildScene(std::vector<Entity*>* list) override
+	{
+		if (ocean == nullptr) 
+		{
+			ocean = new OceanObject(glm::vec3(500, 500, 10));
+			ocean->setFacingRotation(glm::vec4(1, 0, 0, 90));
+		}
+		
+		if(island == nullptr)
+		{
+			island = new IslandObject();
+		}
+		
+		list->push_back(ocean);
+		list->push_back(island);
+		
+		allReferences.push_back(list);
+	}
 };
+
 
 #endif

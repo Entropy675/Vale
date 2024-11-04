@@ -6,38 +6,42 @@
 
 class Entity 
 {
+private:
+	bool setupDone = false;
+	static long long uniqueCounter;
+	
 protected:
-    // Newton physics (use glm::length(vec) for calculating magnitude)
+    const long long hashId;
+    glm::vec3 dimensions; // (length, width, height) = (x, y, z)
+    ofMesh mesh; // Assuming this is a member variable
+	ofMaterial material;
+	
+    // Inertia (mass) 
+    float inertia = 1.0f;
+    
+    // Newtonian physics (use glm::length(vec) for calculating magnitude)
     glm::vec3 position = glm::vec3(0, 0, 0);
     glm::vec3 velocity = glm::vec3(0, 0, 0);
     glm::vec3 acceleration = glm::vec3(0, 0, 0);
 
-    // Inertia (mass) (can be moment of inertia maybe later...)
-    float inertia = 1.0f;
-
-    // Angular velocity and acceleration
     glm::vec3 angularVelocity = glm::vec3(0, 0, 0);
     glm::vec3 angularAcceleration = glm::vec3(0, 0, 0);
-
+    
+    // actual values used to draw frame by frame, calculated via above
     glm::vec3 scale = glm::vec3(1, 1, 1);
 	ofQuaternion rotation;
     glm::vec3 translation = glm::vec3(0, 0, 0);
     
-    ofMesh mesh; // Assuming this is a member variable
-	ofMaterial material;
-    glm::vec3 dimensions; // (length, width, height) = (x, y, z)
-
 public:
     // Constructors
     Entity(glm::vec3 dimension = glm::vec3(0, 0, 0));
-
-    // Constructor with mesh reference
     Entity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     
     virtual ~Entity();
-    virtual void setup() = 0;
+    
     virtual void update() = 0;
     virtual void draw() = 0;
+    virtual void setup();
 
     // references
     ofMesh& getMesh(); // Return a const reference to ofMesh

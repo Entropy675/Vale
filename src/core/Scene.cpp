@@ -17,6 +17,16 @@ Scene::~Scene()
 	}
 }
 
+void Scene::loadScene(std::vector<Entity*>* list)
+{
+	buildScene(list);
+}
+
+void Scene::setup()
+{
+    for (Entity* ptr : sceneObjects) ptr->setup();
+}
+
 // TODO: make a format for loading entities from a file.
 bool Scene::loadSceneFromFile(std::string& path)
 {

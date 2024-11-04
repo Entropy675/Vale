@@ -53,6 +53,7 @@ void OceanObject::updateNormals()
 
 void OceanObject::setup() 
 {
+	Entity::setup();
     material.setShininess(1);
     material.setSpecularColor(ofColor(220, 220, 220, 255));
     material.setEmissiveColor(ofColor(0, 0, 0, 255));

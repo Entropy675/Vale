@@ -1,18 +1,28 @@
 #include "Entity.h"
 
+long long Entity::uniqueCounter = 0;
+
 Entity::Entity(glm::vec3 dim)
-    : dimensions(dim)
+    : dimensions(dim), hashId(std::hash<std::size_t>{}(++uniqueCounter))
 { 
     rotation = ofQuaternion(0, 0, 0, 1);
 }
 
 Entity::Entity(const ofMesh& meshRef, glm::vec3 dim)
-	: dimensions(dim), mesh(meshRef) 
+	: dimensions(dim), hashId(std::hash<std::size_t>{}(++uniqueCounter)), mesh(meshRef) 
 {
     rotation = ofQuaternion(0, 0, 0, 1);
 } 
 
 Entity::~Entity() {};
+
+void Entity::setup()
+{
+    if (!setupDone) 
+        setupDone = true;
+    else
+        ofLogWarning("Entity") << "Setup has already been called!";
+}
 
 // Getters
 glm::vec3 Entity::getPosition() const 				{ return position; } 

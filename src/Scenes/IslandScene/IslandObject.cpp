@@ -7,6 +7,8 @@ IslandObject::~IslandObject() {}
 
 void IslandObject::setup()
 {
+	Entity::setup();
+	
     // Set up wood material
     stoneMaterial.setDiffuseColor(ofColor(139, 139, 139)); // Brown color for wood
     stoneMaterial.setSpecularColor(ofColor(255, 255, 255)); // White specular highlights
