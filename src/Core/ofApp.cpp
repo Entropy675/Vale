@@ -6,44 +6,6 @@ ofApp::~ofApp()
     ofRemoveListener(ofEvents().mouseMoved, this, &ofApp::mouseMoved);
     for (Entity* ptr : entities) delete ptr;
 }
-
-//--------------------------------------------------------------
-void ofApp::update() 
-{
-    for (Entity* ptr : entities) ptr->update();
-	if (!path.empty())
-	{
-		for (const auto& point : path) 
-		    std::cout << "{" << point.x << ", " << point.y << ", " << point.z << "}, "; // Print each point
-		std::cout << std::endl;
-    }
-    
-    if(followPathBlindly) 
-    {
-    	followPath(path);
-    	if (path.empty()) followPathBlindly = false;
-    	return;
-    }
-    
-	// Camera movement based on key presses (WASD)
-	if (keys['w']) cam.dolly(-moveSpeed); // Move forward
-	if (keys['s']) cam.dolly(moveSpeed); // Move backward
-	if (keys['a']) cam.truck(-moveSpeed); // Move left
-	if (keys['d']) cam.truck(moveSpeed); // Move right
-	if (keys[OF_KEY_SHIFT]) cam.boom(-moveSpeed); // Move down (Shift key)
-	if (keys[' ']) cam.move(0, moveSpeed, 0); // Move up (Space key)
-	
-	/*
-    // Gravity
-	float minY = 10.0f; // Threshold values for the camera's Y position
-	if (cam.getPosition().y < minY) // floor
-	    cam.move(0, minY - cam.getPosition().y, 0);
-	
-    if(cameraFloor < cam.getPosition().y) // grav
-	    cam.move(0, -10, 0);
-    */
-}
-
 //--------------------------------------------------------------
 //-----------------------SETUP-FUNCTIIONS-----------------------
 //--------------------------------------------------------------
@@ -62,7 +24,7 @@ void ofApp::setup()
 
     sun.setSpecularColor(0.8);
     sun.setSpotConcentration(30);
-    sun.setGlobalPosition(330, 1830, 1700);
+    sun.setGlobalPosition(0, 1330, 0);
     sun.enable();
     
     // object / scene setups
@@ -73,7 +35,7 @@ void ofApp::setup()
     cam.move(0, 400, 0);
     cam.setFov(60);
     cam.setNearClip(1.0f);  // Minimum distance from the camera to render objects (near clipping plane)
-	cam.setFarClip(21000.0f);
+	cam.setFarClip(41000.0f);
     moveSpeed = 30.0f;
     memset(keys, 0, sizeof(keys));
 
@@ -132,15 +94,51 @@ void ofApp::followPath(std::vector<glm::vec3>& pathPoints)
 }
 
 //--------------------------------------------------------------
-//------------------------DRAW-FUNCTIIONS-----------------------
+//-----------------------UPDATE-CALLBACK------------------------
 //--------------------------------------------------------------
 
+void ofApp::update() 
+{
+    for (Entity* ptr : entities) ptr->update();
+	if (!path.empty())
+	{
+		for (const auto& point : path) 
+		    std::cout << "{" << point.x << ", " << point.y << ", " << point.z << "}, "; // Print each point
+		std::cout << std::endl;
+    }
+    
+    if(followPathBlindly) 
+    {
+    	followPath(path);
+    	if (path.empty()) followPathBlindly = false;
+    	return;
+    }
+    
+	// Camera movement based on key presses (WASD)
+	if (keys['w']) cam.dolly(-moveSpeed); // Move forward
+	if (keys['s']) cam.dolly(moveSpeed); // Move backward
+	if (keys['a']) cam.truck(-moveSpeed); // Move left
+	if (keys['d']) cam.truck(moveSpeed); // Move right
+	if (keys[OF_KEY_SHIFT]) cam.boom(-moveSpeed); // Move down (Shift key)
+	if (keys[' ']) cam.move(0, moveSpeed, 0); // Move up (Space key)
+	
+	/*
+    // Gravity
+	float minY = 10.0f; // Threshold values for the camera's Y position
+	if (cam.getPosition().y < minY) // floor
+	    cam.move(0, minY - cam.getPosition().y, 0);
+	
+    if(cameraFloor < cam.getPosition().y) // grav
+	    cam.move(0, -10, 0);
+    */
+}
 
 //--------------------------------------------------------------
+//------------------------DRAW-CALLBACKS------------------------
+//--------------------------------------------------------------
+
 void ofApp::draw() 
 {
-    //glDisable(GL_COLOR_MATERIAL);
-
     cam.begin();
     
     for (Entity* ptr : entities) ptr->draw();
@@ -148,7 +146,7 @@ void ofApp::draw()
 }
 
 //--------------------------------------------------------------
-//-----------------------INPUT-FUNCTIONS------------------------
+//-----------------------INPUT-CALLBACKS------------------------
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key) 
 {

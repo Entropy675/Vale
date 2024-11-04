@@ -1,6 +1,6 @@
 #include "IslandScene.h"
 
-IslandScene::IslandScene(std::vector<Entity*>* list) : Scene(list) {}
+IslandScene::IslandScene() {}
 
 
 void IslandScene::loadScene(std::vector<Entity*>* list) 

@@ -1,11 +1,7 @@
 #include "Scene.h"
 
 
-Scene::Scene(std::vector<Entity*>* list)
-{
-	if (list != nullptr)
-		loadScene(list);
-}
+Scene::Scene() {}
 
 Scene::~Scene()
 {
@@ -20,12 +16,6 @@ Scene::~Scene()
 	    	list->end());
 	}
 }
-
-void Scene::loadScene(std::vector<Entity*>* list)
-{
-	 // Does nothing, inherit/overwrite to add your scene objects here
-}
-
 
 // TODO: make a format for loading entities from a file.
 bool Scene::loadSceneFromFile(std::string& path)

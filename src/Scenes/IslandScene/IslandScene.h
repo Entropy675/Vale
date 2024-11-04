@@ -3,14 +3,18 @@
 
 #include "Entity.h"
 #include "Scene.h"
+#include <vector>
 
 class OceanObject : public Entity
 {
     float noiseScale; // how big is noise
     float spread; // how far apart is each node
     float noiseZ; // z offset
+    std::vector<glm::vec3> vertices;
+    
     
 	// helpers
+	void updateNormals();
 	float generateWaveHeight(float x, float y);
 
 public:
@@ -47,7 +51,7 @@ public:
 	OceanObject* ocean;
 	IslandObject* island;
 	
-	IslandScene(std::vector<Entity*>* list = nullptr);
+	IslandScene();
 	void loadScene(std::vector<Entity*>* list) override;
 };
 
