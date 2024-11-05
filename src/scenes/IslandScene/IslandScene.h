@@ -12,7 +12,7 @@ class OceanObject : public Entity
     float spread; // how far apart is each node
     float noiseZ; // z offset
     std::vector<glm::vec3> vertices;
-    
+    ofQuaternion waterRotation;
     
 	// helpers
 	void updateNormals();
@@ -53,9 +53,7 @@ public:
 	// cleanup is handled in parent 
 	IslandScene() 
 	{
-		OceanObject* ocean = new OceanObject(glm::vec3(500, 500, 10));
-		ocean->setFacingRotation(glm::vec4(1, 0, 0, 90));
-		sceneObjects.push_back(ocean);
+		sceneObjects.push_back(new OceanObject(glm::vec3(500, 500, 10)));
 		sceneObjects.push_back(new IslandObject());
 	};
 };

@@ -46,14 +46,6 @@ void IslandObject::_update()
 void IslandObject::_draw()
 {
     ofPushMatrix();
-    ofMatrix4x4 rotationMatrix;
-    rotation.get(rotationMatrix);
-    
-	// SRT inverse
-	ofScale(scale);
-	ofMultMatrix(rotationMatrix); // with this one
-	ofTranslate(translation); // maybe switch this if the water mesh is invisible
-	
 	
     ofPushMatrix();
     ofScale(glm::vec3(4, 1, 4));

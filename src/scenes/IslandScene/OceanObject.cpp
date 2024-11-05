@@ -123,11 +123,13 @@ void OceanObject::_draw()
 {
     glm::vec3 translation(-(dimensions.x * 0.5) * spread , -(dimensions.y * 0.5) * spread, dimensions.z);
 	glm::vec3 scale = glm::vec3(1, 1, 1);
-	
     ofPushMatrix(); // save state
     
+    ofQuaternion waterRotation = ofQuaternion(0, 0, 0, 1);
+	waterRotation.makeRotate(90, 1, 0, 0);
+	
     ofMatrix4x4 rotationMatrix;
-    rotation.get(rotationMatrix);
+    waterRotation.get(rotationMatrix);
     
 	// SRT inverse
 	ofScale(scale);
