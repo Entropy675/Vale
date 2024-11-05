@@ -38,11 +38,13 @@ public:
     Entity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     
     virtual ~Entity();
+    void update(); // internal
+    void draw();
+    void setup();
+    virtual void _update() = 0; // define your entities behaviour
+    virtual void _draw() = 0;
+    virtual void _setup() = 0;
     
-    virtual void update() = 0;
-    virtual void draw() = 0;
-    virtual void setup();
-
     // references
     ofMesh& getMesh(); // Return a const reference to ofMesh
     ofMaterial& getMaterial(); // Return a reference to ofMaterial

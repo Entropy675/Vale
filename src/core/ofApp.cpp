@@ -4,7 +4,6 @@
 ofApp::~ofApp()
 {
     ofRemoveListener(ofEvents().mouseMoved, this, &ofApp::mouseMoved);
-    for (Entity* ptr : entities) delete ptr;
 }
 //--------------------------------------------------------------
 //-----------------------SETUP-FUNCTIIONS-----------------------
@@ -28,9 +27,10 @@ void ofApp::setup()
     sun.enable();
     
     // object / scene setups
-    islandMap.loadScene(&entities);
-    for (Entity* ptr : entities) ptr->setup();
-
+    sceneManager.addScene(new IslandScene());
+	sceneManager.loadScene(0);
+	sceneManager.setup();
+	
 	// cam
     cam.move(0, 400, 0);
     cam.setFov(60);
@@ -99,7 +99,7 @@ void ofApp::followPath(std::vector<glm::vec3>& pathPoints)
 
 void ofApp::update() 
 {
-    for (Entity* ptr : entities) ptr->update();
+    sceneManager.update();
 	if (!path.empty())
 	{
 		for (const auto& point : path) 
@@ -140,8 +140,7 @@ void ofApp::update()
 void ofApp::draw() 
 {
     cam.begin();
-    
-    for (Entity* ptr : entities) ptr->draw();
+    sceneManager.draw();
     cam.end();
 }
 

@@ -4,19 +4,17 @@
 #include <vector>
 #include "Entity.h"
 
-class Scene
+class Scene // responsible for the mem of its own entities
 {
 protected:
 	std::vector<Entity*> sceneObjects;
 	std::vector<std::vector<Entity*>*> allReferences;
-	virtual void buildScene(std::vector<Entity*>* list) = 0;
-	
 public:
 	Scene();
 	virtual ~Scene();
 
-	void loadScene(std::vector<Entity*>* list);
 	void setup();
+	void loadScene(std::vector<Entity*>* list);
 	bool loadSceneFromFile(std::string& path); // TODO not done yet...
 	bool saveSceneToFile(std::string& path);
 };

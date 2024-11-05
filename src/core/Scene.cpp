@@ -15,11 +15,15 @@ Scene::~Scene()
 		    }), 
 	    	list->end());
 	}
+	// delete every added entity
+	for (Entity* ent : sceneObjects) delete ent;
 }
 
 void Scene::loadScene(std::vector<Entity*>* list)
 {
-	buildScene(list);
+    list->reserve(sceneObjects.size());
+    std::copy(sceneObjects.begin(), sceneObjects.end(), std::back_inserter(*list));
+	allReferences.push_back(list); // keep a reference to where referenced
 }
 
 void Scene::setup()

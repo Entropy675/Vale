@@ -4,9 +4,8 @@
 #include "ofMain.h"
 #include "ofTexture.h"
 #include "IslandScene.h"
-
-#define EYEBALLS 7
-#define NUM_BLOOD_SPLATTERS 20
+#include "SceneManager.h"
+#include "PhysicsController.h"
 
 class ofApp : public ofBaseApp 
 {
@@ -32,7 +31,8 @@ public:
     ofLight sun;
     
     // objects (entities)
-    std::vector<Entity*> entities;
+    // std::vector<Entity*> entities;
+    SceneManager sceneManager;
 	
 	// scenes (loads into entities)
 	IslandScene islandMap;

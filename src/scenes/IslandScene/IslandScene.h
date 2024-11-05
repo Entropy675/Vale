@@ -1,5 +1,5 @@
-#ifndef OBJECTS_H__
-#define OBJECTS_H__
+#ifndef ISLANDSCENE_H__
+#define ISLANDSCENE_H__
 
 #include "Entity.h"
 #include "Scene.h"
@@ -22,9 +22,9 @@ public:
     OceanObject(glm::vec3 dim = glm::vec3(100, 100, 10), float nScale = 3.8f, float sp = 130.0f);
 	~OceanObject();
 	
-    void setup() override;
-    void update() override; 
-    void draw() override;
+    void _setup() override;
+    void _update() override; 
+    void _draw() override;
 };
 
 class IslandObject : public Entity
@@ -40,9 +40,9 @@ public:
     IslandObject(glm::vec3 dim = glm::vec3(100, 100, 10), float rad = 700, int res = 64, float sp = 10, float ns = 3.5f);
 	~IslandObject();
 	
-    void setup() override;
-    void update() override; 
-    void draw() override;
+    void _setup() override;
+    void _update() override; 
+    void _draw() override;
 };
 
 
@@ -50,28 +50,14 @@ public:
 class IslandScene : public Scene
 {
 public:
-	OceanObject* ocean;
-	IslandObject* island;
-	
-	IslandScene() {}; // since this is unique to each scene, 
-	void buildScene(std::vector<Entity*>* list) override
+	// cleanup is handled in parent 
+	IslandScene() 
 	{
-		if (ocean == nullptr) 
-		{
-			ocean = new OceanObject(glm::vec3(500, 500, 10));
-			ocean->setFacingRotation(glm::vec4(1, 0, 0, 90));
-		}
-		
-		if(island == nullptr)
-		{
-			island = new IslandObject();
-		}
-		
-		list->push_back(ocean);
-		list->push_back(island);
-		
-		allReferences.push_back(list);
-	}
+		OceanObject* ocean = new OceanObject(glm::vec3(500, 500, 10));
+		ocean->setFacingRotation(glm::vec4(1, 0, 0, 90));
+		sceneObjects.push_back(ocean);
+		sceneObjects.push_back(new IslandObject());
+	};
 };
 
 

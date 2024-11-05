@@ -51,9 +51,8 @@ void OceanObject::updateNormals()
 }
 
 
-void OceanObject::setup() 
+void OceanObject::_setup() 
 {
-	Entity::setup();
     material.setShininess(1);
     material.setSpecularColor(ofColor(220, 220, 220, 255));
     material.setEmissiveColor(ofColor(0, 0, 0, 255));
@@ -97,7 +96,7 @@ void OceanObject::setup()
     updateNormals();
 }
 
-void OceanObject::update() 
+void OceanObject::_update() 
 {
     noiseZ += 0.03f;
     for (int y = 0; y < dimensions.y; y++) 
@@ -120,7 +119,7 @@ void OceanObject::update()
     updateNormals();
 }
 
-void OceanObject::draw() 
+void OceanObject::_draw() 
 {
     glm::vec3 translation(-(dimensions.x * 0.5) * spread , -(dimensions.y * 0.5) * spread, dimensions.z);
 	glm::vec3 scale = glm::vec3(1, 1, 1);

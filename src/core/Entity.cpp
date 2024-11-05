@@ -14,14 +14,29 @@ Entity::Entity(const ofMesh& meshRef, glm::vec3 dim)
     rotation = ofQuaternion(0, 0, 0, 1);
 } 
 
-Entity::~Entity() {};
+Entity::~Entity() {}; // each entity manages its own cleanup in its dtor
 
+void Entity::update()
+{
+	_update();
+}
+
+void Entity::draw()
+{
+	_draw();
+}
+    
 void Entity::setup()
 {
     if (!setupDone) 
-        setupDone = true;
+        setupDone = true; // prevent any repeated setup
     else
+    {
         ofLogWarning("Entity") << "Setup has already been called!";
+    	return;
+    }
+    
+    _setup();
 }
 
 // Getters

@@ -5,10 +5,8 @@ IslandObject::IslandObject(glm::vec3 dim, float rad, int res, float sp, float ns
 
 IslandObject::~IslandObject() {}
 
-void IslandObject::setup()
+void IslandObject::_setup()
 {
-	Entity::setup();
-	
     // Set up wood material
     stoneMaterial.setDiffuseColor(ofColor(139, 139, 139)); // Brown color for wood
     stoneMaterial.setSpecularColor(ofColor(255, 255, 255)); // White specular highlights
@@ -40,12 +38,12 @@ void IslandObject::setup()
     }
 }
 
-void IslandObject::update()
+void IslandObject::_update()
 {
 
 }
 
-void IslandObject::draw()
+void IslandObject::_draw()
 {
     ofPushMatrix();
     ofMatrix4x4 rotationMatrix;
