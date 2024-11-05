@@ -28,7 +28,6 @@ void ofApp::setup()
     
     // object / scene setups
     sceneManager.addScene(new IslandScene());
-	sceneManager.loadScene(0);
 	sceneManager.setup();
 	
 	// cam

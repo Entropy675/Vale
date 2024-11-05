@@ -1,12 +1,12 @@
 #ifndef PHYSICSCONTROLLER__H_
 #define PHYSICSCONTROLLER__H_
 
-#include "Entity.h"
+#include "PhysicsEntity.h"
 
 class PhysicsController : public Entity
 {
 	private:
-	std::vector<Entity*> physicsObjects;
+	std::vector<PhysicsEntity*> physicsObjects;
 	
 	public:
     PhysicsController();

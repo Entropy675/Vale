@@ -23,6 +23,7 @@ void SceneManager::loadScene(int index)
 void SceneManager::addScene(Scene* scene)
 {
 	scenes.push_back(scene);
+	if (scenes.size() == 1) loadScene(0);
 }
 
 void SceneManager::_setup()
