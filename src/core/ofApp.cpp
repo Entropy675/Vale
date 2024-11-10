@@ -150,7 +150,7 @@ void ofApp::mouseMoved(ofMouseEventArgs& mouse)
     cam.setGlobalOrientation(glm::quat());
 
     // Calculate the relative mouse position to the screen center
-    float deltaX = mouse.x - ofGetWidth() / 2;
+    float deltaX = mouse.x;
     float deltaY = mouse.y - ofGetHeight() / 2;
 
     // Rotate the camera based on mouse movement

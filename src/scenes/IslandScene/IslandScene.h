@@ -3,7 +3,6 @@
 
 #include "Entity.h"
 #include "Scene.h"
-#include <vector>
 
 // ----------  Scene objects  ----------
 class OceanObject : public Entity

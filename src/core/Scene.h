@@ -3,11 +3,13 @@
 
 #include <vector>
 #include "Entity.h"
+#include "PhysicsEntity.h"
 
 class Scene // responsible for the mem of its own entities
 {
 protected:
     std::vector<Entity*> sceneObjects;
+    std::vector<PhysicsEntity*> scenePhysicsObjects;
     std::vector<std::vector<Entity*>*> allReferences;
 public:
     Scene();
