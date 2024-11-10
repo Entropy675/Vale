@@ -5,21 +5,23 @@
 #include "Scene.h"
 #include <vector>
 
-// ---------- Scene objects ----------
+// ----------  Scene objects  ----------
 class OceanObject : public Entity
 {
     float noiseScale; // how big is noise
     float spread; // how far apart is each node
     float noiseZ; // z offset
+    glm::vec3 lightDir;
     std::vector<glm::vec3> vertices;
     ofQuaternion waterRotation;
+    glm::vec3 dimensions = glm::vec3(500, 500, 10);
     
 	// helpers
 	void updateNormals();
 	float generateWaveHeight(float x, float y);
 
 public:
-    OceanObject(glm::vec3 dim = glm::vec3(100, 100, 10), float nScale = 3.8f, float sp = 130.0f);
+    OceanObject(glm::vec3 pos = glm::vec3(0, 0, 0), float nScale = 3.8f, float sp = 130.0f);
 	~OceanObject();
 	
     void _setup() override;
@@ -35,9 +37,10 @@ class IslandObject : public Entity
     int resolution;
     float spread;
     float noiseScale;
+    glm::vec3 dimensions = glm::vec3(100, 100, 10);
 
 public:
-    IslandObject(glm::vec3 dim = glm::vec3(100, 100, 10), float rad = 700, int res = 64, float sp = 10, float ns = 3.5f);
+    IslandObject(glm::vec3 pos = glm::vec3(0, 0, 0), float rad = 700, int res = 64, float sp = 10, float ns = 3.5f);
 	~IslandObject();
 	
     void _setup() override;
@@ -53,7 +56,7 @@ public:
 	// cleanup is handled in parent 
 	IslandScene() 
 	{
-		sceneObjects.push_back(new OceanObject(glm::vec3(500, 500, 10)));
+		sceneObjects.push_back(new OceanObject());
 		sceneObjects.push_back(new IslandObject());
 	};
 };

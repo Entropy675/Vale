@@ -3,7 +3,6 @@
 
 #include "ofMain.h"
 #include "ofTexture.h"
-#include "IslandScene.h"
 #include "SceneManager.h"
 #include "PhysicsController.h"
 
@@ -31,12 +30,8 @@ public:
     ofLight sun;
     
     // objects (entities)
-    // std::vector<Entity*> entities;
+    // std::vector<Entity*> entities; replaced with manager
     SceneManager sceneManager;
-	
-	// scenes (loads into entities)
-	IslandScene islandMap;
-	
 	
 	// cam
     ofCamera cam;
@@ -53,10 +48,7 @@ public:
     bool keys[256]; // to track which keys are pressed
     
 private:
-	glm::vec3 generateRandomVector(float totalDistance);
 	void followPath(std::vector<glm::vec3>& pathPoints);
-	void setupSandIslandMesh(ofMesh& sandMesh, float radius, int resolution, float spread, float noiseScale);
-	void drawIslandMesh(ofMesh& islandMesh);
 };
 
 #endif

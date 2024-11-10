@@ -12,17 +12,12 @@ protected:
     float mass = 1.0f;
     
     // Newtonian physics (use glm::length(vec) for calculating magnitude)
-    glm::vec3 position = glm::vec3(0, 0, 0);
     glm::vec3 velocity = glm::vec3(0, 0, 0);
     glm::vec3 acceleration = glm::vec3(0, 0, 0);
 
     glm::vec3 angularVelocity = glm::vec3(0, 0, 0);
     glm::vec3 angularAcceleration = glm::vec3(0, 0, 0);
     
-    // actual values used to draw frame by frame, calculated via above
-    glm::vec3 scale = glm::vec3(1, 1, 1);
-	ofQuaternion rotation;
-    glm::vec3 translation = glm::vec3(0, 0, 0);
     
 public:
     // Constructors

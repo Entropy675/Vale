@@ -1,9 +1,9 @@
 #include "IslandScene.h"
 
-OceanObject::OceanObject(glm::vec3 dim, float nScale, float sp)
-	: Entity(dim), noiseScale(nScale), spread(sp) 
+OceanObject::OceanObject(glm::vec3 pos, float nScale, float sp)
+    : Entity(pos), noiseScale(nScale), spread(sp) 
 {
-	noiseZ = 0.0f;
+    noiseZ = 0.0f;
 }
 
 OceanObject::~OceanObject() {}
@@ -13,9 +13,11 @@ void OceanObject::updateNormals()
     // Clear previous normals
     mesh.clearNormals();
     
-    // Define a light direction for calculating shading effect
-    glm::vec3 lightDir = glm::normalize(glm::vec3(0.5f, 1.5f, 0.5f)); // Adjust direction as needed
-    
+    // Define a light direction that changes gradually over time (simulate sun movement)
+    // lightDir = glm::normalize(glm::vec3(sin(ofGetElapsedTimef() * 0.2f) * 0.5f, -0.8f, cos(ofGetElapsedTimef() * 0.2f) * 0.5f));
+    lightDir = glm::vec3(0.0f, -0.35f, -0.5f);
+    glm::vec3 viewDir = glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)); // Adjust as needed for camera direction
+
     // Calculate normals based on adjacent vertices
     for (int y = 0; y < dimensions.y; y++) 
     {
@@ -35,28 +37,29 @@ void OceanObject::updateNormals()
             
             // Compute normal with cross product of dx and dy
             glm::vec3 normal = glm::normalize(glm::cross(dx, dy));
-            
+
             // Calculate angle-based shadow intensity
             float angleFactor = glm::dot(normal, lightDir);
-            float shadowIntensity = glm::clamp(0.0f, angleFactor * 0.5f + 0.5f, 0.0f); // Adjust range for effect
+            float shadowIntensity = glm::clamp(0.3f + angleFactor * 0.8f, 0.0f, 1.0f); // Fine-tuned range
             glm::vec3 shadedNormal = normal * shadowIntensity;
 
-			// Adjust normals to make the shadows darker based on angle to light
-			float shadowBoost = 2.5f;  // Increase this factor for darker shadows
-			shadedNormal *= shadowBoost;
+            // Fresnel effect for edge reflectivity
+            float fresnelPower = 3.0f;  // Controls sharpness of reflectivity
+            float fresnelEffect = pow(1.0f - glm::dot(viewDir, normal), fresnelPower);
+            shadedNormal = glm::mix(shadedNormal, lightDir, fresnelEffect * 0.6f);
 
+            // Add the shaded normal to the mesh
             mesh.addNormal(glm::normalize(shadedNormal));
         }
     }
 }
 
-
 void OceanObject::_setup() 
 {
-    material.setShininess(1);
-    material.setSpecularColor(ofColor(220, 220, 220, 255));
+    material.setShininess(32);  // Higher shininess for sharper specular highlights
+    material.setSpecularColor(ofColor(255, 255, 255, 180)); // Subtle white highlight
     material.setEmissiveColor(ofColor(0, 0, 0, 255));
-    material.setDiffuseColor(ofColor(100, 100, 200, 145));
+    material.setDiffuseColor(ofColor(50, 100, 200, 145)); // Darker diffuse color
     material.setAmbientColor(ofColor(90, 90, 160, 255));
 
     // Create the terrain mesh
@@ -122,21 +125,21 @@ void OceanObject::_update()
 void OceanObject::_draw() 
 {
     glm::vec3 translation(-(dimensions.x * 0.5) * spread , -(dimensions.y * 0.5) * spread, dimensions.z);
-	glm::vec3 scale = glm::vec3(1, 1, 1);
+    glm::vec3 scale = glm::vec3(1, 1, 1);
     ofPushMatrix(); // save state
     
     ofQuaternion waterRotation = ofQuaternion(0, 0, 0, 1);
-	waterRotation.makeRotate(90, 1, 0, 0);
-	
+    waterRotation.makeRotate(90, 1, 0, 0);
+    
     ofMatrix4x4 rotationMatrix;
     waterRotation.get(rotationMatrix);
     
-	// SRT inverse
-	ofScale(scale);
-	ofMultMatrix(rotationMatrix); // with this one
-	ofTranslate(translation); // maybe switch this if the water mesh is invisible
-	
-	// draw water
+    // SRT inverse
+    ofScale(scale);
+    ofMultMatrix(rotationMatrix);
+    ofTranslate(translation);
+    
+    // draw water
     material.begin();
     mesh.draw();
     material.end();
@@ -144,11 +147,10 @@ void OceanObject::_draw()
     ofPopMatrix(); // go back to state
 }
 
-
-// sinosodal function generates height at a given position for uniform-ish waves
+// Sinosoidal function generates height at a given position for uniform-ish waves
 float OceanObject::generateWaveHeight(float x, float y)
 {
-	float wx = sin(x * 0.1f) * 40.0f + cos(x*0.09f + y*0.03f) * 40.0f;
-	float wy = sin(y * 0.1f) * 40.0f + cos(y*0.09f + x*0.03f) * 40.0f;
-	return wx + wy;
+    float wx = sin(x * 0.1f) * 40.0f + cos(x * 0.09f + y * 0.03f) * 40.0f;
+    float wy = sin(y * 0.1f) * 40.0f + cos(y * 0.09f + x * 0.03f) * 40.0f;
+    return wx + wy;
 }

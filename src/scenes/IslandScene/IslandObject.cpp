@@ -1,7 +1,7 @@
 #include "IslandScene.h"
 
-IslandObject::IslandObject(glm::vec3 dim, float rad, int res, float sp, float ns)
-	: Entity(dim), radius(rad), resolution(res), spread(sp), noiseScale(ns) {}
+IslandObject::IslandObject(glm::vec3 pos, float rad, int res, float sp, float ns)
+	: Entity(pos), radius(rad), resolution(res), spread(sp), noiseScale(ns) {}
 
 IslandObject::~IslandObject() {}
 

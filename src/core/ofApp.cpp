@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "IslandScene.h"
 
 // cleanup
 ofApp::~ofApp()
@@ -26,7 +27,7 @@ void ofApp::setup()
     sun.setGlobalPosition(0, 1330, 0);
     sun.enable();
     
-    // object / scene setups
+    // add scenes / scene setups
     sceneManager.addScene(new IslandScene());
 	sceneManager.setup();
 	
@@ -52,23 +53,6 @@ void ofApp::setup()
 //--------------------------------------------------------------
 //----------------------HELPER-FUNCTIIONS-----------------------
 //--------------------------------------------------------------
-
-
-// Generate random vector to somewhere on the surface of the eye
-glm::vec3 ofApp::generateRandomVector(float totalDistance) 
-{
-    float x = ofRandom(-totalDistance, totalDistance);
-    float y = ofRandom(-totalDistance, totalDistance);
-
-    // Calculate the remaining z value to ensure the vector's length is totalDistance
-    float z = std::sqrt(totalDistance * totalDistance - x * x - y * y);
-
-    // Randomly choose the sign of z to ensure the vector can point in all directions
-    z *= (ofRandom(0.0f, 1.0f) > 0.5f) ? 1.0f : -1.0f;
-
-    return glm::vec3(x, y, z);
-}
-
 
 void ofApp::followPath(std::vector<glm::vec3>& pathPoints) 
 {

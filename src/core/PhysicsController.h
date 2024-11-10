@@ -6,7 +6,7 @@
 class PhysicsController : public Entity
 {
 	private:
-	std::vector<PhysicsEntity*> physicsObjects;
+	std::vector<PhysicsEntity*> physicsObjects; // not mem managed by this class
 	
 	public:
     PhysicsController();

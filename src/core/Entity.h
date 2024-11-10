@@ -12,13 +12,19 @@ private:
 	
 protected:
     const long long hashId;
-    glm::vec3 dimensions; // (length, width, height) = (x, y, z)
     ofMesh mesh; // Assuming this is a member variable
 	ofMaterial material;
+	
+    glm::vec3 position = glm::vec3(0, 0, 0);
+    
+    // object level transformations applied 
+    glm::vec3 scale = glm::vec3(1, 1, 1);
+	ofQuaternion rotation;
+    glm::vec3 translation = glm::vec3(0, 0, 0);
     
 public:
     // Constructors
-    Entity(glm::vec3 dimension = glm::vec3(0, 0, 0));
+    Entity(glm::vec3 position = glm::vec3(0, 0, 0));
     Entity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     virtual ~Entity();
     

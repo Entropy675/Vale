@@ -1,6 +1,6 @@
 #include "PhysicsController.h"
 
-// should perform SRT before drawing
+// the biggest difference between movement here and movement in actual object is that this does modify collision mesh
 // maintains a small list of physics objects, cleared when the scene is changed
 // scene can load entities into either SceneManager or PhysicsController
 // only PhysicsEntities will do something different if in PhysicsController
