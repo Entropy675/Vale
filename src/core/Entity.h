@@ -19,7 +19,7 @@ protected:
     
     // object level transformations applied 
     glm::vec3 scale = glm::vec3(1, 1, 1);
-	ofQuaternion rotation;
+    ofQuaternion rotation;
     glm::vec3 translation = glm::vec3(0, 0, 0);
     
 public:

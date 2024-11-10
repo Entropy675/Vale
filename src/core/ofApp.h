@@ -9,7 +9,7 @@
 class ofApp : public ofBaseApp 
 {
 public:
-	~ofApp();
+    ~ofApp();
     void setup();
     void update();
     void draw();
@@ -26,29 +26,29 @@ public:
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
 
-	// light
+    // light
     ofLight sun;
-    
+
     // objects (entities)
     // std::vector<Entity*> entities; replaced with manager
     SceneManager sceneManager;
-	
-	// cam
+
+    // cam
     ofCamera cam;
     float cameraFloor;
     float moveSpeed; // camera movement speed
     int currentTargetIndex;
     float cameraSpeed; // auto camera movement speed
-	std::vector<glm::vec3> path;
-	glm::vec3 cameraPosition;
-	bool followPathBlindly = true;
-	
-	// controls
-	bool isCursorHidden = false;
+    std::vector<glm::vec3> path;
+    glm::vec3 cameraPosition;
+    bool followPathBlindly = true;
+
+    // controls
+    bool isCursorHidden = false;
     bool keys[256]; // to track which keys are pressed
-    
+
 private:
-	void followPath(std::vector<glm::vec3>& pathPoints);
+    void followPath(std::vector<glm::vec3>& pathPoints);
 };
 
 #endif

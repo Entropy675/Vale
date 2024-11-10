@@ -13,17 +13,17 @@ PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(mesh
 PhysicsEntity::~PhysicsEntity() {}; // each PhysicsEntity manages its own cleanup in its dtor
 
 // Getters
-glm::vec3 PhysicsEntity::getPosition() const 				{ return position; } 
-glm::vec3 PhysicsEntity::getVelocity() const 				{ return velocity; }
-glm::vec3 PhysicsEntity::getAcceleration() const 			{ return acceleration; }
-float PhysicsEntity::getMass() const 						{ return mass; }
-glm::vec3 PhysicsEntity::getAngularVelocity() const 		{ return angularVelocity; }
-glm::vec3 PhysicsEntity::getAngularAcceleration() const 	{ return angularAcceleration; }
-ofQuaternion PhysicsEntity::getFacingRotation() const		{ return rotation; }
+glm::vec3 PhysicsEntity::getPosition() const                { return position; } 
+glm::vec3 PhysicsEntity::getVelocity() const                { return velocity; }
+glm::vec3 PhysicsEntity::getAcceleration() const            { return acceleration; }
+float PhysicsEntity::getMass() const                        { return mass; }
+glm::vec3 PhysicsEntity::getAngularVelocity() const         { return angularVelocity; }
+glm::vec3 PhysicsEntity::getAngularAcceleration() const     { return angularAcceleration; }
+ofQuaternion PhysicsEntity::getFacingRotation() const       { return rotation; }
 
 // setters
-void PhysicsEntity::setMass(float massValue)			{ mass = massValue; }
-void PhysicsEntity::setFacingRotation(const glm::vec4& rot){ rotation.makeRotate(rot.w, rot.x, rot.y, rot.z); }
+void PhysicsEntity::setMass(float massValue)                { mass = massValue; }
+void PhysicsEntity::setFacingRotation(const glm::vec4& rot) { rotation.makeRotate(rot.w, rot.x, rot.y, rot.z); }
 
 // rot = specify % rotation in axis, (%x, %y, %z, angle)
 void PhysicsEntity::addFacingRotation(const glm::vec4& rot) 
@@ -41,15 +41,15 @@ glm::vec3 PhysicsEntity::getFacingDirection() const
 }
 
 // Adjust position
-void PhysicsEntity::moveTo(const glm::vec3& newPos) 		{ position = newPos; }
-void PhysicsEntity::translate(const glm::vec3& offset)		{ position += offset; }
+void PhysicsEntity::moveTo(const glm::vec3& newPos)         { position = newPos; }
+void PhysicsEntity::translate(const glm::vec3& offset)      { position += offset; }
 
 // Adjust velocity
-void PhysicsEntity::setVelocity(const glm::vec3& vel)		{ velocity = vel; }
-void PhysicsEntity::addVelocity(const glm::vec3& delta)	{ velocity += delta; }
+void PhysicsEntity::setVelocity(const glm::vec3& vel)       { velocity = vel; }
+void PhysicsEntity::addVelocity(const glm::vec3& delta)     { velocity += delta; }
 
 // Apply force/acceleration
-void PhysicsEntity::setAcceleration(const glm::vec3& accel){ acceleration = accel; }
+void PhysicsEntity::setAcceleration(const glm::vec3& accel) { acceleration = accel; }
 void PhysicsEntity::applyForce(const glm::vec3& direction, float power) 
 {
     acceleration += direction * power / mass; // mass is mass
