@@ -1,0 +1,63 @@
+/* Scenes are defined in a single header file
+ * They include the definitions for their objects
+ * A scene is linked with this header file + the individual scene object .cpp files
+ * This is a strict structure because it is relatively straight forward &
+ * there should be no limitations that arise from enforcing this layout
+*/ 
+
+- Here is a template for the layout of a scene:
+- inside /SomeScene directory:
+- SomeScene.h:
+#ifndef SOMESCENE_H__
+#define SOMESCENE_H__
+
+#include "Entity.h"
+#include "Scene.h"
+
+// ----------  Scene objects  ----------
+
+class SomeObject : public Entity
+{
+public:
+    SomeObject(glm::vec3 pos = glm::vec3(0, 0, 0));
+	~SomeObject();
+	
+    void _setup() override;
+    void _update() override; 
+    void _draw() override;
+};
+
+class SomePhysicsObject : public PhysicsEntity
+{
+public:
+    SomePhysicsObject(glm::vec3 pos = glm::vec3(0, 0, 0));
+	~SomePhysicsObject();
+	
+    void _setup() override;
+    void _update() override; 
+    void _draw() override;
+};
+
+// ---------- Scene definition ----------
+class SomeScene : public Scene
+{
+public:
+	SomeScene() 
+	{
+		sceneObjects.push_back(new SomeObject());
+		scenePhysicsObjects.push_back(new SomePhysicsObject());
+	};
+};
+
+
+#endif
+
+
+NOTE:
+Whats the difference between PhysicsObjects and SceneObjects if both can move and have animations?
+Well, SceneObjects collision mesh is planned to be computed and stored once (or as rarely as possible), 
+while the PhysicsObjects can change their collision mesh dynamically. Basically if it moves its probably 
+better off as a PhysicsObject then a SceneObject because, although it might work as a scene object, 
+every time you modify the mesh it will remove that from the Scene mesh, and re add whith your new position 
+modifying the mesh. Its bad, slow, awful, all those things, don't do it.
+

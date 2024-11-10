@@ -7,8 +7,8 @@
 class Entity 
 {
 private:
-	bool setupDone = false;
-	static long long uniqueCounter;
+    bool setupDone = false;
+    static long long uniqueCounter;
 	
 protected:
     const long long hashId;
