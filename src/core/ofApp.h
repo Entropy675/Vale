@@ -36,7 +36,7 @@ public:
     // cam
     ofCamera cam;
     float cameraFloor;
-    float moveSpeed; // camera movement speed
+    float moveSpeed; // player camera movement speed
     int currentTargetIndex;
     float cameraSpeed; // auto camera movement speed
     std::vector<glm::vec3> path;

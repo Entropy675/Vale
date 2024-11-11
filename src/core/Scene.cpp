@@ -19,8 +19,10 @@ Scene::~Scene()
     for (Entity* ent : sceneObjects) delete ent;
 }
 
-void Scene::loadScene(std::vector<Entity*>* list)
+void Scene::loadScene(PhysicsController& phys, std::vector<Entity*>* list)
 {
+    phys.loadScene(scenePhysicsObjects);
+    list->clear();
     list->reserve(sceneObjects.size());
     std::copy(sceneObjects.begin(), sceneObjects.end(), std::back_inserter(*list));
     allReferences.push_back(list); // keep a reference to where referenced

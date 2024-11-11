@@ -62,6 +62,11 @@ void OceanObject::_setup()
     material.setDiffuseColor(ofColor(50, 100, 200, 145)); // Darker diffuse color
     material.setAmbientColor(ofColor(90, 90, 160, 255));
 
+    // properties
+    translation = glm::vec3(-(dimensions.x * 0.5) * spread , -(dimensions.y * 0.5) * spread, dimensions.z);
+    scale = glm::vec3(1, 1, 1);
+    rotation.makeRotate(90, 1, 0, 0);
+    
     // Create the terrain mesh
     mesh.setMode(OF_PRIMITIVE_TRIANGLES);
     vertices.clear();
@@ -94,7 +99,6 @@ void OceanObject::_setup()
             mesh.addIndex(i + dimensions.x);
         }
     }
-
     // Calculate normals initially
     updateNormals();
 }
@@ -124,21 +128,6 @@ void OceanObject::_update()
 
 void OceanObject::_draw() 
 {
-    glm::vec3 translation(-(dimensions.x * 0.5) * spread , -(dimensions.y * 0.5) * spread, dimensions.z);
-    glm::vec3 scale = glm::vec3(1, 1, 1);
-    ofPushMatrix(); // save state
-    
-    ofQuaternion waterRotation = ofQuaternion(0, 0, 0, 1);
-    waterRotation.makeRotate(90, 1, 0, 0);
-    
-    ofMatrix4x4 rotationMatrix;
-    waterRotation.get(rotationMatrix);
-    
-    // SRT inverse
-    ofScale(scale);
-    ofMultMatrix(rotationMatrix);
-    ofTranslate(translation);
-    
     // draw water
     material.begin();
     mesh.draw();
