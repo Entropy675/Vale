@@ -102,6 +102,7 @@ void OceanObject::_setup()
     }
     // Calculate normals initially
     updateNormals();
+    _update();
 }
 
 void OceanObject::_update() 
@@ -140,7 +141,7 @@ void OceanObject::_draw()
 // Sinosoidal function generates height at a given position for uniform-ish waves
 float OceanObject::generateWaveHeight(float x, float y)
 {
-    float wx = sin(x * 0.1f) * 40.0f + cos(x * 0.09f + y * 0.03f) * 40.0f;
-    float wy = sin(y * 0.1f) * 40.0f + cos(y * 0.09f + x * 0.03f) * 40.0f;
+    float wx = sin(x * 0.1f) * 40.0f + cos(x * 0.09f + y * 0.03f) * 45.0f;
+    float wy = sin(y * 0.1f) * 35.0f + cos(y * 0.09f + x * 0.03f) * 40.0f;
     return wx + wy;
 }

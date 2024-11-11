@@ -1,5 +1,6 @@
 #include "ofApp.h"
 #include "IslandScene.h"
+#include "PopperScene.h"
 
 // cleanup
 ofApp::~ofApp()
@@ -29,6 +30,7 @@ void ofApp::setup()
     
     // add scenes / scene setups
     sceneManager.addScene(new IslandScene());
+    sceneManager.addScene(new PopperScene());
     sceneManager.setup();
     
     // cam
@@ -133,6 +135,8 @@ void ofApp::draw()
 void ofApp::keyPressed(int key) 
 {
     keys[key] = true;
+    if (key == '1') sceneManager.loadScene(0);
+    if (key == '2') sceneManager.loadScene(1);
     if (key == 't') sceneManager.toggleStaticMesh();
     if (key == 'q') path.push_back(cam.getPosition());
     if (key == 'e') followPathBlindly = !followPathBlindly;
