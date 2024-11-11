@@ -17,7 +17,16 @@ void Entity::update()
 
 void Entity::draw()
 {
+    ofPushMatrix();
+    ofScale(scale);
+    ofMatrix4x4 rotationMatrix;
+    rotation.get(rotationMatrix);
+    ofMultMatrix(rotationMatrix);
+    ofTranslate(translation);
+    
     _draw();
+    
+    ofPopMatrix();
 }
     
 void Entity::setup()
