@@ -4,14 +4,18 @@
 // maintains a small list of physics objects, cleared when the scene is changed
 // scene can load entities into either SceneManager or PhysicsController
 // only PhysicsEntities will work PhysicsController
-PhysicsController::PhysicsController()
-{
-
-}
+PhysicsController::PhysicsController(ofMesh& environment)
+    : Entity(glm::vec3(0, 0, 0)), env(environment) {}
 
 PhysicsController::~PhysicsController()
 {
     for (PhysicsEntity* obj : physicsObjects) delete obj; // Free memory for each existing object
+}
+
+void PhysicsController::clear() 
+{
+    for (PhysicsEntity* obj : physicsObjects) delete obj;
+    physicsObjects.clear();
 }
 
 void PhysicsController::loadScene(std::vector<PhysicsEntity*>& preservedPhysicsObjects)
@@ -37,4 +41,5 @@ void PhysicsController::_update()
 void PhysicsController::_draw()
 {
     for (PhysicsEntity* ptr : physicsObjects) ptr->draw();
+    env.drawWireframe();
 }

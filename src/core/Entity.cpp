@@ -3,12 +3,24 @@
 long long Entity::uniqueCounter = 0;
 
 Entity::Entity(glm::vec3 pos)
-    : position(pos), hashId(std::hash<std::size_t>{}(++uniqueCounter)) {}
+    : position(pos), hashId(++uniqueCounter) {}
 
 Entity::Entity(const ofMesh& meshRef, glm::vec3 pos)
-    : position(pos), hashId(std::hash<std::size_t>{}(++uniqueCounter)), mesh(meshRef) {}
+    : position(pos), hashId(++uniqueCounter), mesh(meshRef) {}
 
 Entity::~Entity() {}; // each entity manages its own cleanup in its dtor
+
+ofMatrix4x4 Entity::getTransformationMatrix() const
+{
+    ofMatrix4x4 transformation;
+    transformation.scale(scale.x, scale.y, scale.z);
+
+    ofMatrix4x4 rotationMatrix;
+    rotation.get(rotationMatrix);
+    transformation.preMult(rotationMatrix);
+    transformation.translate(position + translation);
+    return transformation;
+}
 
 void Entity::update()
 {
@@ -31,6 +43,7 @@ void Entity::draw()
     
 void Entity::setup()
 {
+    std::cout <<  hashId << std::endl;
     if (!setupDone) setupDone = true; // prevent any repeated setup
     else return; // ofLogWarning("Entity") << "Setup has already been called!"; // ignore because who cares
     

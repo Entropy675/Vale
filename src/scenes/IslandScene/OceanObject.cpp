@@ -63,7 +63,7 @@ void OceanObject::_setup()
     material.setAmbientColor(ofColor(90, 90, 160, 255));
 
     // properties
-    translation = glm::vec3(-(dimensions.x * 0.5) * spread , -(dimensions.y * 0.5) * spread, dimensions.z);
+    translation = glm::vec3(-(dimensions.x * 0.5) * spread, -(dimensions.y * 0.5) * spread, dimensions.z);
     scale = glm::vec3(1, 1, 1);
     rotation.makeRotate(90, 1, 0, 0);
     

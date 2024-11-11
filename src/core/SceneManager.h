@@ -9,14 +9,16 @@
 class SceneManager : public Entity
 {
     private:
-    PhysicsController phys;
-    std::vector<Entity*> entities; // mem managed by scenes
     std::vector<Scene*> scenes; // mem managed by this class
+    std::vector<Entity*> entities; // mem managed by scenes
+    ofMesh aggregateMesh; // Unified mesh for the entire scene
+    PhysicsController phys;
 
     public:
     SceneManager();
     ~SceneManager();
 
+    void updateEnvironmentMesh();
     void loadScene(int index);
     void addScene(Scene* scene);
 

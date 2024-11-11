@@ -11,7 +11,6 @@ private:
     static long long uniqueCounter;
 	
 protected:
-    const long long hashId;
     ofMesh mesh; // Assuming this is a member variable
 	ofMaterial material;
 	
@@ -20,9 +19,10 @@ protected:
     // object level transformations applied 
     glm::vec3 scale = glm::vec3(1, 1, 1);
     ofQuaternion rotation;
-    glm::vec3 translation = glm::vec3(0, 0, 0);
+    glm::vec3 translation = glm::vec3(0, 0, 0); // x, y, z
     
 public:
+    const long long hashId;
     // Constructors
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
     Entity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
@@ -37,13 +37,16 @@ public:
     virtual void _setup() = 0;
     
     // references
-    ofMesh& getMesh(); // Return a const reference to ofMesh
+    virtual ofMesh& getMesh(); // Return a const reference to ofMesh
     ofMaterial& getMaterial(); // Return a reference to ofMaterial
 
     // material properties
     void setMaterial(const ofMaterial& mat); // Set the material
     void setMaterialColor(const ofColor& color); // Set the material color
     void setMaterialShininess(float shininess); // Set the material shininess
+    
+    // helpers
+    ofMatrix4x4 getTransformationMatrix() const;
 };
 
 #endif // ENTITY_H__

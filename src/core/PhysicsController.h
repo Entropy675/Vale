@@ -7,11 +7,13 @@ class PhysicsController : public Entity
 {
     private:
     std::vector<PhysicsEntity*> physicsObjects; // mem managed by this class
+    ofMesh& env;
     
     public:
-    PhysicsController();
+    PhysicsController(ofMesh& environment);
     ~PhysicsController();
 
+    void clear();
     void loadScene(std::vector<PhysicsEntity*>& physicsObjects);
 
     void _setup() override;
