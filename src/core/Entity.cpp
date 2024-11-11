@@ -31,13 +31,8 @@ void Entity::draw()
     
 void Entity::setup()
 {
-    if (!setupDone) 
-        setupDone = true; // prevent any repeated setup
-    else
-    {
-        ofLogWarning("Entity") << "Setup has already been called!";
-        return;
-    }
+    if (!setupDone) setupDone = true; // prevent any repeated setup
+    else return; // ofLogWarning("Entity") << "Setup has already been called!"; // ignore because who cares
     
     _setup();
 }

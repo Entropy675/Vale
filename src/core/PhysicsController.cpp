@@ -3,9 +3,7 @@
 // the biggest difference between movement here and movement in actual object is that this does modify collision mesh
 // maintains a small list of physics objects, cleared when the scene is changed
 // scene can load entities into either SceneManager or PhysicsController
-// only PhysicsEntities will do something different if in PhysicsController
-// PhysicsEntities in SceneManager will be stored in a seperate list, and can be switched between
-// being managed by the SceneManager (just drawn normally) or the PhysicsController (with physics).
+// only PhysicsEntities will work PhysicsController
 PhysicsController::PhysicsController()
 {
 
@@ -13,20 +11,30 @@ PhysicsController::PhysicsController()
 
 PhysicsController::~PhysicsController()
 {
+    for (PhysicsEntity* obj : physicsObjects) delete obj; // Free memory for each existing object
+}
 
+void PhysicsController::loadScene(std::vector<PhysicsEntity*>& preservedPhysicsObjects)
+{
+    for (PhysicsEntity* obj : physicsObjects) delete obj; // Free memory for each existing object
+    physicsObjects.clear();
+    
+    // copy each preserved object in the scene into active physicsObjects
+    for (PhysicsEntity* obj : preservedPhysicsObjects) 
+        physicsObjects.push_back(obj->clone());
 }
 
 void PhysicsController::_setup()
 {
-
+    for (PhysicsEntity* ptr : physicsObjects) ptr->setup();
 }
 
 void PhysicsController::_update()
 {
-
+    for (PhysicsEntity* ptr : physicsObjects) ptr->update();
 }
 
 void PhysicsController::_draw()
 {
-
+    for (PhysicsEntity* ptr : physicsObjects) ptr->draw();
 }

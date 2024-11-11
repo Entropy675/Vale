@@ -17,7 +17,7 @@ void SceneManager::loadScene(int index)
 	    std::cerr << "Error: Scene index " << index << " is out of bounds." << std::endl;
     	return;
 	}
-	scenes[index]->loadScene(&entities);
+	scenes[index]->loadScene(phys, &entities);
 }
 
 void SceneManager::addScene(Scene* scene)
@@ -28,16 +28,19 @@ void SceneManager::addScene(Scene* scene)
 
 void SceneManager::_setup()
 {
-
-    for (Scene* sc : scenes) sc->setup();
+    phys.setup();
+    //for (Scene* sc : scenes) sc->setup();
+    for (Entity* ptr : entities) ptr->setup();
 }
 
 void SceneManager::_update()
 {
+    phys.update();
     for (Entity* ptr : entities) ptr->update();
 }
 
 void SceneManager::_draw()
 {
+    phys.draw();
     for (Entity* ptr : entities) ptr->draw();
 }

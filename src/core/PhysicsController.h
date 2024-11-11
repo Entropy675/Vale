@@ -6,11 +6,13 @@
 class PhysicsController : public Entity
 {
     private:
-    std::vector<PhysicsEntity*> physicsObjects; // not mem managed by this class
-
+    std::vector<PhysicsEntity*> physicsObjects; // mem managed by this class
+    
     public:
     PhysicsController();
     ~PhysicsController();
+
+    void loadScene(std::vector<PhysicsEntity*>& physicsObjects);
 
     void _setup() override;
     void _update() override; 
