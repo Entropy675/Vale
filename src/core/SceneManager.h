@@ -19,7 +19,7 @@ class SceneManager : public Entity
     ~SceneManager();
 
     void updateEnvironmentMesh();
-    void loadScene(int index);
+    void loadScene(size_t index);
     void addScene(Scene* scene);
 
     void _setup() override;

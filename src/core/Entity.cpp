@@ -10,6 +10,42 @@ Entity::Entity(const ofMesh& meshRef, glm::vec3 pos)
 
 Entity::~Entity() {}; // each entity manages its own cleanup in its dtor
 
+void Entity::update()
+{
+    _update();
+}
+
+void Entity::draw()
+{
+    ofPushMatrix();
+    /*
+    ofScale(scale);
+    ofMatrix4x4 rotationMatrix;
+    rotation.get(rotationMatrix);
+    ofMultMatrix(rotationMatrix);
+    ofTranslate(translation);
+    */
+    ofMultMatrix(getTransformationMatrix());
+    _draw();
+    
+    ofPopMatrix();
+}
+    
+void Entity::setup()
+{
+    if (!setupDone) setupDone = true; // prevent any repeated setup
+    else return; // ofLogWarning("Entity") << "Setup has already been called!"; // ignore because who cares
+    
+    std::cout << "Entity setup: " <<  hashId << std::endl;
+    _setup();
+}
+
+// getters
+ofQuaternion Entity::getRotation() const            { return rotation; }
+glm::vec3 Entity::getScale() const                  { return scale; }
+glm::vec3 Entity::getTranslation() const            { return translation + position; }
+
+// helpers
 ofMatrix4x4 Entity::getTransformationMatrix() const
 {
     ofMatrix4x4 transformation;
@@ -22,33 +58,8 @@ ofMatrix4x4 Entity::getTransformationMatrix() const
     return transformation;
 }
 
-void Entity::update()
-{
-    _update();
-}
-
-void Entity::draw()
-{
-    ofPushMatrix();
-    ofScale(scale);
-    ofMatrix4x4 rotationMatrix;
-    rotation.get(rotationMatrix);
-    ofMultMatrix(rotationMatrix);
-    ofTranslate(translation);
-    
-    _draw();
-    
-    ofPopMatrix();
-}
-    
-void Entity::setup()
-{
-    std::cout <<  hashId << std::endl;
-    if (!setupDone) setupDone = true; // prevent any repeated setup
-    else return; // ofLogWarning("Entity") << "Setup has already been called!"; // ignore because who cares
-    
-    _setup();
-}
+long long Entity::getId() const                     { return hashId; }
+ofMesh Entity::copyMesh() const                     { return mesh; }
 
 // references
 ofMesh& Entity::getMesh()                           { return mesh; } 
