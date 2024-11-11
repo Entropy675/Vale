@@ -16,32 +16,51 @@ void SceneManager::updateEnvironmentMesh()
     for (Entity* entity : entities) 
     {
         ofMesh entityMesh = entity->getMesh();
-        ofMatrix4x4 transformationMatrix = entity->getTransformationMatrix();
+        
+        // Get individual transformations
+        glm::vec3 scale = entity->getScale();
+        ofQuaternion rotation = entity->getRotation();
+        glm::vec3 translation = entity->getTranslation();
 
-        std::cout << "pre: \n" << entityMesh.getVertex(entityMesh.getNumVertices()/2) << std::endl;
-        std::cout << "translation #" << entity->hashId << ": \n" << (transformationMatrix) << std::endl;
-    
-        std::cout << "errrrrrrrrr #" << entity->hashId << ": \n" << (transformationMatrix) << std::endl;
-        std::cout << transformationMatrix(3, 0) << ", " << transformationMatrix(3, 1) << ", " << transformationMatrix(3, 2) << std::endl;
+        // Debug the transformation breakdown
+        ofVec3f tempVert = entityMesh.getVertex(entityMesh.getNumVertices() / 2);
+        std::cout << "pre: \n" << tempVert << std::endl;
+        std::cout << "scale: \n" << scale << std::endl;
+        std::cout << "rotation: \n" << rotation << std::endl;
+        std::cout << "translation: \n" << translation << std::endl;
+
+
         // Transform each vertex in the entity's mesh
-        for (int i = 0; i < entityMesh.getNumVertices(); i++) 
+        for (size_t i = 0; i < entityMesh.getNumVertices(); i++) 
         {
             ofVec3f vertex = entityMesh.getVertex(i);
-            ofVec4f transformedVertex = transformationMatrix * ofVec4f(vertex.x, vertex.y, vertex.z, 1.0f); // Apply transformation
-            float temp = 1.0f;
-            entityMesh.setVertex(i, 
-                ofVec3f(transformedVertex.x + temp*transformationMatrix(3, 0), // not sure why this is switched
-                        transformedVertex.y + temp*transformationMatrix(3, 2), // conversion from x,y,z to of coords?
-                        transformedVertex.z - temp*transformationMatrix(3, 1))
-                ); // Set transformed vertex
+            
+            // Scale
+            vertex.x *= scale.x;
+            vertex.y *= scale.y;
+            vertex.z *= scale.z;
+            
+            // Rotate
+            ofVec3f transformedVertex = rotation * vertex; 
+            
+            // Translate
+            transformedVertex.x += translation.x;
+            transformedVertex.y += translation.y;
+            transformedVertex.z += translation.z;
+
+
+            entityMesh.setVertex(i, ofVec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z)); // Update the vertex
         }
-        std::cout << "post: \n" << entityMesh.getVertex(entityMesh.getNumVertices()/2) << std::endl;
+
+        // Debug the transformed position of the analyzed point
+        std::cout << "post: \n" << entityMesh.getVertex(entityMesh.getNumVertices() / 2) << std::endl;
         
+        // Append the transformed mesh to the aggregate mesh
         aggregateMesh.append(entityMesh);
     }
 }
 
-void SceneManager::loadScene(int index)
+void SceneManager::loadScene(size_t index)
 {
     if (index < 0 && index >= scenes.size()) 
     {

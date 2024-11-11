@@ -19,7 +19,7 @@ void OceanObject::updateNormals()
     glm::vec3 viewDir = glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)); // Adjust as needed for camera direction
 
     // Calculate normals based on adjacent vertices
-    for (int y = 0; y < dimensions.y; y++) 
+    for (int y = 0; y < dimensions.z; y++) 
     {
         for (int x = 0; x < dimensions.x; x++) 
         {
@@ -29,7 +29,7 @@ void OceanObject::updateNormals()
             glm::vec3 left   = x > 0 ? vertices[i - 1] : vertices[i];
             glm::vec3 right  = x < dimensions.x - 1 ? vertices[i + 1] : vertices[i];
             glm::vec3 up     = y > 0 ? vertices[i - dimensions.x] : vertices[i];
-            glm::vec3 down   = y < dimensions.y - 1 ? vertices[i + dimensions.x] : vertices[i];
+            glm::vec3 down   = y < dimensions.z - 1 ? vertices[i + dimensions.x] : vertices[i];
 
             // Calculate vectors from neighboring vertices
             glm::vec3 dx = right - left;
@@ -63,16 +63,17 @@ void OceanObject::_setup()
     material.setAmbientColor(ofColor(90, 90, 160, 255));
 
     // properties
-    translation = glm::vec3(-(dimensions.x * 0.5) * spread, -(dimensions.y * 0.5) * spread, dimensions.z);
-    scale = glm::vec3(1, 1, 1);
+    //translation = glm::vec3(-(dimensions.x * 0.5) * spread, -(dimensions.y * 0.5) * spread, dimensions.z);
+    translation = glm::vec3(-(dimensions.x * 0.5) * spread, dimensions.y, -(dimensions.z * 0.5) * spread);
+    scale = glm::vec3(1, 1, 1); // -1 for rotation in z axis
     rotation.makeRotate(90, 1, 0, 0);
     
     // Create the terrain mesh
     mesh.setMode(OF_PRIMITIVE_TRIANGLES);
     vertices.clear();
-    vertices.reserve(dimensions.x * dimensions.y);
+    vertices.reserve(dimensions.x * dimensions.z);
     
-    for (int y = 0; y < dimensions.y; y++) 
+    for (int y = 0; y < dimensions.z; y++) 
     {
         for (int x = 0; x < dimensions.x; x++) 
         {
@@ -85,7 +86,7 @@ void OceanObject::_setup()
     }
 
     // Set up indices for the triangles
-    for (int y = 0; y < dimensions.y - 1; y++) 
+    for (int y = 0; y < dimensions.z - 1; y++) 
     {
         for (int x = 0; x < dimensions.x - 1; x++) 
         {
@@ -106,7 +107,7 @@ void OceanObject::_setup()
 void OceanObject::_update() 
 {
     noiseZ += 0.03f;
-    for (int y = 0; y < dimensions.y; y++) 
+    for (int y = 0; y < dimensions.z; y++) 
     {
         for (int x = 0; x < dimensions.x; x++) 
         {
