@@ -8,6 +8,11 @@ SceneManager::SceneManager() : Entity(glm::vec3(0, 0, 0)), phys(aggregateMesh)
 SceneManager::~SceneManager()
 {
     for (Scene* sc : scenes) delete sc;
+}   
+
+void SceneManager::toggleStaticMesh()
+{
+    drawStaticMesh = !drawStaticMesh;
 }
 
 void SceneManager::updateEnvironmentMesh()
@@ -23,12 +28,13 @@ void SceneManager::updateEnvironmentMesh()
         glm::vec3 translation = entity->getTranslation();
 
         // Debug the transformation breakdown
+        /*
         ofVec3f tempVert = entityMesh.getVertex(entityMesh.getNumVertices() / 2);
         std::cout << "pre: \n" << tempVert << std::endl;
         std::cout << "scale: \n" << scale << std::endl;
         std::cout << "rotation: \n" << rotation << std::endl;
         std::cout << "translation: \n" << translation << std::endl;
-
+        */
 
         // Transform each vertex in the entity's mesh
         for (size_t i = 0; i < entityMesh.getNumVertices(); i++) 
@@ -53,7 +59,7 @@ void SceneManager::updateEnvironmentMesh()
         }
 
         // Debug the transformed position of the analyzed point
-        std::cout << "post: \n" << entityMesh.getVertex(entityMesh.getNumVertices() / 2) << std::endl;
+        // std::cout << "post: \n" << entityMesh.getVertex(entityMesh.getNumVertices() / 2) << std::endl;
         
         // Append the transformed mesh to the aggregate mesh
         aggregateMesh.append(entityMesh);
@@ -64,23 +70,27 @@ void SceneManager::loadScene(size_t index)
 {
     if (index < 0 && index >= scenes.size()) 
     {
-	    std::cerr << "Error: Scene index " << index << " is out of bounds." << std::endl;
-    	return;
-	}
-	scenes[index]->loadScene(phys, &entities);
+        std::cerr << "Error: Scene index " << index << " is out of bounds." << std::endl;
+        return;
+    }
+    scenes[index]->loadScene(phys, &entities);
+    std::cout << "loading... " << entities.size() << std::endl;
+    for (auto& entity : entities)
+        std::cout << "loading: " << entity->getId() << std::endl;
+    _setup();
 }
 
 void SceneManager::addScene(Scene* scene)
 {
-	scenes.push_back(scene);
-	if (scenes.size() == 1) loadScene(0);
+    scenes.push_back(scene);
+    if (scenes.size() == 1) loadScene(0);
 }
 
 void SceneManager::_setup()
 {
     phys.setup();
     for (Entity* ptr : entities) ptr->setup();
-	updateEnvironmentMesh();
+    updateEnvironmentMesh();
 }
 
 void SceneManager::_update()
@@ -93,4 +103,5 @@ void SceneManager::_draw()
 {
     phys.draw();
     for (Entity* ptr : entities) ptr->draw();
+    if (drawStaticMesh) aggregateMesh.drawWireframe();
 }

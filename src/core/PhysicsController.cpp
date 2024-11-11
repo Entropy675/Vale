@@ -41,5 +41,4 @@ void PhysicsController::_update()
 void PhysicsController::_draw()
 {
     for (PhysicsEntity* ptr : physicsObjects) ptr->draw();
-    env.drawWireframe();
 }
