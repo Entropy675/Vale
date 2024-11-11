@@ -13,11 +13,14 @@ class SceneManager : public Entity
     std::vector<Entity*> entities; // mem managed by scenes
     ofMesh aggregateMesh; // Unified mesh for the entire scene
     PhysicsController phys;
+    
+    bool drawStaticMesh = true;
 
     public:
     SceneManager();
     ~SceneManager();
 
+    void toggleStaticMesh();
     void updateEnvironmentMesh();
     void loadScene(size_t index);
     void addScene(Scene* scene);

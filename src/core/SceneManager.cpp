@@ -8,6 +8,11 @@ SceneManager::SceneManager() : Entity(glm::vec3(0, 0, 0)), phys(aggregateMesh)
 SceneManager::~SceneManager()
 {
     for (Scene* sc : scenes) delete sc;
+}   
+
+void SceneManager::toggleStaticMesh()
+{
+    drawStaticMesh = !drawStaticMesh;
 }
 
 void SceneManager::updateEnvironmentMesh()
@@ -93,4 +98,5 @@ void SceneManager::_draw()
 {
     phys.draw();
     for (Entity* ptr : entities) ptr->draw();
+    if (drawStaticMesh) aggregateMesh.drawWireframe();
 }
