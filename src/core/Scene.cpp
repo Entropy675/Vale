@@ -17,6 +17,7 @@ Scene::~Scene()
     }
     // delete every added entity
     for (Entity* ent : sceneObjects) delete ent;
+    for (Entity* ent : scenePhysicsObjects) delete ent;
 }
 
 void Scene::loadScene(PhysicsController& phys, std::vector<Entity*>* list)

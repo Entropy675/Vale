@@ -1,6 +1,6 @@
 #include "SceneManager.h"
 
-SceneManager::SceneManager()
+SceneManager::SceneManager() : Entity(glm::vec3(0, 0, 0)), phys(aggregateMesh)
 {
 
 }
@@ -8,6 +8,12 @@ SceneManager::SceneManager()
 SceneManager::~SceneManager()
 {
     for (Scene* sc : scenes) delete sc;
+}
+
+void SceneManager::updateEnvironmentMesh()
+{
+    aggregateMesh.clear();
+    for (Entity* entity : entities) aggregateMesh.append(entity->getMesh());
 }
 
 void SceneManager::loadScene(int index)
@@ -29,8 +35,8 @@ void SceneManager::addScene(Scene* scene)
 void SceneManager::_setup()
 {
     phys.setup();
-    //for (Scene* sc : scenes) sc->setup();
     for (Entity* ptr : entities) ptr->setup();
+	updateEnvironmentMesh();
 }
 
 void SceneManager::_update()
