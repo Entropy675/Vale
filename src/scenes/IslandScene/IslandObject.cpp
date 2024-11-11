@@ -5,9 +5,9 @@ IslandObject::IslandObject(glm::vec3 pos, float rad, int res, float sp, float ns
 
 IslandObject::~IslandObject() {}
 
-void IslandObject::_setup()
+void IslandObject::_setup() 
 {
-    // Set up wood material
+    // Set up stone material
     stoneMaterial.setDiffuseColor(ofColor(139, 139, 139)); // Brown color for wood
     stoneMaterial.setSpecularColor(ofColor(255, 255, 255)); // White specular highlights
     stoneMaterial.setShininess(64); // Set shininess for specular highlights
@@ -21,6 +21,7 @@ void IslandObject::_setup()
     stone.setRadius(400);
     stone.setResolution(64);
     
+    scale = glm::vec3(10, 1, 10);
     mesh = ofMesh::sphere(radius, resolution);
     
     // Loop through all vertices and apply noise to z-coordinate (height)
@@ -48,7 +49,7 @@ void IslandObject::_draw()
     ofPushMatrix();
 	
     ofPushMatrix();
-    ofScale(glm::vec3(4, 1, 4));
+    ofScale(glm::vec3(0.4f, 1, 0.4f));
     ofTranslate(glm::vec3(0, -70, 0));
     stoneMaterial.begin();
     //ofDrawSphere(0, -70, 0, 400); // center platform
@@ -57,7 +58,6 @@ void IslandObject::_draw()
     ofPopMatrix();
     
     ofPushMatrix();
-    ofScale(glm::vec3(10, 1, 10));
     material.begin();
     mesh.draw();
     material.end();
