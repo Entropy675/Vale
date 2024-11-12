@@ -29,12 +29,12 @@ void ofApp::setup()
     sun.enable();
     
     // add scenes / scene setups
-    sceneManager.addScene(new IslandScene());
     sceneManager.addScene(new PopperScene());
+    sceneManager.addScene(new IslandScene());
     sceneManager.setup();
     
     // cam
-    cam.move(0, 400, 0);
+    cam.move(0, -600, -4000);
     cam.setFov(60);
     cam.setNearClip(1.0f);  // Minimum distance from the camera to render objects (near clipping plane)
     cam.setFarClip(21000.0f);
@@ -106,16 +106,6 @@ void ofApp::update()
     if (keys['d']) cam.truck(moveSpeed); // Move right
     if (keys[OF_KEY_SHIFT]) cam.boom(-moveSpeed); // Move down (Shift key)
     if (keys[' ']) cam.move(0, moveSpeed, 0); // Move up (Space key)
-    
-    /*
-    // Gravity
-    float minY = 10.0f; // Threshold values for the camera's Y position
-    if (cam.getPosition().y < minY) // floor
-        cam.move(0, minY - cam.getPosition().y, 0);
-    
-    if(cameraFloor < cam.getPosition().y) // grav
-        cam.move(0, -10, 0);
-    */
 }
 
 //--------------------------------------------------------------
@@ -136,10 +126,12 @@ void ofApp::keyPressed(int key)
 {
     keys[key] = true;
     if (key == '1') sceneManager.loadScene(0);
-    if (key == '2') sceneManager.loadScene(1);
+    else if (key == '2') sceneManager.loadScene(1);
+    else sceneManager.keyPressed(key);
+    
     if (key == 't') sceneManager.toggleStaticMesh();
-    if (key == 'q') path.push_back(cam.getPosition());
-    if (key == 'e') followPathBlindly = !followPathBlindly;
+    else if (key == 'q') path.push_back(cam.getPosition());
+    else if (key == 'e') followPathBlindly = !followPathBlindly;
 }
 
 //--------------------------------------------------------------
@@ -154,12 +146,11 @@ void ofApp::mouseMoved(ofMouseEventArgs& mouse)
     // Reset to a default forward-facing orientation
     cam.setGlobalOrientation(glm::quat());
 
-    // Calculate the relative mouse position to the screen center
     float deltaX = mouse.x - ofGetWidth() / 2;
     float deltaY = mouse.y - ofGetHeight() / 2;
 
     // Rotate the camera based on mouse movement
-    float sensitivity = .35f;  // You can tweak the sensitivity as needed
+    float sensitivity = .35f; 
     cam.panDeg(-sensitivity*1.4 * deltaX);   // Pan (left-right rotation)
     cam.tiltDeg(-sensitivity * deltaY);   // Tilt (up-down rotation)
 }

@@ -18,6 +18,7 @@ void SceneManager::toggleStaticMesh()
 void SceneManager::updateEnvironmentMesh()
 {
     aggregateMesh.clear();
+    std::cout << "updateEnvironmentMesh clear" << std::endl;
     for (Entity* entity : entities) 
     {
         ofMesh entityMesh = entity->getMesh();
@@ -64,6 +65,7 @@ void SceneManager::updateEnvironmentMesh()
         // Append the transformed mesh to the aggregate mesh
         aggregateMesh.append(entityMesh);
     }
+    std::cout << "updateEnvironmentMesh success" << std::endl;
 }
 
 void SceneManager::loadScene(size_t index)
@@ -78,6 +80,12 @@ void SceneManager::loadScene(size_t index)
     for (auto& entity : entities)
         std::cout << "loading: " << entity->getId() << std::endl;
     _setup();
+}
+
+void SceneManager::_keyPressed(int key) 
+{
+    for (Entity* ptr : entities) ptr->keyPressed(key);
+    phys.keyPressed(key);
 }
 
 void SceneManager::addScene(Scene* scene)

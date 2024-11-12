@@ -25,6 +25,8 @@ class SceneManager : public Entity
     void loadScene(size_t index);
     void addScene(Scene* scene);
 
+
+    void _keyPressed(int key) override; 
     void _setup() override;
     void _update() override; 
     void _draw() override;

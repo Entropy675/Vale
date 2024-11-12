@@ -18,7 +18,7 @@ void Entity::update()
 void Entity::draw()
 {
     ofPushMatrix();
-    /*
+    /* SRT
     ofScale(scale);
     ofMatrix4x4 rotationMatrix;
     rotation.get(rotationMatrix);
@@ -26,6 +26,7 @@ void Entity::draw()
     ofTranslate(translation);
     */
     ofMultMatrix(getTransformationMatrix());
+    
     _draw();
     
     ofPopMatrix();
@@ -39,6 +40,9 @@ void Entity::setup()
     std::cout << "Entity setup: " <<  hashId << std::endl;
     _setup();
 }
+
+void Entity::keyPressed(int key)                    { _keyPressed(key); }
+void Entity::_keyPressed(int key)                   { return; }
 
 // getters
 ofQuaternion Entity::getRotation() const            { return rotation; }
@@ -66,6 +70,7 @@ ofMesh& Entity::getMesh()                           { return mesh; }
 ofMaterial& Entity::getMaterial()                   { return material; }
 
 // Setters for material properties
+void Entity::toggleDefaultMaterial()                { drawDefaultMaterial = !drawDefaultMaterial; }
 void Entity::setMaterial(const ofMaterial& mat)     { material = mat; }
 void Entity::setMaterialColor(const ofColor& color) { material.setDiffuseColor(color); }
 void Entity::setMaterialShininess(float shininess)  { material.setShininess(shininess); }

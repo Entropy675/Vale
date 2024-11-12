@@ -25,7 +25,30 @@ void PhysicsController::loadScene(std::vector<PhysicsEntity*>& preservedPhysicsO
     
     // copy each preserved object in the scene into active physicsObjects
     for (PhysicsEntity* obj : preservedPhysicsObjects) 
-        physicsObjects.push_back(obj->clone());
+    {
+        std::cout << "Physics Loading: " << obj->getId() << std::endl;
+        PhysicsEntity* clone = obj->clone();
+        physicsObjects.push_back(clone);
+        std::cout << "Physics Loaded active clone: " << clone->getId() << std::endl;
+    }
+}
+
+void PhysicsController::collisionCheck()
+{
+    for (PhysicsEntity* obj : physicsObjects)
+    {
+        obj->collision(env);
+        //for (PhysicsEntity* otherObj : physicsObjects)
+        {
+            //if (obj == otherObj) continue;
+            //obj->collision(otherObj->getMesh());
+        }
+    }
+}
+
+void PhysicsController::_keyPressed(int key) 
+{
+    for (PhysicsEntity* ptr : physicsObjects) ptr->keyPressed(key);
 }
 
 void PhysicsController::_setup()
@@ -36,9 +59,11 @@ void PhysicsController::_setup()
 void PhysicsController::_update()
 {
     for (PhysicsEntity* ptr : physicsObjects) ptr->update();
+    collisionCheck();
 }
 
 void PhysicsController::_draw()
 {
-    for (PhysicsEntity* ptr : physicsObjects) ptr->draw();
+    for (PhysicsEntity* ptr : physicsObjects) 
+        ptr->draw();
 }
