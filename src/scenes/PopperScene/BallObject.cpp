@@ -6,35 +6,40 @@ BallObject::BallObject(glm::vec3 pos, float rad, int res)
 
 BallObject::~BallObject() {}
 
-void BallObject::collision(const PhysicsEntity& targetMesh)
+void BallObject::collision(const ofMesh& targetMesh)
 {
     //Iterate through each vertex of the target mesh
     for (int i = 0; i < targetMesh.getNumVertices(); ++i)
     {
         glm::vec3 vertexPosition = targetMesh.getVertex(i);
 
+        // Step 3: Calculate the distance between the vertex and the center of the BallObject
         glm::vec3 directionToVertex = vertexPosition - position;
         float distance = glm::length(directionToVertex);
 
+        // Step 4: Check for intersection
         if (distance - 3.6*radius < radius)
         {
             // Collision detected; calculate the collision normal and correction distance
             glm::vec3 collisionNormal = glm::normalize(position);  // Normal points towards the origin (0,0,0) so I don't need to worry about position lol
             float penetrationDepth = radius - distance;
 
+            glm::vec3 correction = collisionNormal * penetrationDepth;
+            moveTo(position + correction*0.1);
+
             // Reflect velocity to simulate bounce if needed
             glm::vec3 velocity = getVelocity();
-            
-            //std::cout << glm::length(velocity) << std::endl;
-            glm::vec3 correction = collisionNormal * penetrationDepth * 0.0001 * glm::length(velocity);
-            moveTo(position + correction);
-
             glm::vec3 reflectedVelocity = glm::reflect(velocity, collisionNormal);
             setVelocity(reflectedVelocity * 0.8f);  // Apply some damping factor
+
+            // Exit early if single correction suffices (optional, depending on your collision needs)
             return;
         }
     }
     
+    // Additional damping to stop small oscillations after landing
+    if (glm::length(getVelocity()) < 0.1f)  // Threshold to detect rest
+        setVelocity(glm::vec3(0, 0, 0));  // Stop the ball
 }
 
 PhysicsEntity* BallObject::clone() const
@@ -89,11 +94,6 @@ void BallObject::_update()
 
     // Update position based on current velocity
     glm::vec3 currentPosition = getPosition();
-    
-    // Additional damping to stop small oscillations after landing
-    if (glm::length(getVelocity()) < 8)  // Threshold to detect rest
-        setVelocity(glm::vec3(0, 0, 0));  // Stop the ball
-    
     glm::vec3 newPosition = currentPosition + getVelocity() * ofGetLastFrameTime();
     moveTo(newPosition);
     
