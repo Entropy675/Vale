@@ -6,7 +6,7 @@ BallObject::BallObject(glm::vec3 pos, float rad, int res)
 
 BallObject::~BallObject() {}
 
-void BallObject::collision(const ofMesh& targetMesh)
+void BallObject::collision(const PhysicsEntity& targetMesh)
 {
     //Iterate through each vertex of the target mesh
     for (int i = 0; i < targetMesh.getNumVertices(); ++i)
