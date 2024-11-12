@@ -25,7 +25,7 @@ public:
     PhysicsEntity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     virtual ~PhysicsEntity();
 
-    virtual void collision(const ofMesh& targetMesh) = 0;
+    virtual void collision(const PhysicsEntity& target) = 0;
     virtual PhysicsEntity* clone() const = 0; 
     // Due to the nature of these, we will be copying them. Need a good, explicit copy ctor.
     // So write one in this clone method. This must return a new copy in heap of this entity. 
