@@ -29,12 +29,12 @@ void ofApp::setup()
     sun.enable();
     
     // add scenes / scene setups
-    sceneManager.addScene(new IslandScene());
     sceneManager.addScene(new PopperScene());
+    sceneManager.addScene(new IslandScene());
     sceneManager.setup();
     
     // cam
-    cam.move(0, 400, 0);
+    cam.move(0, -600, -4000);
     cam.setFov(60);
     cam.setNearClip(1.0f);  // Minimum distance from the camera to render objects (near clipping plane)
     cam.setFarClip(21000.0f);
@@ -135,6 +135,7 @@ void ofApp::draw()
 void ofApp::keyPressed(int key) 
 {
     keys[key] = true;
+    sceneManager.keyPressed(key);
     if (key == '1') sceneManager.loadScene(0);
     if (key == '2') sceneManager.loadScene(1);
     if (key == 't') sceneManager.toggleStaticMesh();

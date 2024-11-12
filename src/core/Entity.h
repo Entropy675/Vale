@@ -13,6 +13,7 @@ private:
 protected:
     ofMesh mesh;
     ofMaterial material;
+    bool drawDefaultMaterial = false;
     
     glm::vec3 position = glm::vec3(0, 0, 0);
     const long long hashId;
@@ -31,16 +32,20 @@ public:
     void update(); // internal
     void draw();
     void setup();
+    void keyPressed(int key);
     
     virtual void _update() = 0; // define your entities behaviour
     virtual void _draw() = 0;
     virtual void _setup() = 0;
+    
+    virtual void _keyPressed(int key); // user input optional
     
     // references
     virtual ofMesh& getMesh(); // Return a const reference to ofMesh
     ofMaterial& getMaterial(); // Return a reference to ofMaterial
 
     // material properties
+    void toggleDefaultMaterial();
     void setMaterial(const ofMaterial& mat); // Set the material
     void setMaterialColor(const ofColor& color); // Set the material color
     void setMaterialShininess(float shininess); // Set the material shininess
