@@ -41,15 +41,9 @@ void Entity::setup()
     _setup();
 }
 
-void Entity::keyPressed(int key)
-{
-    _keyPressed(key);
-}
+void Entity::keyPressed(int key)                    { _keyPressed(key); }
+void Entity::_keyPressed(int key)                   { return; }
 
-void Entity::_keyPressed(int key)
-{
-    return;
-}
 // getters
 ofQuaternion Entity::getRotation() const            { return rotation; }
 glm::vec3 Entity::getScale() const                  { return scale; }
