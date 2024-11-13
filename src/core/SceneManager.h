@@ -26,10 +26,10 @@ class SceneManager : public Entity
     void addScene(Scene* scene);
 
 
-    void _keyPressed(int key) override; 
     void _setup() override;
     void _update() override; 
     void _draw() override;
+    void registerInputManager(InputManager* input) override;
 };
 
 #endif

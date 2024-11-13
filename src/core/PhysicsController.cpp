@@ -24,12 +24,13 @@ void PhysicsController::loadScene(std::vector<PhysicsEntity*>& preservedPhysicsO
     physicsObjects.clear();
     
     // copy each preserved object in the scene into active physicsObjects
+    std::cout << "Physics loading count: " << preservedPhysicsObjects.size() << std::endl;
     for (PhysicsEntity* obj : preservedPhysicsObjects) 
     {
-        std::cout << "Physics Loading: " << obj->getId() << std::endl;
+        std::cout << "Physics loading: " << obj->getId() << std::endl;
         PhysicsEntity* clone = obj->clone();
         physicsObjects.push_back(clone);
-        std::cout << "Physics Loaded active clone: " << clone->getId() << std::endl;
+        std::cout << "Physics loaded active clone: " << clone->getId() << std::endl;
     }
 }
 
@@ -46,14 +47,13 @@ void PhysicsController::collisionCheck()
     }
 }
 
-void PhysicsController::_keyPressed(int key) 
-{
-    for (PhysicsEntity* ptr : physicsObjects) ptr->keyPressed(key);
-}
-
 void PhysicsController::_setup()
 {
-    for (PhysicsEntity* ptr : physicsObjects) ptr->setup();
+    for (PhysicsEntity* ptr : physicsObjects) 
+    { 
+        ptr->registerInputManager(inputManager);
+        ptr->setup();
+    }
 }
 
 void PhysicsController::_update()

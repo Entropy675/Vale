@@ -66,17 +66,6 @@ glm::vec3 generateRandomVector(float totalDistance)
     return glm::vec3(x, y, z);
 }
 
-
-void BallObject::_keyPressed(int key) 
-{
-    if(key == 'b') 
-    {
-        glm::vec3 vec = generateRandomVector(730.5f);
-        std::cout << "adding random velocity: " << vec << std::endl; 
-        addVelocity(vec);
-    }
-} 
-
 void BallObject::_setup() 
 {
     mesh = ofMesh::sphere(radius, resolution);
@@ -99,7 +88,9 @@ void BallObject::_update()
     
     if (ofGetElapsedTimef() - lastActivationTime >= interval) 
     {
-        _keyPressed('b'); 
+        glm::vec3 vec = generateRandomVector(1130.5f);
+        std::cout << "[Time: " << ofGetElapsedTimef() - lastActivationTime << "] adding random velocity: " << vec << std::endl; 
+        addVelocity(vec);
         lastActivationTime = ofGetElapsedTimef(); // Reset the timer
     }
 }
@@ -110,3 +101,20 @@ void BallObject::_draw()
     ofDrawSphere(position.x, position.y, position.z, radius);
     material.end();
 }
+
+void BallObject::_input() 
+{
+    if (!inputManager)
+    {
+        std::cout << "Ball with id: " << getId() << " does not have an input manager!" << std::endl;
+        return;
+    }
+    if(inputManager->get('b')) 
+    {
+        glm::vec3 vec = generateRandomVector(730.5f);
+        std::cout << "adding random velocity: " << vec << std::endl; 
+        addVelocity(vec);
+    }
+} 
+
+

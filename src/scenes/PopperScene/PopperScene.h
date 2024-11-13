@@ -39,10 +39,10 @@ public:
     PhysicsEntity* clone() const override; 
     void collision(const ofMesh& targetMesh) override;
     
-    void _keyPressed(int key) override; 
     void _setup() override;
     void _update() override; 
     void _draw() override;
+    void _input() override; 
 };
 
 glm::vec3 generateRandomVector(float totalDistance);
@@ -56,7 +56,10 @@ public:
     {
         sceneObjects.push_back(new ContainerObject());
         for (int i = 0; i < 10; i++)
-            scenePhysicsObjects.push_back(new BallObject(generateRandomVector(700)));
+        {
+            BallObject* ball = new BallObject(generateRandomVector(700));
+            scenePhysicsObjects.push_back(ball);
+        }
     };
 };
 

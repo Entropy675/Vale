@@ -31,8 +31,9 @@ public:
 
     // objects (entities)
     // std::vector<Entity*> entities; replaced with manager
+    InputManager inputManager;
     SceneManager sceneManager;
-
+    
     // cam
     ofCamera cam;
     float cameraFloor;
@@ -45,7 +46,6 @@ public:
 
     // controls
     bool isCursorHidden = false;
-    bool keys[256]; // to track which keys are pressed
 
 private:
     void followPath(std::vector<glm::vec3>& pathPoints);

@@ -13,6 +13,9 @@ ofApp::~ofApp()
 
 void ofApp::setup() 
 {
+    // listeners
+    ofAddListener(ofEvents().mouseMoved, this, &ofApp::mouseMoved);
+    
     cameraFloor = 0;
     cameraSpeed = 5.0f;
     currentTargetIndex = 0;
@@ -29,8 +32,9 @@ void ofApp::setup()
     sun.enable();
     
     // add scenes / scene setups
-    sceneManager.addScene(new PopperScene());
+    sceneManager.registerInputManager(&inputManager);
     sceneManager.addScene(new IslandScene());
+    sceneManager.addScene(new PopperScene());
     sceneManager.setup();
     
     // cam
@@ -39,18 +43,11 @@ void ofApp::setup()
     cam.setNearClip(1.0f);  // Minimum distance from the camera to render objects (near clipping plane)
     cam.setFarClip(21000.0f);
     moveSpeed = 60.0f;
-    memset(keys, 0, sizeof(keys));
-
 
     // Setup terrain object variables
     ofEnableLighting();
     ofEnableDepthTest();
-    
-    // listeners
-    ofAddListener(ofEvents().mouseMoved, this, &ofApp::mouseMoved);
 }
-
-
 
 //--------------------------------------------------------------
 //----------------------HELPER-FUNCTIIONS-----------------------
@@ -98,14 +95,24 @@ void ofApp::update()
         if (path.empty()) followPathBlindly = false;
         return;
     }
-    
+    //keys[key] = true;
     // Camera movement based on key presses (WASD)
-    if (keys['w']) cam.dolly(-moveSpeed); // Move forward
-    if (keys['s']) cam.dolly(moveSpeed); // Move backward
-    if (keys['a']) cam.truck(-moveSpeed); // Move left
-    if (keys['d']) cam.truck(moveSpeed); // Move right
-    if (keys[OF_KEY_SHIFT]) cam.boom(-moveSpeed); // Move down (Shift key)
-    if (keys[' ']) cam.move(0, moveSpeed, 0); // Move up (Space key)
+    if (inputManager.get(1))
+    { 
+        cam.boom(-moveSpeed);
+        return;
+    } 
+    if (inputManager.get('1')) sceneManager.loadScene(0); // Move down (Shift key)
+    else if (inputManager.get('2')) sceneManager.loadScene(1);
+    else if (inputManager.get('t')) sceneManager.toggleStaticMesh();
+    else if (inputManager.get('q')) path.push_back(cam.getPosition());
+    else if (inputManager.get('e')) followPathBlindly = !followPathBlindly;
+    else if (inputManager.get(' ')) cam.move(0, moveSpeed, 0); // Move up (Space key)
+    
+    if (inputManager.get('w')) cam.dolly(-moveSpeed); // Move forward
+    if (inputManager.get('s')) cam.dolly(moveSpeed); // Move backward
+    if (inputManager.get('a')) cam.truck(-moveSpeed); // Move left
+    if (inputManager.get('d')) cam.truck(moveSpeed); // Move right'
 }
 
 //--------------------------------------------------------------
@@ -122,23 +129,10 @@ void ofApp::draw()
 //--------------------------------------------------------------
 //-----------------------INPUT-CALLBACKS------------------------
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key) 
-{
-    keys[key] = true;
-    if (key == '1') sceneManager.loadScene(0);
-    else if (key == '2') sceneManager.loadScene(1);
-    else sceneManager.keyPressed(key);
-    
-    if (key == 't') sceneManager.toggleStaticMesh();
-    else if (key == 'q') path.push_back(cam.getPosition());
-    else if (key == 'e') followPathBlindly = !followPathBlindly;
-}
+void ofApp::keyPressed(int key) { inputManager.ofKeyPressed(key); } // use inputManager.get(key) to check if a key is pressed
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key) 
-{
-    keys[key] = false;
-}
+void ofApp::keyReleased(int key) { inputManager.ofKeyReleased(key); }
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(ofMouseEventArgs& mouse) 
