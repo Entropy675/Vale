@@ -17,7 +17,13 @@ protected:
 
     glm::vec3 angularVelocity = glm::vec3(0, 0, 0);
     glm::vec3 angularAcceleration = glm::vec3(0, 0, 0);
-
+    
+    // current ideas: 
+    // - switch to entity based (not mesh) collisions
+    // - a tag based entity identification system
+    // - a type of function pointer for collision(PhysicsEntity) behaviour 
+    // - a map for default tag -> collision behaviour
+    // - ways to add to this map, automatically call based on tags in collision
     
 public:
     // Constructors
@@ -25,7 +31,9 @@ public:
     PhysicsEntity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     virtual ~PhysicsEntity();
 
-    virtual void collision(const ofMesh& targetMesh) = 0;
+    void collision(const ofMesh& targetMesh);
+    
+    virtual void _collision(const ofMesh& targetMesh) = 0;
     virtual PhysicsEntity* clone() const = 0; 
     // Due to the nature of these, we will be copying them. Need a good, explicit copy ctor.
     // So write one in this clone method. This must return a new copy in heap of this entity. 

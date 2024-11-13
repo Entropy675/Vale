@@ -12,6 +12,12 @@ PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(mesh
 
 PhysicsEntity::~PhysicsEntity() {}; // each PhysicsEntity manages its own cleanup in its dtor
 
+
+void PhysicsEntity::collision(const ofMesh& targetMesh) 
+{
+    _collision(targetMesh);
+}
+
 // Getters
 glm::vec3 PhysicsEntity::getPosition() const                { return position; } 
 glm::vec3 PhysicsEntity::getVelocity() const                { return velocity; }

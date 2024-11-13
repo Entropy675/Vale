@@ -37,8 +37,8 @@ public:
     ~BallObject();
     
     PhysicsEntity* clone() const override; 
-    void collision(const ofMesh& targetMesh) override;
     
+    void _collision(const ofMesh& targetMesh) override;
     void _setup() override;
     void _update() override; 
     void _draw() override;
