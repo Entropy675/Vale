@@ -10,7 +10,7 @@ class InputManager
 private:
     bool keys[NUM_KEYS] = {0};
     
-    bool debugInput = true;
+    bool debugInput = false;
 
 public:
     InputManager();

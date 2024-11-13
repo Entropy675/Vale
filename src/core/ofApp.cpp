@@ -41,7 +41,7 @@ void ofApp::setup()
     cam.move(0, -600, -4000);
     cam.setFov(60);
     cam.setNearClip(1.0f);  // Minimum distance from the camera to render objects (near clipping plane)
-    cam.setFarClip(21000.0f);
+    cam.setFarClip(31000.0f);
     moveSpeed = 60.0f;
 
     // Setup terrain object variables

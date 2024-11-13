@@ -20,7 +20,7 @@ bool InputManager::get(int key) const
     {
         if(key + 32 >= NUM_KEYS) return false;
         key += 32;
-        std::cout << "Modified KeyGet: " << key << " ";
+        if(debugInput) std::cout << "Modified KeyGet: " << key << " ";
     }
     if ( key < 0 && key > NUM_KEYS) 
     {
@@ -38,7 +38,7 @@ void InputManager::ofKeyPressed(int key)
     {
         if(key + 32 >= NUM_KEYS) return;
         key += 32; 
-        std::cout << "Modified KeyPress: " << key << " ";
+        if(debugInput) std::cout << "Modified KeyPress: " << key << " ";
     }
     keys[key] = true;
 }
@@ -50,7 +50,7 @@ void InputManager::ofKeyReleased(int key)
     {
         if(key + 32 >= NUM_KEYS) return;
         key += 32;
-        std::cout << "Modified KeyRelease: " << key << " ";
+        if(debugInput) std::cout << "Modified KeyRelease: " << key << " ";
     }
     keys[key] = false;
 }
