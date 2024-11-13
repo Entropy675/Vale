@@ -13,7 +13,7 @@ Entity::~Entity() {}; // each entity manages its own cleanup in its dtor
 void Entity::update()
 {
     _update();
-    if(inputManager) _input();
+    _input();
 }
 
 void Entity::draw()
