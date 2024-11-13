@@ -37,6 +37,12 @@ void ofApp::setup()
     sceneManager.addScene(new PopperScene());
     sceneManager.setup();
     
+    // map these keys so that shift works properly
+    inputManager.map('W', 'w');
+    inputManager.map('S', 's');
+    inputManager.map('A', 'a');
+    inputManager.map('D', 'd');
+    
     // cam
     cam.move(0, -600, -4000);
     cam.setFov(60);
@@ -97,11 +103,7 @@ void ofApp::update()
     }
     //keys[key] = true;
     // Camera movement based on key presses (WASD)
-    if (inputManager.get(1))
-    { 
-        cam.boom(-moveSpeed);
-        return;
-    } 
+    if (inputManager.get(OF_KEY_SHIFT)) cam.boom(-moveSpeed); 
     if (inputManager.get('1')) sceneManager.loadScene(0); // Move down (Shift key)
     else if (inputManager.get('2')) sceneManager.loadScene(1);
     else if (inputManager.get('t')) sceneManager.toggleStaticMesh();
