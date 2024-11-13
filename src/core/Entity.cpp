@@ -13,6 +13,7 @@ Entity::~Entity() {}; // each entity manages its own cleanup in its dtor
 void Entity::update()
 {
     _update();
+    if(inputManager) _input();
 }
 
 void Entity::draw()
@@ -40,9 +41,6 @@ void Entity::setup()
     std::cout << "Entity setup: " <<  hashId << std::endl;
     _setup();
 }
-
-void Entity::keyPressed(int key)                    { _keyPressed(key); }
-void Entity::_keyPressed(int key)                   { return; }
 
 // getters
 ofQuaternion Entity::getRotation() const            { return rotation; }

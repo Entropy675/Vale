@@ -3,6 +3,7 @@
 
 #include "ofMain.h"
 #include "ofTexture.h"
+#include "InputManager.h"
 
 class Entity 
 {
@@ -22,7 +23,7 @@ protected:
     glm::vec3 scale = glm::vec3(1, 1, 1);
     ofQuaternion rotation;
     glm::vec3 translation = glm::vec3(0, 0, 0); // x, y, z
-    
+    InputManager* inputManager = nullptr;
 public:
     // Constructors
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
@@ -32,13 +33,13 @@ public:
     void update(); // internal
     void draw();
     void setup();
-    void keyPressed(int key);
     
     virtual void _update() = 0; // define your entities behaviour
     virtual void _draw() = 0;
     virtual void _setup() = 0;
     
-    virtual void _keyPressed(int key); // user input optional
+    virtual void registerInputManager(InputManager* input) { inputManager = input; };
+    virtual void _input() { return; }; // optional: called at the end of update only when an inputManager is registered.
     
     // references
     virtual ofMesh& getMesh(); // Return a const reference to ofMesh
