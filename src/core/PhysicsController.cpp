@@ -29,6 +29,7 @@ void PhysicsController::loadScene(std::vector<PhysicsEntity*>& preservedPhysicsO
     {
         std::cout << "Physics loading: " << obj->getId() << std::endl;
         PhysicsEntity* clone = obj->clone();
+        clone->registerInputManager(inputManager);
         physicsObjects.push_back(clone);
         std::cout << "Physics loaded active clone: " << clone->getId() << std::endl;
     }
@@ -49,11 +50,7 @@ void PhysicsController::collisionCheck()
 
 void PhysicsController::_setup()
 {
-    for (PhysicsEntity* ptr : physicsObjects) 
-    { 
-        ptr->registerInputManager(inputManager);
-        ptr->setup();
-    }
+    for (PhysicsEntity* ptr : physicsObjects) ptr->setup();
 }
 
 void PhysicsController::_update()
