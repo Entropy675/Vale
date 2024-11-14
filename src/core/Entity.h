@@ -5,6 +5,8 @@
 #include "ofTexture.h"
 #include "InputManager.h"
 
+#define PRINTALLENTITIES
+
 class Entity 
 {
 private:
@@ -19,11 +21,13 @@ protected:
     glm::vec3 position = glm::vec3(0, 0, 0);
     const long long hashId;
     
+    vector<std::string> tags;
+    InputManager* inputManager = nullptr;
+    
     // object level transformations applied 
     glm::vec3 scale = glm::vec3(1, 1, 1);
     ofQuaternion rotation;
     glm::vec3 translation = glm::vec3(0, 0, 0); // x, y, z
-    InputManager* inputManager = nullptr;
 public:
     // Constructors
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
@@ -51,10 +55,14 @@ public:
     void setMaterialColor(const ofColor& color); // Set the material color
     void setMaterialShininess(float shininess); // Set the material shininess
     
+    // setters
+    void addTag(const std::string&);
+    
     // getters
     ofQuaternion getRotation() const;
     glm::vec3 getScale() const;
     glm::vec3 getTranslation() const;
+    bool hasTag(const std::string&) const;
     
     // helpers
     ofMatrix4x4 getTransformationMatrix() const;

@@ -3,6 +3,7 @@
 PhysicsEntity::PhysicsEntity(glm::vec3 dim) : Entity(dim) 
 {
     rotation = ofQuaternion(0, 0, 0, 1);
+    addTag("physics");
 }
 
 PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(meshRef, dim) 

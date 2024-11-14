@@ -2,7 +2,7 @@
 
 
 ContainerObject::ContainerObject(glm::vec3 pos, float rad, int res)
-    : Entity(pos), radius(rad), resolution(res) {}
+    : Entity(pos), radius(rad), resolution(res) { addTag("container"); }
 
 ContainerObject::~ContainerObject() {}
 

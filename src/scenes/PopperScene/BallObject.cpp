@@ -2,7 +2,7 @@
 
 
 BallObject::BallObject(glm::vec3 pos, float rad, int res)
-    : PhysicsEntity(pos), radius(rad), resolution(res) {}
+    : PhysicsEntity(pos), radius(rad), resolution(res) { addTag("ball"); }
 
 BallObject::~BallObject() {}
 

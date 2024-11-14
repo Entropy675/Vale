@@ -3,7 +3,7 @@
 long long Entity::uniqueCounter = 0;
 
 Entity::Entity(glm::vec3 pos)
-    : position(pos), hashId(++uniqueCounter) {}
+    : position(pos), hashId(++uniqueCounter) { addTag("entity"); }
 
 Entity::Entity(const ofMesh& meshRef, glm::vec3 pos)
     : position(pos), hashId(++uniqueCounter), mesh(meshRef) {}
@@ -14,6 +14,12 @@ void Entity::update()
 {
     _update();
     _input();
+
+#ifdef PRINTALLENTITIES
+    std::cout << "Id: " << getId() << " Tags: ";
+    for (std::string s : tags) std::cout << "[" << s << "], ";
+    std::cout << std::endl;
+#endif
 }
 
 void Entity::draw()
@@ -42,10 +48,14 @@ void Entity::setup()
     _setup();
 }
 
+// setters
+void Entity::addTag(const std::string& tag)         { if (!hasTag(tag)) tags.push_back(tag); }
+
 // getters
 ofQuaternion Entity::getRotation() const            { return rotation; }
 glm::vec3 Entity::getScale() const                  { return scale; }
 glm::vec3 Entity::getTranslation() const            { return translation + position; }
+bool Entity::hasTag(const std::string& tag) const   { return std::find(tags.begin(), tags.end(), tag) != tags.end(); }
 
 // helpers
 ofMatrix4x4 Entity::getTransformationMatrix() const

@@ -31,9 +31,8 @@ public:
 
     // objects (entities)
     // std::vector<Entity*> entities; replaced with manager
-    InputManager inputManager;
     SceneManager sceneManager;
-    
+
     // cam
     ofCamera cam;
     float cameraFloor;
@@ -46,6 +45,7 @@ public:
 
     // controls
     bool isCursorHidden = false;
+    InputManager inputManager;
 
 private:
     void followPath(std::vector<glm::vec3>& pathPoints);
