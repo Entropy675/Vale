@@ -13,7 +13,7 @@ public:
     ~EnvironmentObject() {};
     
     PhysicsEntity* clone() const override { return new EnvironmentObject(env); }; 
-    void _collision(const PhysicsEntity& target) override
+    void _collision(PhysicsEntity& target) override
     {
         // global env collision logic, runs against every entity in the scene
     };

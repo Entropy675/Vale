@@ -44,10 +44,10 @@ void PhysicsController::collisionCheck()
     for (PhysicsEntity* obj : physicsObjects)
     {
         obj->collision(env);
-        //for (PhysicsEntity* otherObj : physicsObjects)
+        for (PhysicsEntity* otherObj : physicsObjects)
         {
-            //if (obj == otherObj) continue;
-            //obj->collision(otherObj->getMesh());
+            if (obj == otherObj) continue;
+            obj->collision(*otherObj);
         }
     }
 }
