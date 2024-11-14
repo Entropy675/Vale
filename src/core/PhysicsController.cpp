@@ -5,7 +5,11 @@
 // scene can load entities into either SceneManager or PhysicsController
 // only PhysicsEntities will work PhysicsController
 PhysicsController::PhysicsController(ofMesh& environment)
-    : Entity(glm::vec3(0, 0, 0)), env(environment) { addTag("physics_controller"); }
+    : Entity(glm::vec3(0, 0, 0)), env(environment) 
+{ 
+    addTag("physics_controller"); 
+    env.addTag("env");
+}
 
 PhysicsController::~PhysicsController()
 {

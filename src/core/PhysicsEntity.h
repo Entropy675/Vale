@@ -8,10 +8,8 @@
 class PhysicsEntity : public Entity
 {
 protected:
-    // Inertia (mass) 
-    float mass = 1.0f;
-
     // Newtonian physics (use glm::length(vec) for calculating magnitude)
+    float mass = 1.0f;
     glm::vec3 velocity = glm::vec3(0, 0, 0);
     glm::vec3 acceleration = glm::vec3(0, 0, 0);
 
@@ -19,11 +17,9 @@ protected:
     glm::vec3 angularAcceleration = glm::vec3(0, 0, 0);
     
     // current ideas: 
-    // - switch to entity based (not mesh) collisions
-    // - a tag based entity identification system
     // - a type of function pointer for collision(PhysicsEntity) behaviour 
     // - a map for default tag -> collision behaviour
-    // - ways to add to this map, automatically call based on tags in collision
+    //   (ways to add to this map, automatically call based on tags in collision)
     
 public:
     // Constructors
@@ -31,9 +27,9 @@ public:
     PhysicsEntity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     virtual ~PhysicsEntity();
 
-    void collision(const ofMesh& targetMesh);
+    void collision(const PhysicsEntity& target); // internal
     
-    virtual void _collision(const ofMesh& targetMesh) = 0;
+    virtual void _collision(const PhysicsEntity& target) = 0;
     virtual PhysicsEntity* clone() const = 0; 
     // Due to the nature of these, we will be copying them. Need a good, explicit copy ctor.
     // So write one in this clone method. This must return a new copy in heap of this entity. 

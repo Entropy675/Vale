@@ -12,8 +12,8 @@ Entity::~Entity() {}; // each entity manages its own cleanup in its dtor
 
 void Entity::update()
 {
-    _update();
     _input();
+    _update();
 
 #ifdef PRINTALLENTITIES
     std::cout << "Id: " << getId() << " Tags: ";
@@ -48,15 +48,6 @@ void Entity::setup()
     _setup();
 }
 
-// setters
-void Entity::addTag(const std::string& tag)         { if (!hasTag(tag)) tags.push_back(tag); }
-
-// getters
-ofQuaternion Entity::getRotation() const            { return rotation; }
-glm::vec3 Entity::getScale() const                  { return scale; }
-glm::vec3 Entity::getTranslation() const            { return translation + position; }
-bool Entity::hasTag(const std::string& tag) const   { return std::find(tags.begin(), tags.end(), tag) != tags.end(); }
-
 // helpers
 ofMatrix4x4 Entity::getTransformationMatrix() const
 {
@@ -69,16 +60,3 @@ ofMatrix4x4 Entity::getTransformationMatrix() const
     transformation.translate(position + translation);
     return transformation;
 }
-
-long long Entity::getId() const                     { return hashId; }
-ofMesh Entity::copyMesh() const                     { return mesh; }
-
-// references
-ofMesh& Entity::getMesh()                           { return mesh; } 
-ofMaterial& Entity::getMaterial()                   { return material; }
-
-// Setters for material properties
-void Entity::toggleDefaultMaterial()                { drawDefaultMaterial = !drawDefaultMaterial; }
-void Entity::setMaterial(const ofMaterial& mat)     { material = mat; }
-void Entity::setMaterialColor(const ofColor& color) { material.setDiffuseColor(color); }
-void Entity::setMaterialShininess(float shininess)  { material.setShininess(shininess); }
