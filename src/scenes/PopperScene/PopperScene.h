@@ -37,12 +37,13 @@ public:
     ~BallObject();
     
     PhysicsEntity* clone() const override; 
-    void collision(const ofMesh& targetMesh) override;
+    void _collision(const PhysicsEntity& target) override;
+    
+    void _input() override; 
     
     void _setup() override;
     void _update() override; 
     void _draw() override;
-    void _input() override; 
 };
 
 glm::vec3 generateRandomVector(float totalDistance);

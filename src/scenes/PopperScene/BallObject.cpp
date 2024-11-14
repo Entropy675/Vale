@@ -2,14 +2,16 @@
 
 
 BallObject::BallObject(glm::vec3 pos, float rad, int res)
-    : PhysicsEntity(pos), radius(rad), resolution(res) {}
+    : PhysicsEntity(pos), radius(rad), resolution(res) { addTag("ball"); }
 
 BallObject::~BallObject() {}
 
-void BallObject::collision(const ofMesh& targetMesh)
+void BallObject::_collision(const PhysicsEntity& target)
 {
+    if(target.hasTag("ball")) return;
+    const ofMesh& targetMesh = target.getMesh();
     //Iterate through each vertex of the target mesh
-    for (int i = 0; i < targetMesh.getNumVertices(); ++i)
+    for (size_t i = 0; i < targetMesh.getNumVertices(); ++i)
     {
         glm::vec3 vertexPosition = targetMesh.getVertex(i);
 

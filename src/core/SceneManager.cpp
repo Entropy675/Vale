@@ -2,7 +2,7 @@
 
 SceneManager::SceneManager() : Entity(glm::vec3(0, 0, 0)), phys(aggregateMesh)
 {
-
+    addTag("scene_manager"); 
 }
 
 SceneManager::~SceneManager()

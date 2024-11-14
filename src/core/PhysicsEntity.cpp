@@ -3,6 +3,7 @@
 PhysicsEntity::PhysicsEntity(glm::vec3 dim) : Entity(dim) 
 {
     rotation = ofQuaternion(0, 0, 0, 1);
+    addTag("physics");
 }
 
 PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(meshRef, dim) 
@@ -11,6 +12,12 @@ PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(mesh
 } 
 
 PhysicsEntity::~PhysicsEntity() {}; // each PhysicsEntity manages its own cleanup in its dtor
+
+
+void PhysicsEntity::collision(const PhysicsEntity& target) 
+{
+    _collision(target);
+}
 
 // Getters
 glm::vec3 PhysicsEntity::getPosition() const                { return position; } 
