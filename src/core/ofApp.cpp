@@ -33,8 +33,8 @@ void ofApp::setup()
     
     // add scenes / scene setups
     sceneManager.registerInputManager(&inputManager);
-    sceneManager.addScene(new IslandScene());
     sceneManager.addScene(new PopperScene());
+    sceneManager.addScene(new IslandScene());
     sceneManager.setup();
     
     // map these keys so that shift works properly
@@ -44,7 +44,7 @@ void ofApp::setup()
     inputManager.map('D', 'd');
     
     // cam
-    cam.move(0, -600, -4000);
+    cam.move(0, 400, 0);
     cam.setFov(60);
     cam.setNearClip(1.0f);  // Minimum distance from the camera to render objects (near clipping plane)
     cam.setFarClip(31000.0f);

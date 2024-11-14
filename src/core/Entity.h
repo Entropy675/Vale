@@ -5,7 +5,7 @@
 #include "ofTexture.h"
 #include "InputManager.h"
 
-#define PRINTALLENTITIES
+// #define PRINTALLENTITIES
 
 class Entity 
 {
