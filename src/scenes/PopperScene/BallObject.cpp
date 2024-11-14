@@ -138,9 +138,9 @@ void BallObject::_update()
     
     if (ofGetElapsedTimef() - lastActivationTime >= interval) 
     {
-        glm::vec3 vec = generateRandomVector(1130.5f);
+        glm::vec3 vec = generateRandomVector(1630.5f);
         std::cout << "[Time: " << ofGetElapsedTimef() - lastActivationTime << "] adding random velocity: " << vec << std::endl; 
-        //addVelocity(vec);
+        addVelocity(vec);
         lastActivationTime = ofGetElapsedTimef(); // Reset the timer
     }
 }

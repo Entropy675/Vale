@@ -30,8 +30,8 @@ private:
     int resolution;
 
     float lastActivationTime = 0.0f; // Keeps track of the last time the popper was activated
-    float interval = 31.5f;
-    float threshold = 25.1f;
+    float interval = 15.5f;
+    float threshold = 20.1f;
     
 public:
     BallObject(glm::vec3 pos = glm::vec3(0, 0, 0), float radius = 200, int resolution = 64);
