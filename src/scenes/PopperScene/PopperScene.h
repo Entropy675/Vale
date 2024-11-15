@@ -30,7 +30,7 @@ private:
     int resolution;
 
     float lastActivationTime = 0.0f; // Keeps track of the last time the popper was activated
-    float interval = 32.5f;
+    float interval = 42.5f;
     float threshold = 7.1f;
     
 public:
@@ -57,7 +57,7 @@ public:
     PopperScene() 
     {
         sceneObjects.push_back(new ContainerObject());
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 12; i++)
         {
             BallObject* ball = new BallObject(generateRandomVector(600));
             scenePhysicsObjects.push_back(ball);
