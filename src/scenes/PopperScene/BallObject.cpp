@@ -26,18 +26,15 @@ void BallObject::_collision(PhysicsEntity& target)
                 // Collision detected; calculate the collision normal and correction distance
                 glm::vec3 collisionNormal = glm::normalize(position);  // Normal points towards the origin (0,0,0) so I don't need to worry about position lol
                 float penetrationDepth = radius - distance;
-
-                glm::vec3 correction = collisionNormal * penetrationDepth;
-                
-                if (glm::length(getVelocity()) > threshold)  
-                    moveTo(position + correction*0.0003f*glm::length(getVelocity()));
-                else
-                    moveTo(position + correction*0.001f);
-
-                // Reflect velocity to simulate bounce if needed
                 glm::vec3 velocity = getVelocity();
+                float velLength = glm::length(velocity);
+                glm::vec3 correction = position + collisionNormal * penetrationDepth * (log(velLength + 1)*0.002f);
+                //if (velLength > threshold)  
+                    moveTo(correction);
+                    
+                // Reflect velocity to simulate bounce if needed
                 glm::vec3 reflectedVelocity = glm::reflect(velocity, collisionNormal);
-                setVelocity(reflectedVelocity * 0.4f);  // Apply some damping factor
+                setVelocity(reflectedVelocity * 0.8f);  // Apply some damping factor
             }
         }
     }
@@ -88,7 +85,7 @@ void BallObject::_collision(PhysicsEntity& target)
     }
     
     // Additional damping to stop small oscillations after landing
-    if (glm::length(getVelocity()) < threshold)  // Threshold to detect rest
+    if (glm::length(getVelocity()) < threshold*2)  // Threshold to detect rest
         setVelocity(glm::vec3(0, 0, 0));  // Stop the ball
 }
 
