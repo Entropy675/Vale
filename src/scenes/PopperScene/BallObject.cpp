@@ -28,13 +28,13 @@ void BallObject::_collision(PhysicsEntity& target)
                 float penetrationDepth = radius - distance;
                 glm::vec3 velocity = getVelocity();
                 float velLength = glm::length(velocity);
-                glm::vec3 correction = position + collisionNormal * penetrationDepth * (log(velLength + 1)*0.002f);
+                glm::vec3 correction = position + collisionNormal * penetrationDepth * (log(velLength + 1)*0.003f);
                 //if (velLength > threshold)  
                 moveTo(correction);
                     
                 // Reflect velocity to simulate bounce if needed
                 glm::vec3 reflectedVelocity = glm::reflect(velocity, collisionNormal);
-                setVelocity(reflectedVelocity * 0.8f);  // Apply some damping factor
+                setVelocity(reflectedVelocity * 0.65f);  // Apply some damping factor
             }
         }
     }
@@ -59,7 +59,7 @@ void BallObject::_collision(PhysicsEntity& target)
             float penetrationDepth = (radius/2 + targetRadius/2) - distanceBetweenCenters;
 
             // Correct position to resolve overlap
-            glm::vec3 correction = collisionNormal * penetrationDepth * 0.5f;  // Split correction between both balls
+            glm::vec3 correction = collisionNormal * penetrationDepth * 0.4f;  // Split correction between both balls
             if (glm::length(getVelocity()) > threshold)  
                 moveTo(position - correction);
             //target.moveTo(targetPosition + correction);
