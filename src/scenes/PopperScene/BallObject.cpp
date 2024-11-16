@@ -59,7 +59,7 @@ void BallObject::_collision(PhysicsEntity& target)
             float penetrationDepth = (radius/2 + targetRadius/2) - distanceBetweenCenters;
 
             // Correct position to resolve overlap
-            glm::vec3 correction = collisionNormal * penetrationDepth * 0.4f;  // Split correction between both balls
+            glm::vec3 correction = collisionNormal * penetrationDepth * 0.35f;  // Split correction between both balls
             if (glm::length(getVelocity()) > threshold)  
                 moveTo(position - correction);
             //target.moveTo(targetPosition + correction);
