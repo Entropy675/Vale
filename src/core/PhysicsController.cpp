@@ -59,8 +59,8 @@ void PhysicsController::_setup()
 
 void PhysicsController::_update()
 {
+    collisionCheck(); // needs to happen before due to collision checking
     for (PhysicsEntity* ptr : physicsObjects) ptr->update();
-    collisionCheck();
 }
 
 void PhysicsController::_draw()

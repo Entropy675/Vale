@@ -30,11 +30,11 @@ private:
     int resolution;
 
     float lastActivationTime = 0.0f; // Keeps track of the last time the popper was activated
-    float interval = 15.5f;
-    float threshold = 20.1f;
+    float interval = 42.5f;
+    float threshold = 7.1f;
     
 public:
-    BallObject(glm::vec3 pos = glm::vec3(0, 0, 0), float radius = 200, int resolution = 64);
+    BallObject(glm::vec3 pos = glm::vec3(0), float radius = 200, int resolution = 64);
     ~BallObject();
     
     PhysicsEntity* clone() const override; 
@@ -57,7 +57,7 @@ public:
     PopperScene() 
     {
         sceneObjects.push_back(new ContainerObject());
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 12; i++)
         {
             BallObject* ball = new BallObject(generateRandomVector(600));
             scenePhysicsObjects.push_back(ball);
