@@ -2,3 +2,11 @@ obj/
 bin/
 
 config.make
+.vs/
+Vale.sln
+Vale.vcxproj
+Vale.vcxproj.filters
+Vale.vcxproj.user
+addons.make
+icon.aps
+icon.rc
