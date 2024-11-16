@@ -45,7 +45,7 @@ public:
 
     // controls
     bool isCursorHidden = false;
-    bool keys[256]; // to track which keys are pressed
+    InputManager inputManager;
 
 private:
     void followPath(std::vector<glm::vec3>& pathPoints);

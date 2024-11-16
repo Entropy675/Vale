@@ -5,7 +5,11 @@
 // scene can load entities into either SceneManager or PhysicsController
 // only PhysicsEntities will work PhysicsController
 PhysicsController::PhysicsController(ofMesh& environment)
-    : Entity(glm::vec3(0, 0, 0)), env(environment) {}
+    : Entity(glm::vec3(0, 0, 0)), env(environment) 
+{ 
+    addTag("physics_controller"); 
+    env.addTag("env");
+}
 
 PhysicsController::~PhysicsController()
 {
@@ -24,12 +28,14 @@ void PhysicsController::loadScene(std::vector<PhysicsEntity*>& preservedPhysicsO
     physicsObjects.clear();
     
     // copy each preserved object in the scene into active physicsObjects
+    std::cout << "Physics loading count: " << preservedPhysicsObjects.size() << std::endl;
     for (PhysicsEntity* obj : preservedPhysicsObjects) 
     {
-        std::cout << "Physics Loading: " << obj->getId() << std::endl;
+        std::cout << "Physics loading: " << obj->getId() << std::endl;
         PhysicsEntity* clone = obj->clone();
+        clone->registerInputManager(inputManager);
         physicsObjects.push_back(clone);
-        std::cout << "Physics Loaded active clone: " << clone->getId() << std::endl;
+        std::cout << "Physics loaded active clone: " << clone->getId() << std::endl;
     }
 }
 
@@ -38,17 +44,12 @@ void PhysicsController::collisionCheck()
     for (PhysicsEntity* obj : physicsObjects)
     {
         obj->collision(env);
-        //for (PhysicsEntity* otherObj : physicsObjects)
+        for (PhysicsEntity* otherObj : physicsObjects)
         {
-            //if (obj == otherObj) continue;
-            //obj->collision(otherObj->getMesh());
+            if (obj == otherObj) continue;
+            obj->collision(*otherObj);
         }
     }
-}
-
-void PhysicsController::_keyPressed(int key) 
-{
-    for (PhysicsEntity* ptr : physicsObjects) ptr->keyPressed(key);
 }
 
 void PhysicsController::_setup()
@@ -58,8 +59,8 @@ void PhysicsController::_setup()
 
 void PhysicsController::_update()
 {
+    collisionCheck(); // needs to happen before due to collision checking
     for (PhysicsEntity* ptr : physicsObjects) ptr->update();
-    collisionCheck();
 }
 
 void PhysicsController::_draw()

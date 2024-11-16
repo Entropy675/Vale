@@ -2,7 +2,7 @@
 
 SceneManager::SceneManager() : Entity(glm::vec3(0, 0, 0)), phys(aggregateMesh)
 {
-
+    addTag("scene_manager"); 
 }
 
 SceneManager::~SceneManager()
@@ -18,7 +18,6 @@ void SceneManager::toggleStaticMesh()
 void SceneManager::updateEnvironmentMesh()
 {
     aggregateMesh.clear();
-    std::cout << "updateEnvironmentMesh clear" << std::endl;
     for (Entity* entity : entities) 
     {
         ofMesh entityMesh = entity->getMesh();
@@ -27,15 +26,6 @@ void SceneManager::updateEnvironmentMesh()
         glm::vec3 scale = entity->getScale();
         ofQuaternion rotation = entity->getRotation();
         glm::vec3 translation = entity->getTranslation();
-
-        // Debug the transformation breakdown
-        /*
-        ofVec3f tempVert = entityMesh.getVertex(entityMesh.getNumVertices() / 2);
-        std::cout << "pre: \n" << tempVert << std::endl;
-        std::cout << "scale: \n" << scale << std::endl;
-        std::cout << "rotation: \n" << rotation << std::endl;
-        std::cout << "translation: \n" << translation << std::endl;
-        */
 
         // Transform each vertex in the entity's mesh
         for (size_t i = 0; i < entityMesh.getNumVertices(); i++) 
@@ -55,13 +45,9 @@ void SceneManager::updateEnvironmentMesh()
             transformedVertex.y += translation.y;
             transformedVertex.z += translation.z;
 
-
             entityMesh.setVertex(i, ofVec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z)); // Update the vertex
         }
 
-        // Debug the transformed position of the analyzed point
-        // std::cout << "post: \n" << entityMesh.getVertex(entityMesh.getNumVertices() / 2) << std::endl;
-        
         // Append the transformed mesh to the aggregate mesh
         aggregateMesh.append(entityMesh);
     }
@@ -75,17 +61,12 @@ void SceneManager::loadScene(size_t index)
         std::cerr << "Error: Scene index " << index << " is out of bounds." << std::endl;
         return;
     }
+    entities.clear();
     scenes[index]->loadScene(phys, &entities);
-    std::cout << "loading... " << entities.size() << std::endl;
+    std::cout << "loading entities count: " << entities.size() << std::endl;
     for (auto& entity : entities)
         std::cout << "loading: " << entity->getId() << std::endl;
     _setup();
-}
-
-void SceneManager::_keyPressed(int key) 
-{
-    for (Entity* ptr : entities) ptr->keyPressed(key);
-    phys.keyPressed(key);
 }
 
 void SceneManager::addScene(Scene* scene)
@@ -97,7 +78,11 @@ void SceneManager::addScene(Scene* scene)
 void SceneManager::_setup()
 {
     phys.setup();
-    for (Entity* ptr : entities) ptr->setup();
+    for (Entity* ptr : entities) 
+    {
+        ptr->registerInputManager(inputManager);
+        ptr->setup();
+    }
     updateEnvironmentMesh();
 }
 
@@ -112,4 +97,10 @@ void SceneManager::_draw()
     phys.draw();
     for (Entity* ptr : entities) ptr->draw();
     if (drawStaticMesh) aggregateMesh.drawWireframe();
+}
+
+void SceneManager::registerInputManager(InputManager* input)
+{
+    inputManager = input;
+    phys.registerInputManager(input);
 }

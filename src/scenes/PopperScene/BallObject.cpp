@@ -2,43 +2,91 @@
 
 
 BallObject::BallObject(glm::vec3 pos, float rad, int res)
-    : PhysicsEntity(pos), radius(rad), resolution(res) {}
+    : PhysicsEntity(pos), radius(rad), resolution(res) { addTag("ball"); }
 
 BallObject::~BallObject() {}
 
-void BallObject::collision(const ofMesh& targetMesh)
+void BallObject::_collision(PhysicsEntity& target)
 {
-    //Iterate through each vertex of the target mesh
-    for (int i = 0; i < targetMesh.getNumVertices(); ++i)
+    if(!target.hasTag("ball"))
     {
-        glm::vec3 vertexPosition = targetMesh.getVertex(i);
-
-        // Step 3: Calculate the distance between the vertex and the center of the BallObject
-        glm::vec3 directionToVertex = vertexPosition - position;
-        float distance = glm::length(directionToVertex);
-
-        // Step 4: Check for intersection
-        if (distance - 3.6*radius < radius)
+        const ofMesh& targetMesh = target.getMesh();
+        //Iterate through each vertex of the target mesh
+        for (size_t i = 0; i < targetMesh.getNumVertices(); ++i)
         {
-            // Collision detected; calculate the collision normal and correction distance
-            glm::vec3 collisionNormal = glm::normalize(position);  // Normal points towards the origin (0,0,0) so I don't need to worry about position lol
-            float penetrationDepth = radius - distance;
+            glm::vec3 vertexPosition = targetMesh.getVertex(i);
 
-            glm::vec3 correction = collisionNormal * penetrationDepth;
-            moveTo(position + correction*0.1);
+            // Step 3: Calculate the distance between the vertex and the center of the BallObject
+            glm::vec3 directionToVertex = vertexPosition - position;
+            float distance = glm::length(directionToVertex);
 
-            // Reflect velocity to simulate bounce if needed
+            // Step 4: Check for intersection
+            if (distance - 3.6*radius < radius)
+            {
+                // Collision detected; calculate the collision normal and correction distance
+                glm::vec3 collisionNormal = glm::normalize(position);  // Normal points towards the origin (0,0,0) so I don't need to worry about position lol
+                float penetrationDepth = radius - distance;
+                glm::vec3 velocity = getVelocity();
+                float velLength = glm::length(velocity);
+                glm::vec3 correction = position + collisionNormal * penetrationDepth * (log(velLength + 1)*0.003f);
+                //if (velLength > threshold)  
+                moveTo(correction);
+                    
+                // Reflect velocity to simulate bounce if needed
+                glm::vec3 reflectedVelocity = glm::reflect(velocity, collisionNormal);
+                setVelocity(reflectedVelocity * 0.65f);  // Apply some damping factor
+            }
+        }
+    }
+    else
+    {
+        // based on radius being the same value for all balls
+        // Get target position and radius
+        glm::vec3 targetPosition = target.getPosition();
+        float targetRadius = radius; 
+        // hmm... maybe dimensions should be a part of entity? or perhaps properties pointer/map?
+        // maybe we maintain a map between sets of tags and properties?
+
+        // Calculate the vector between the centers of the two balls
+        glm::vec3 directionToTarget = targetPosition - position;
+        float distanceBetweenCenters = glm::length(directionToTarget);
+
+        // Check if the balls are intersecting
+        if (distanceBetweenCenters < radius/2 + targetRadius/2)
+        {
+            // Collision detected; normalize direction and calculate penetration depth
+            glm::vec3 collisionNormal = glm::normalize(directionToTarget);
+            float penetrationDepth = (radius/2 + targetRadius/2) - distanceBetweenCenters;
+
+            // Correct position to resolve overlap
+            glm::vec3 correction = collisionNormal * penetrationDepth * 0.35f;  // Split correction between both balls
+            if (glm::length(getVelocity()) > threshold)  
+                moveTo(position - correction);
+            //target.moveTo(targetPosition + correction);
+
+            // Reflect velocities 
             glm::vec3 velocity = getVelocity();
-            glm::vec3 reflectedVelocity = glm::reflect(velocity, collisionNormal);
-            setVelocity(reflectedVelocity * 0.8f);  // Apply some damping factor
+            glm::vec3 targetVelocity = target.getVelocity();
 
-            // Exit early if single correction suffices (optional, depending on your collision needs)
-            return;
+            // Calculate the relative velocity in the direction of the collision normal
+            float relativeVelocity = glm::dot(velocity - targetVelocity, collisionNormal);
+            if (relativeVelocity < 0.0f) // Apply the opposite impulse only if balls are moving towards each other
+            {
+                // Calculate restitution (bounciness) and impulse scalar
+                float restitution = 0.01f;  // Adjust restitution as needed
+                float impulseMagnitude = -(1 + restitution) * relativeVelocity;
+                impulseMagnitude /= 1 / getMass() + 1 / target.getMass();
+
+                // Calculate impulse vectors
+                glm::vec3 impulse = impulseMagnitude * collisionNormal;
+                setVelocity(velocity + impulse / getMass());
+                target.setVelocity(targetVelocity - impulse / target.getMass());
+            }
         }
     }
     
     // Additional damping to stop small oscillations after landing
-    if (glm::length(getVelocity()) < 0.1f)  // Threshold to detect rest
+    if (glm::length(getVelocity()) < threshold*2)  // Threshold to detect rest
         setVelocity(glm::vec3(0, 0, 0));  // Stop the ball
 }
 
@@ -66,17 +114,6 @@ glm::vec3 generateRandomVector(float totalDistance)
     return glm::vec3(x, y, z);
 }
 
-
-void BallObject::_keyPressed(int key) 
-{
-    if(key == 'b') 
-    {
-        glm::vec3 vec = generateRandomVector(730.5f);
-        std::cout << "adding random velocity: " << vec << std::endl; 
-        addVelocity(vec);
-    }
-} 
-
 void BallObject::_setup() 
 {
     mesh = ofMesh::sphere(radius, resolution);
@@ -88,18 +125,20 @@ void BallObject::_setup()
 
 void BallObject::_update() 
 {
-    // Apply gravity to the ball's acceleration
-    glm::vec3 gravity(0, -19.81f, 0);  // Downward gravity in y-axis (adjust for scale)
-    addVelocity(gravity * ofGetLastFrameTime()*5);  // Increment velocity based on gravity
-
     // Update position based on current velocity
     glm::vec3 currentPosition = getPosition();
     glm::vec3 newPosition = currentPosition + getVelocity() * ofGetLastFrameTime();
     moveTo(newPosition);
     
+    // Apply gravity to the ball's acceleration
+    glm::vec3 gravity(0, -26.81f, 0);  // Downward gravity in y-axis (adjust for scale)
+    addVelocity(gravity * ofGetLastFrameTime()*5);  // Increment velocity based on gravity
+    
     if (ofGetElapsedTimef() - lastActivationTime >= interval) 
     {
-        _keyPressed('b'); 
+        glm::vec3 vec = generateRandomVector(1630.5f);
+        std::cout << "[Time: " << ofGetElapsedTimef() - lastActivationTime << "] adding random velocity: " << vec << std::endl; 
+        addVelocity(vec);
         lastActivationTime = ofGetElapsedTimef(); // Reset the timer
     }
 }
@@ -110,3 +149,20 @@ void BallObject::_draw()
     ofDrawSphere(position.x, position.y, position.z, radius);
     material.end();
 }
+
+void BallObject::_input() 
+{
+    if (!inputManager)
+    {
+        std::cout << "Ball with id: " << getId() << " does not have an input manager!" << std::endl;
+        return;
+    }
+    if(inputManager->get('b')) 
+    {
+        glm::vec3 vec = generateRandomVector(730.5f);
+        std::cout << "adding random velocity: " << vec << std::endl; 
+        addVelocity(vec);
+    }
+} 
+
+
