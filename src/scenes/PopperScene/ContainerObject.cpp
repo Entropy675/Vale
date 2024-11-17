@@ -6,6 +6,11 @@ ContainerObject::ContainerObject(glm::vec3 pos, float rad, int res)
 
 ContainerObject::~ContainerObject() {}
 
+Entity* ContainerObject::clone() const
+{
+    return new ContainerObject(position, radius, resolution);
+}
+
 void ContainerObject::_setup() 
 {
     mesh = ofMesh::sphere(radius, resolution);

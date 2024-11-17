@@ -22,7 +22,8 @@ class OceanObject : public Entity
 public:
     OceanObject(glm::vec3 pos = glm::vec3(0, -330, 0), float nScale = 3.8f, float sp = 130.0f);
     ~OceanObject();
-    
+
+    Entity* clone() const override;
     void _setup() override;
     void _update() override; 
     void _draw() override;
@@ -41,7 +42,8 @@ class IslandObject : public Entity
 public:
     IslandObject(glm::vec3 pos = glm::vec3(0, 0, 0), float rad = 700, int res = 64, float sp = 10, float ns = 3.5f);
     ~IslandObject();
-    
+
+    Entity* clone() const override;
     void _setup() override;
     void _update() override; 
     void _draw() override;
@@ -53,7 +55,7 @@ class IslandScene : public Scene
 {
 public:
 	// cleanup is handled in parent 
-	IslandScene() 
+    IslandScene()
 	{
 		sceneObjects.push_back(new OceanObject());
 		sceneObjects.push_back(new IslandObject());

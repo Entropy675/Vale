@@ -5,6 +5,10 @@ IslandObject::IslandObject(glm::vec3 pos, float rad, int res, float sp, float ns
 
 IslandObject::~IslandObject() {}
 
+Entity* IslandObject::clone() const
+{
+    return new IslandObject(position, radius, resolution, spread, noiseScale);
+}
 void IslandObject::_setup() 
 {
     // Set up stone material
@@ -41,7 +45,6 @@ void IslandObject::_setup()
 
 void IslandObject::_update()
 {
-
 }
 
 void IslandObject::_draw()

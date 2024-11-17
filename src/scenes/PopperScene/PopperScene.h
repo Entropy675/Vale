@@ -18,6 +18,7 @@ public:
     ContainerObject(glm::vec3 pos = glm::vec3(0, 0, 0), float radius = 1600, int resolution = 864);
     ~ContainerObject();
     
+    Entity* clone() const override; 
     void _setup() override;
     void _update() override; 
     void _draw() override;
@@ -37,7 +38,7 @@ public:
     BallObject(glm::vec3 pos = glm::vec3(0), float radius = 200, int resolution = 64);
     ~BallObject();
     
-    PhysicsEntity* clone() const override; 
+    Entity* clone() const override; 
     void _collision(PhysicsEntity& target) override;
     
     void _input() override; 

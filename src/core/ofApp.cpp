@@ -37,7 +37,7 @@ void ofApp::setup()
     sceneManager.addScene(new IslandScene());
     sceneManager.setup();
     
-    // map these keys so that shift works properly
+    /// map these keys so that shift works properly
     inputManager.map('W', 'w');
     inputManager.map('S', 's');
     inputManager.map('A', 'a');
@@ -103,18 +103,22 @@ void ofApp::update()
     }
     //keys[key] = true;
     // Camera movement based on key presses (WASD)
-    if (inputManager.get(OF_KEY_SHIFT)) cam.boom(-moveSpeed); 
-    if (inputManager.get('1')) sceneManager.loadScene(0); // Move down (Shift key)
-    else if (inputManager.get('2')) sceneManager.loadScene(1);
-    else if (inputManager.get('t')) sceneManager.toggleStaticMesh();
-    else if (inputManager.get('q')) path.push_back(cam.getPosition());
-    else if (inputManager.get('e')) followPathBlindly = !followPathBlindly;
-    else if (inputManager.get(' ')) cam.move(0, moveSpeed, 0); // Move up (Space key)
+    if (inputManager.getPressed(OF_KEY_SHIFT)) cam.boom(-moveSpeed); 
+    if (inputManager.getPressed('1')) sceneManager.loadScene(0); // Move down (Shift key)
+    else if (inputManager.getPressed('2')) {
+        std::cout << "LOADING" << std::endl;
+        sceneManager.loadScene(1);
+        std::cout << "LOADING DOne" << std::endl;
+    }
+    else if (inputManager.getPressed('t')) sceneManager.toggleStaticMesh();
+    else if (inputManager.getPressed('q')) path.push_back(cam.getPosition());
+    else if (inputManager.getPressed('e')) followPathBlindly = !followPathBlindly;
+    else if (inputManager.getPressed(' ')) cam.move(0, moveSpeed, 0); // Move up (Space key)
     
-    if (inputManager.get('w')) cam.dolly(-moveSpeed); // Move forward
-    if (inputManager.get('s')) cam.dolly(moveSpeed); // Move backward
-    if (inputManager.get('a')) cam.truck(-moveSpeed); // Move left
-    if (inputManager.get('d')) cam.truck(moveSpeed); // Move right'
+    if (inputManager.getHeld('w')) cam.dolly(-moveSpeed); // Move forward
+    if (inputManager.getHeld('s')) cam.dolly(moveSpeed); // Move backward
+    if (inputManager.getHeld('a')) cam.truck(-moveSpeed); // Move left
+    if (inputManager.getHeld('d')) cam.truck(moveSpeed); // Move right'
 }
 
 //--------------------------------------------------------------

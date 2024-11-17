@@ -4,7 +4,6 @@ SceneManager::SceneManager() : Entity(glm::vec3(0, 0, 0)), phys(aggregateMesh)
 {
     addTag("scene_manager"); 
 }
-
 SceneManager::~SceneManager()
 {
     for (Scene* sc : scenes) delete sc;
@@ -56,7 +55,8 @@ void SceneManager::updateEnvironmentMesh()
 
 void SceneManager::loadScene(size_t index)
 {
-    if (index < 0 && index >= scenes.size()) 
+    std::cout << "SCENE: " << index << std::endl;
+    if (index <= 0 && index > scenes.size()) 
     {
         std::cerr << "Error: Scene index " << index << " is out of bounds." << std::endl;
         return;
@@ -88,6 +88,7 @@ void SceneManager::_setup()
 
 void SceneManager::_update()
 {
+    inputManager->update(); 
     phys.update();
     for (Entity* ptr : entities) ptr->update();
 }

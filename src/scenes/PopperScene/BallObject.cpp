@@ -6,6 +6,11 @@ BallObject::BallObject(glm::vec3 pos, float rad, int res)
 
 BallObject::~BallObject() {}
 
+Entity* BallObject::clone() const
+{
+    return new BallObject(position, radius, resolution);
+}
+
 void BallObject::_collision(PhysicsEntity& target)
 {
     if(!target.hasTag("ball"))
@@ -90,10 +95,7 @@ void BallObject::_collision(PhysicsEntity& target)
         setVelocity(glm::vec3(0, 0, 0));  // Stop the ball
 }
 
-PhysicsEntity* BallObject::clone() const
-{
-    return new BallObject(position, radius, resolution);
-}
+
 
 glm::vec3 generateRandomVector(float totalDistance) 
 {
@@ -157,7 +159,7 @@ void BallObject::_input()
         std::cout << "Ball with id: " << getId() << " does not have an input manager!" << std::endl;
         return;
     }
-    if(inputManager->get('b')) 
+    if(inputManager->getPressed('b')) 
     {
         glm::vec3 vec = generateRandomVector(730.5f);
         std::cout << "adding random velocity: " << vec << std::endl; 

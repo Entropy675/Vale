@@ -40,6 +40,7 @@ class PhysicsController : public Entity
     void loadScene(std::vector<PhysicsEntity*>& physicsObjects);
     void collisionCheck();
 
+    Entity* clone() const override { return nullptr; };
     void _setup() override;
     void _update() override; 
     void _draw() override;

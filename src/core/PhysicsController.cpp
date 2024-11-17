@@ -32,7 +32,7 @@ void PhysicsController::loadScene(std::vector<PhysicsEntity*>& preservedPhysicsO
     for (PhysicsEntity* obj : preservedPhysicsObjects) 
     {
         std::cout << "Physics loading: " << obj->getId() << std::endl;
-        PhysicsEntity* clone = obj->clone();
+        PhysicsEntity* clone = static_cast<PhysicsEntity*>(obj->clone());
         clone->registerInputManager(inputManager);
         physicsObjects.push_back(clone);
         std::cout << "Physics loaded active clone: " << clone->getId() << std::endl;

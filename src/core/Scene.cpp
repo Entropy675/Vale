@@ -25,7 +25,9 @@ void Scene::loadScene(PhysicsController& phys, std::vector<Entity*>* list)
     phys.loadScene(scenePhysicsObjects);
     list->clear();
     list->reserve(sceneObjects.size());
-    std::copy(sceneObjects.begin(), sceneObjects.end(), std::back_inserter(*list));
+    //std::copy(sceneObjects.begin(), sceneObjects.end(), std::back_inserter(*list));
+    for (Entity* ptr : sceneObjects)
+        list->push_back(ptr->clone());
     allReferences.push_back(list); // keep a reference to where referenced
 }
 

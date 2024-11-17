@@ -9,6 +9,10 @@ OceanObject::OceanObject(glm::vec3 pos, float nScale, float sp)
 
 OceanObject::~OceanObject() {}
 
+
+Entity* OceanObject::clone() const {
+    return new OceanObject(position, noiseScale, spread);
+}
 void OceanObject::updateNormals()
 {
     // Clear previous normals
@@ -125,8 +129,8 @@ void OceanObject::_update()
             mesh.setVertex(index, vertices[index]);
         }
     }
-    
     updateNormals();
+
 }
 
 void OceanObject::_draw() 
@@ -135,8 +139,6 @@ void OceanObject::_draw()
     material.begin();
     mesh.draw();
     material.end();
-    
-    ofPopMatrix(); // go back to state
 }
 
 // Sinosoidal function generates height at a given position for uniform-ish waves

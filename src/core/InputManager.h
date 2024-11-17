@@ -1,5 +1,6 @@
 #ifndef INPUTMANAGER_H__
 #define INPUTMANAGER_H__
+#include <vector>
 
 #define NUM_KEYS    4096
 
@@ -7,22 +8,57 @@
 class InputManager
 {
 private:
-    bool keys[NUM_KEYS] = {0};
-    int mapKeys[NUM_KEYS] = {0};
+    bool keys[NUM_KEYS] = {};
+    int mapKeys[NUM_KEYS] = {};
+    std::vector<std::pair<int, float>> timeoutMap;
+    
     bool debugInput = true;
+    float maxTimeout = 1.5f;
+    float decrementkeyPressTime = 0.1f; 
 
 public:
     InputManager();
     ~InputManager();
+
+    void update(); 
     
     // another way of accessing input...
     const bool (&getInputArray() const)[NUM_KEYS]   { return keys; }
-    bool get(int key) const                         { return keys[key]; };
-    void map(int fromKey, int toKey)                { mapKeys[fromKey] = toKey; };
-    void unmap(int key)                             { mapKeys[key] = 0; };
-    void ofKeyPressed(int key);
-    void ofKeyReleased(int key);
-    
+    bool getPressed(int key) const
+    {
+        if (key < 0 || key >= NUM_KEYS) return false;
+
+        for (int i = 0; i < timeoutMap.size(); i++)
+        {
+            bool possible = timeoutMap.at(i).second >= maxTimeout - decrementkeyPressTime;            
+            if (timeoutMap.at(i).first == key)
+            {
+                return false;
+            }
+        }
+        return keys[key];
+    };
+
+    // have def here and put code in C++ file 
+
+    bool getHeld(int keyPressed) const 
+    {
+        if (keyPressed < 0 || keyPressed >= NUM_KEYS) return false;
+        return keys[keyPressed];
+    };
+    void map(int fromKey, int toKey)                
+    {
+        if (fromKey < 0 || fromKey >= NUM_KEYS) return;
+        mapKeys[fromKey] = toKey; 
+    };
+    void unmap(int keyPressed)                             
+    {
+        if (keyPressed < 0 || keyPressed >= NUM_KEYS) return;
+        mapKeys[keyPressed] = 0; 
+    };
+    void ofKeyPressed(int keyPressed);
+    void ofKeyReleased(int keyPressed);
+   
 };
 
 #endif

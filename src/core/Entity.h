@@ -37,6 +37,7 @@ public:
     void update(); // internal
     void draw();
     void setup();
+    virtual Entity* clone() const = 0; // you must declare an explicit copy for clarity
     
     virtual void _update() = 0; // define your entities behaviour
     virtual void _draw() = 0;
