@@ -57,6 +57,8 @@ public:
 	// cleanup is handled in parent 
     IslandScene()
 	{
+        // doesn't have to do with loading two scenes into the scene manager
+        // it has to do with loading an ocean object with an island object. 
 		sceneObjects.push_back(new OceanObject());
 		sceneObjects.push_back(new IslandObject());
 	};

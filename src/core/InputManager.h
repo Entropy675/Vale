@@ -1,6 +1,7 @@
 #ifndef INPUTMANAGER_H__
 #define INPUTMANAGER_H__
 #include <vector>
+#include <iostream>
 
 #define NUM_KEYS    4096
 
@@ -13,7 +14,7 @@ private:
     std::vector<std::pair<int, float>> timeoutMap;
     
     bool debugInput = true;
-    float maxTimeout = 1.5f;
+    float maxTimeout = 3.0f;
     float decrementkeyPressTime = 0.1f; 
 
 public:
@@ -30,8 +31,9 @@ public:
 
         for (int i = 0; i < timeoutMap.size(); i++)
         {
-            bool possible = timeoutMap.at(i).second >= maxTimeout - decrementkeyPressTime;            
-            if (timeoutMap.at(i).first == key)
+            // 3 second minimum on each key press, if time is >= 2.6, we consider the timer as the key just pressed so we still want to return true, can play around with that 0.4
+            bool timerJustStarted = timeoutMap.at(i).second >= maxTimeout - (decrementkeyPressTime + 0.4);            
+            if (timeoutMap.at(i).first == key && !timerJustStarted)
             {
                 return false;
             }

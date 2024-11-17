@@ -106,9 +106,7 @@ void ofApp::update()
     if (inputManager.getPressed(OF_KEY_SHIFT)) cam.boom(-moveSpeed); 
     if (inputManager.getPressed('1')) sceneManager.loadScene(0); // Move down (Shift key)
     else if (inputManager.getPressed('2')) {
-        std::cout << "LOADING" << std::endl;
         sceneManager.loadScene(1);
-        std::cout << "LOADING DOne" << std::endl;
     }
     else if (inputManager.getPressed('t')) sceneManager.toggleStaticMesh();
     else if (inputManager.getPressed('q')) path.push_back(cam.getPosition());

@@ -17,22 +17,23 @@ void SceneManager::toggleStaticMesh()
 void SceneManager::updateEnvironmentMesh()
 {
     aggregateMesh.clear();
-    for (Entity* entity : entities) 
+    for (Entity* entity : entities)
     {
-        ofMesh entityMesh = entity->getMesh();
+        ofMesh entityMesh = entity->getMesh(); 
         
         // Get individual transformations
         glm::vec3 scale = entity->getScale();
         ofQuaternion rotation = entity->getRotation();
         glm::vec3 translation = entity->getTranslation();
-
+        std::cout << "Entity mesh vertex count BEFORE: " << entityMesh.getNumVertices() << std::endl;
         // Transform each vertex in the entity's mesh
         for (size_t i = 0; i < entityMesh.getNumVertices(); i++) 
         {
+
             ofVec3f vertex = entityMesh.getVertex(i);
             
             // Scale
-            vertex.x *= scale.x;
+            vertex.x *= scale.x; 
             vertex.y *= scale.y;
             vertex.z *= scale.z;
             
@@ -43,20 +44,25 @@ void SceneManager::updateEnvironmentMesh()
             transformedVertex.x += translation.x;
             transformedVertex.y += translation.y;
             transformedVertex.z += translation.z;
-
-            entityMesh.setVertex(i, ofVec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z)); // Update the vertex
+            
+            entityMesh.setVertex(i, ofVec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z)); // Update the vertex  
+            aggregateMesh.addVertex(entityMesh.getVertex(i));
         }
-
+    
         // Append the transformed mesh to the aggregate mesh
-        aggregateMesh.append(entityMesh);
+        // appended each vertex individually above
+       // aggregateMesh.addVertex(entityMesh);
+        std::cout << "Appended " << entityMesh.getNumVertices() << " vertices from entity." << std::endl;
+        
     }
+    
     std::cout << "updateEnvironmentMesh success" << std::endl;
 }
 
 void SceneManager::loadScene(size_t index)
 {
     std::cout << "SCENE: " << index << std::endl;
-    if (index <= 0 && index > scenes.size()) 
+    if (index < 0 || index >= scenes.size()) 
     {
         std::cerr << "Error: Scene index " << index << " is out of bounds." << std::endl;
         return;
