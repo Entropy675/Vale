@@ -5,7 +5,7 @@
 
 InputManager::InputManager()
 {
-    
+
 }
 
 InputManager::~InputManager()
@@ -18,13 +18,12 @@ void InputManager::update() {
         timeoutMap.at(i).second -= decrementkeyPressTime;
 
         // Print the current key and its timeout value
-        std::cout << "Key: " << timeoutMap.at(i).first
-            << ", Timeout: " << timeoutMap.at(i).second << std::endl;
+        //std::cout << "Key: " << timeoutMap.at(i).first << ", Timeout: " << timeoutMap.at(i).second << std::endl;
 
         if (timeoutMap.at(i).second <= 0) {
             std::cout << "Removing Key: " << timeoutMap.at(i).first << std::endl;
             timeoutMap.erase(timeoutMap.begin() + i);
-            i--; // Adjust the index 
+            i--; // Adjust the index
         }
     }
 
@@ -38,12 +37,12 @@ void InputManager::ofKeyPressed(int key)
         key = mapKeys[key];
         if(debugInput) std::cout << "-> " << key << std::endl;
     }
-    if (key > NUM_KEYS) return; 
+    if (key > NUM_KEYS) return;
     keys[key] = true;
-    
+
     bool check = false;
-    for (pair lol : timeoutMap) 
-        if (lol.first == key) check = true; 
+    for (pair lol : timeoutMap)
+        if (lol.first == key) check = true;
 
     if (!check) timeoutMap.push_back(pair<int, float>(key, maxTimeout));
 }

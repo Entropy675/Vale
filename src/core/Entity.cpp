@@ -12,7 +12,7 @@ Entity::~Entity() {}; // each entity manages its own cleanup in its dtor
 
 void Entity::update()
 {
-    _input();
+    if(inputManager != nullptr) _input();
     _update();
 
 #ifdef PRINTALLENTITIES
@@ -33,18 +33,23 @@ void Entity::draw()
     ofTranslate(translation);
     */
     ofMultMatrix(getTransformationMatrix());
-    
+
     _draw();
-    
+
     ofPopMatrix();
 }
-    
+
 void Entity::setup()
 {
+    std::cout << "Id: " << getId() << " attempted to call setup... ";
     if (!setupDone) setupDone = true; // prevent any repeated setup
-    else return; // ofLogWarning("Entity") << "Setup has already been called!"; // ignore because who cares
-    
-    std::cout << "Entity setup: " <<  hashId << std::endl;
+    else
+    {
+        std::cout << std::endl;
+        return; // ofLogWarning("Entity") << "Setup has already been called!"; // ignore because who cares
+    }
+
+    std::cout << "First Time Pass! Entity setup: " <<  hashId << std::endl;
     _setup();
 }
 
