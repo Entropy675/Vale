@@ -34,7 +34,7 @@ private:
     float distance = 600;
     float lastActivationTime = 0.0f; // Keeps track of the last time the popper was activated
     float interval = 42.5f;
-    float threshold = 2.1f;
+    float threshold = 5.5f; // need to overcome static force of friction
 
 public:
     BallObject(glm::vec3 pos = glm::vec3(0), float radius = 200, int resolution = 64);
