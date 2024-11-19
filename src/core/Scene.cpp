@@ -9,10 +9,10 @@ Scene::~Scene()
     {
         // Remove all instances of sceneObjects from the current list
         list->erase(std::remove_if(list->begin(), list->end(),
-            [this](Entity* entity) 
+            [this](Entity* entity)
             {    // Returns true if the entity is part of sceneObjects
                 return std::find(sceneObjects.begin(), sceneObjects.end(), entity) != sceneObjects.end();
-            }), 
+            }),
             list->end());
     }
     // delete every added entity
@@ -25,7 +25,15 @@ void Scene::loadScene(PhysicsController& phys, std::vector<Entity*>* list)
     phys.loadScene(scenePhysicsObjects);
     list->clear();
     list->reserve(sceneObjects.size());
-    std::copy(sceneObjects.begin(), sceneObjects.end(), std::back_inserter(*list));
+    //std::copy(sceneObjects.begin(), sceneObjects.end(), std::back_inserter(*list));
+    std::cout << "Scene loading count: " << sceneObjects.size() << std::endl;
+    for (Entity* ptr : sceneObjects)
+    {
+        Entity* clone = ptr->clone();
+        list->push_back(clone);
+        std::cout << "Scene loading: " << ptr->getId() << std::endl;
+        std::cout << "Scene loaded active clone: " << clone->getId() << std::endl;
+    }
     allReferences.push_back(list); // keep a reference to where referenced
 }
 
@@ -37,7 +45,7 @@ void Scene::setup()
 // TODO: make a format for loading entities from a file.
 bool Scene::loadSceneFromFile(std::string& path)
 {
-    // nothing for now, any scene can load more entities    
+    // nothing for now, any scene can load more entities
     return false;
 }
 

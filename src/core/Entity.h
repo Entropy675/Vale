@@ -7,24 +7,23 @@
 
 // #define PRINTALLENTITIES
 
-class Entity 
+class Entity
 {
 private:
     bool setupDone = false;
     static long long uniqueCounter;
-    
+
 protected:
     glm::vec3 position = glm::vec3(0, 0, 0);
     const long long hashId;
     ofMesh mesh;
-    ofMaterial material;
     bool drawDefaultMaterial = false;
-    
-    
+
+
     vector<std::string> tags;
     InputManager* inputManager = nullptr;
-    
-    // object level transformations applied 
+
+    // object level transformations applied
     glm::vec3 scale = glm::vec3(1, 1, 1);
     ofQuaternion rotation;
     glm::vec3 translation = glm::vec3(0, 0, 0); // x, y, z
@@ -33,38 +32,32 @@ public:
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
     Entity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     virtual ~Entity();
-    
+
     void update(); // internal
     void draw();
     void setup();
-    
+    virtual Entity* clone() const = 0; // you must declare an explicit copy for clarity
+
     virtual void _update() = 0; // define your entities behaviour
     virtual void _draw() = 0;
     virtual void _setup() = 0;
-    
+
     virtual void registerInputManager(InputManager* input)              { inputManager = input; };
-    virtual void _input()                                               { return; }; // optional: called at the before update only when an inputManager is registered.
-    
+    virtual void _input()                                               { return; }; // optional: called before update only when an inputManager is registered.
+
     // references
     virtual const ofMesh& getMesh() const                               { return mesh; }; // Return a const reference to ofMesh
     virtual ofMesh& getMeshRef()                                        { return mesh; }; // Return a const reference to ofMesh
-    ofMaterial& getMaterial()                                           { return material; }; // Return a reference to ofMaterial
 
-    // material properties
-    void toggleDefaultMaterial()                                        { drawDefaultMaterial = !drawDefaultMaterial; };
-    void setMaterial(const ofMaterial& mat)                             { material = mat; }; // Set the material
-    void setMaterialColor(const ofColor& color)                         { material.setDiffuseColor(color); }; // Set the material color
-    void setMaterialShininess(float shininess)                          { material.setShininess(shininess); }; // Set the material shininess
-    
     // setters
     void addTag(const std::string& tag)                                 { if (!hasTag(tag)) tags.push_back(tag); };
-    
+
     // getters
     ofQuaternion getRotation() const                                    { return rotation; };
     glm::vec3 getScale() const                                          { return scale; };
     glm::vec3 getTranslation() const                                    { return translation + position; };
     bool hasTag(const std::string& tag) const                           { return std::find(tags.begin(), tags.end(), tag) != tags.end(); };
-    
+
     // helpers
     ofMesh copyMesh() const                                             { return mesh; };
     long long getId() const                                             { return hashId; };

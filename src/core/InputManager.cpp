@@ -5,12 +5,12 @@
 
 InputManager::InputManager()
 {
-    
+
 }
 
 InputManager::~InputManager()
 {
-    
+
 }
 
 void InputManager::ofKeyPressed(int key)
@@ -21,8 +21,9 @@ void InputManager::ofKeyPressed(int key)
         key = mapKeys[key];
         if(debugInput) std::cout << "-> " << key << std::endl;
     }
-    
+    if (key > NUM_KEYS || keys[key]) return;
     keys[key] = true;
+    pressed[key] = frameOffset;
 }
 
 void InputManager::ofKeyReleased(int key)
@@ -34,6 +35,7 @@ void InputManager::ofKeyReleased(int key)
         if(debugInput) std::cout << "-> " << key << std::endl;
     }
     if(debugInput) std::cout << std::endl;
-    
+    if (key > NUM_KEYS) return;
     keys[key] = false;
+    pressed[key] = 0;
 }
