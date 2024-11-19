@@ -30,6 +30,7 @@ Compile and run
 Technical:
 - HUD system/GUI system
 - Raytracing
+- Finishing the tag-based physics system
 - Performance overhaul | lots of different ways, ex: 
                        | z-buffer for occlusion
                        | switching to matricies for all calculations, simd wrapper?
