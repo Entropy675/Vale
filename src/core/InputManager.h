@@ -13,7 +13,7 @@ private:
     int mapKeys[NUM_KEYS] = {};
     int pressed[NUM_KEYS] = {};
 
-    int frameOffset = 2;
+    int frameOffset = 5;
     //std::vector<std::pair<int, float>> timeoutMap;
 
     bool debugInput = true;
@@ -29,7 +29,6 @@ public:
     bool getPressed(int key)
     {
         if (key < 0 || key >= NUM_KEYS) return false;
-        if(pressed[key] && keys[key]) pressed[key]--;
         return pressed[key];
     };
 

@@ -21,7 +21,12 @@ void InputManager::ofKeyPressed(int key)
         key = mapKeys[key];
         if(debugInput) std::cout << "-> " << key << std::endl;
     }
-    if (key > NUM_KEYS || keys[key]) return;
+    if (key > NUM_KEYS) return;
+    if (keys[key])
+    {
+        if (pressed[key]) pressed[key]--;
+        return;
+    }
     keys[key] = true;
     pressed[key] = frameOffset;
 }

@@ -29,7 +29,7 @@ void BallObject::_collision(PhysicsEntity& target)
 
             // Reflect velocity to simulate bounce if needed
             glm::vec3 reflectedVelocity = glm::reflect(velocity, collisionNormal);
-            setVelocity(reflectedVelocity * 0.55f);  // Apply some damping factor
+            setVelocity(reflectedVelocity * 0.5f);  // Apply some damping factor
         }
 
     }
@@ -57,7 +57,6 @@ void BallObject::_collision(PhysicsEntity& target)
 
             // Correct position to resolve overlap
             glm::vec3 correction = collisionNormal * penetrationDepth;// * (log(velLength + 1)*0.03f);
-            //if (velLength > threshold)
             moveTo(position - correction);
             //target.moveTo(targetPosition + correction);
 
@@ -85,7 +84,7 @@ void BallObject::_collision(PhysicsEntity& target)
     }
 
     // Additional damping to stop small oscillations after landing
-    if (glm::length(getVelocity()) < threshold*2)  // Threshold to detect rest
+    if (glm::length(getVelocity()) < threshold)  // Threshold to detect rest
         setVelocity(glm::vec3(0, 0, 0));  // Stop the ball
 }
 
@@ -127,7 +126,7 @@ void BallObject::_update()
     moveTo(newPosition);
 
     // Apply gravity to the ball's acceleration
-    glm::vec3 gravity(0, -26.81f, 0);  // Downward gravity in y-axis (adjust for scale)
+    glm::vec3 gravity(0, -36.81f, 0);  // Downward gravity in y-axis (adjust for scale)
     addVelocity(gravity * ofGetLastFrameTime()*5);  // Increment velocity based on gravity
 
     if (ofGetElapsedTimef() - lastActivationTime >= interval)
