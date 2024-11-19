@@ -103,16 +103,15 @@ void ofApp::update()
     }
     //keys[key] = true;
     // Camera movement based on key presses (WASD)
-    if (inputManager.getPressed('1')) sceneManager.loadScene(0); // Move down (Shift key)
-    else if (inputManager.getPressed('2')) {
-        sceneManager.loadScene(1);
-    }
-    else if (inputManager.getPressed('t')) sceneManager.toggleStaticMesh();
-    else if (inputManager.getPressed('q')) path.push_back(cam.getPosition());
-    else if (inputManager.getPressed('e')) followPathBlindly = !followPathBlindly;
+    if (inputManager.getPressed('1')) sceneManager.prev();
+    else if (inputManager.getPressed('2')) sceneManager.next();
+
+    if (inputManager.getPressed('t')) sceneManager.toggleStaticMesh();
+    if (inputManager.getPressed('q')) path.push_back(cam.getPosition());
+    if (inputManager.getPressed('e')) followPathBlindly = !followPathBlindly;
 
     if (inputManager.getHeld(' ')) cam.move(0, moveSpeed, 0); // Move up (Space key)
-    if (inputManager.getHeld(OF_KEY_SHIFT)) cam.boom(-moveSpeed); // shift down
+    if (inputManager.getHeld(OF_KEY_SHIFT)) cam.boom(-moveSpeed); // Move down (Shift key)
 
     if (inputManager.getHeld('w')) cam.dolly(-moveSpeed); // Move forward
     if (inputManager.getHeld('s')) cam.dolly(moveSpeed); // Move backward
