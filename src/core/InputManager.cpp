@@ -21,9 +21,14 @@ void InputManager::ofKeyPressed(int key)
         key = mapKeys[key];
         if(debugInput) std::cout << "-> " << key << std::endl;
     }
-    if (key > NUM_KEYS || keys[key]) return;
+    if (key > NUM_KEYS) return;
+    if (keys[key])
+    {
+        if (pressed[key]) pressed[key] = false; // if held, only first iter is pressed true
+        return;
+    }
     keys[key] = true;
-    pressed[key] = frameOffset;
+    pressed[key] = true;
 }
 
 void InputManager::ofKeyReleased(int key)
@@ -37,5 +42,5 @@ void InputManager::ofKeyReleased(int key)
     if(debugInput) std::cout << std::endl;
     if (key > NUM_KEYS) return;
     keys[key] = false;
-    pressed[key] = 0;
+    pressed[key] = false;
 }

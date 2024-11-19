@@ -11,10 +11,7 @@ class InputManager
 private:
     bool keys[NUM_KEYS] = {};
     int mapKeys[NUM_KEYS] = {};
-    int pressed[NUM_KEYS] = {};
-
-    int frameOffset = 2;
-    //std::vector<std::pair<int, float>> timeoutMap;
+    bool pressed[NUM_KEYS] = {}; // could be replaced with bitfields for efficiency
 
     bool debugInput = true;
     float maxTimeout = 3.0f;
@@ -29,7 +26,6 @@ public:
     bool getPressed(int key)
     {
         if (key < 0 || key >= NUM_KEYS) return false;
-        if(pressed[key] && keys[key]) pressed[key]--;
         return pressed[key];
     };
 
