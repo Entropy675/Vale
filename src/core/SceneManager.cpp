@@ -92,7 +92,6 @@ void SceneManager::_setup()
 
 void SceneManager::_update()
 {
-    inputManager->update();
     phys.update();
     for (Entity* ptr : entities) ptr->update();
 }
