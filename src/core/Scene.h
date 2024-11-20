@@ -4,6 +4,7 @@
 #include <vector>
 #include "Entity.h"
 #include "PhysicsController.h"
+#include "Player.h"
 
 class Scene // responsible for the mem of its own entities
 {
@@ -11,6 +12,9 @@ protected:
     std::vector<Entity*> sceneObjects;
     std::vector<PhysicsEntity*> scenePhysicsObjects; // unaltered copy
     std::vector<std::vector<Entity*>*> allReferences;
+    // should eventually handle seperately as well as part of sceneObjects
+    // std::vector<Player*> playersInScene;
+
 public:
     Scene();
     virtual ~Scene();
