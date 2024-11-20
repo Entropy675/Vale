@@ -13,6 +13,29 @@ InputManager::~InputManager()
 
 }
 
+bool InputManager::getPressedOnce(int key, bool (&pressedContext)[NUM_KEYS])
+{
+    if (key < 0 || key >= NUM_KEYS) return false;
+    if (!pressed[key])
+    {
+        pressedContext[key] = false;
+        return false;
+    }
+    if (pressedContext[key]) return false;
+    pressedContext[key] = true;
+    return pressed[key];
+}
+
+bool InputManager::getPressedOnce(int key, Entity& ent)
+{
+    return getPressedOnce(key, ent.getInputContext());
+}
+
+bool InputManager::getPressedOnce(int key)
+{
+    return getPressedOnce(key, defaultInputContext);
+}
+
 void InputManager::ofKeyPressed(int key)
 {
     if(debugInput) std::cout << "KeyPress: " << key << " ";//std::endl; // easier to visually understand without it
@@ -21,7 +44,7 @@ void InputManager::ofKeyPressed(int key)
         key = mapKeys[key];
         if(debugInput) std::cout << "-> " << key << std::endl;
     }
-    if (key > NUM_KEYS) return;
+    if (key < 0 || key >= NUM_KEYS) return;
     if (keys[key])
     {
         if (pressed[key]) pressed[key] = false; // if held, only first iter is pressed true
@@ -40,7 +63,7 @@ void InputManager::ofKeyReleased(int key)
         if(debugInput) std::cout << "-> " << key << std::endl;
     }
     if(debugInput) std::cout << std::endl;
-    if (key > NUM_KEYS) return;
+    if (key < 0 || key >= NUM_KEYS) return;
     keys[key] = false;
     pressed[key] = false;
 }

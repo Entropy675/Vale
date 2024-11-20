@@ -15,32 +15,31 @@ void BallObject::_collision(PhysicsEntity& target)
 {
     if(!target.hasTag("ball"))
     {
-        const ofMesh& targetMesh = target.getMesh();
-
-        // Step 4: Check for intersection
         if (glm::length(position) - radius > distance)
         {
             // Collision detected; calculate the collision normal and correction distance
-            glm::vec3 collisionNormal = glm::normalize(position);  // Normal points towards the origin (0,0,0) so I don't need to worry about position lol
+            glm::vec3 collisionNormal = glm::normalize(position);  // Normal points towards the origin (0,0,0) TODO: make this a thing that the environment does before any _collision call
             float penetrationDepth = distance - glm::length(position) + radius;
 
-            glm::vec3 correction = position + collisionNormal * penetrationDepth ; //(log(glm::length(velocity) + 1)*0.002f);
+            glm::vec3 correction = position + collisionNormal * penetrationDepth ;
             moveTo(correction);
 
             // Reflect velocity to simulate bounce if needed
             glm::vec3 reflectedVelocity = glm::reflect(velocity, collisionNormal);
-            setVelocity(reflectedVelocity * 0.5f);  // Apply some damping factor
+            setVelocity(reflectedVelocity * 0.6f);  // Apply some damping factor
         }
 
     }
     else
     {
-        // based on radius being the same value for all balls
+
         // Get target position and radius
         glm::vec3 targetPosition = target.getPosition();
-        float targetRadius = radius;
-        // hmm... maybe dimensions should be a part of entity? or perhaps properties pointer/map?
-        // maybe we maintain a map between sets of tags and properties?
+        float targetRadius = radius; // based on radius being the same value for all balls
+        // plan on eventually maintaining a map between ID's and physics behaviour objects, which will hold metadata like this
+        // The IDs will be embedded into each vector as an extra point when calculating the environment mesh, so when collision occurs,
+        // a simple lookup in the physics object to id mapping table provides a list of objects with a "isColliding(vec3)" and "vec3 getNormal(vec3)"
+        // as well as other data associated with the ID. These will then be dynamically configurable based on the tag system.
 
         // Calculate the vector between the centers of the two balls
         glm::vec3 directionToTarget = targetPosition - position;
@@ -53,7 +52,6 @@ void BallObject::_collision(PhysicsEntity& target)
             glm::vec3 collisionNormal = glm::normalize(directionToTarget);
             float penetrationDepth = (radius/2 + targetRadius/2) - distanceBetweenCenters;
             glm::vec3 velocity = getVelocity();
-            float velLength = glm::length(velocity);
 
             // Correct position to resolve overlap
             glm::vec3 correction = collisionNormal * penetrationDepth;// * (log(velLength + 1)*0.03f);
@@ -151,11 +149,16 @@ void BallObject::_input()
         std::cout << "Ball with id: " << getId() << " does not have an input manager!" << std::endl;
         return;
     }
-    if(inputManager->getPressed('b'))
+    if(inputManager->getPressedOnce('b', *this)) // the first tap makes the vector... and then
     {
-        glm::vec3 vec = generateRandomVector(730.5f);
-        std::cout << "adding random velocity: " << vec << std::endl;
-        addVelocity(vec);
+        randomVec = generateRandomVector(430.5f);
+        std::cout << "Generated random velocity: " << randomVec << std::endl;
+    }
+
+    if(inputManager->getPressed('b')) // -  if you hold it, you get a bit more speed in that direction!
+    {
+        std::cout << "adding vel: " << randomVec << std::endl;
+        addVelocity(randomVec);
     }
 }
 

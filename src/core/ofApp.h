@@ -5,8 +5,9 @@
 #include "ofTexture.h"
 #include "SceneManager.h"
 #include "PhysicsController.h"
+#include "InputManager.h"
 
-class ofApp : public ofBaseApp 
+class ofApp : public ofBaseApp
 {
 public:
     ~ofApp();

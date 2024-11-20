@@ -1,17 +1,18 @@
 #ifndef ENTITY_H__
 #define ENTITY_H__
-
+#include "defs.h"
 #include "ofMain.h"
 #include "ofTexture.h"
-#include "InputManager.h"
 
 // #define PRINTALLENTITIES
+class InputManager;
 
 class Entity
 {
 private:
     bool setupDone = false;
     static long long uniqueCounter;
+    bool inputContext[NUM_KEYS] = {};
 
 protected:
     glm::vec3 position = glm::vec3(0, 0, 0);
@@ -48,6 +49,7 @@ public:
     // references
     virtual const ofMesh& getMesh() const                               { return mesh; }; // Return a const reference to ofMesh
     virtual ofMesh& getMeshRef()                                        { return mesh; }; // Return a const reference to ofMesh
+    bool (&getInputContext())[NUM_KEYS]                                 { return inputContext; }
 
     // setters
     void addTag(const std::string& tag)                                 { if (!hasTag(tag)) tags.push_back(tag); };

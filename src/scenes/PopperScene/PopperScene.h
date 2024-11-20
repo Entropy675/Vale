@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "PhysicsEntity.h"
 #include "Scene.h"
+#include "InputManager.h"
 #include <vector>
 
 
@@ -30,6 +31,7 @@ private:
     float radius;
     int resolution;
     ofMaterial material2;
+    glm::vec3 randomVec;
 
     float distance = 600;
     float lastActivationTime = 0.0f; // Keeps track of the last time the popper was activated
