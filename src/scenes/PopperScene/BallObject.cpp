@@ -144,20 +144,28 @@ void BallObject::_draw()
 
 void BallObject::_input()
 {
-    if (!inputManager)
-    {
-        std::cout << "Ball with id: " << getId() << " does not have an input manager!" << std::endl;
-        return;
-    }
     if(inputManager->getPressedOnce('b', *this)) // the first tap makes the vector... and then
     {
-        randomVec = generateRandomVector(430.5f);
+        randomVec = generateRandomVector(230.5f);
         std::cout << "Generated random velocity: " << randomVec << std::endl;
     }
 
     if(inputManager->getPressed('b')) // -  if you hold it, you get a bit more speed in that direction!
     {
         std::cout << "adding vel: " << randomVec << std::endl;
+        addVelocity(randomVec);
+    }
+
+    if (inputManager->getPressedOnce('m', *this)) // Generate vector towards the origin
+    {
+        glm::vec3 currentPosition = getPosition();
+        randomVec = glm::normalize(-currentPosition) * 230.5f; // Normalized direction to origin, scaled
+        std::cout << "Generated velocity towards origin: " << randomVec << std::endl;
+    }
+
+    if (inputManager->getPressed('m')) // Add velocity towards the origin
+    {
+        std::cout << "adding vel towards origin: " << randomVec << std::endl;
         addVelocity(randomVec);
     }
 }
