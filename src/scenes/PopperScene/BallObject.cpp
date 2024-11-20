@@ -151,7 +151,7 @@ void BallObject::_input()
         std::cout << "Ball with id: " << getId() << " does not have an input manager!" << std::endl;
         return;
     }
-    if(inputManager->getPressed('b'))
+    if(inputManager->getPressedOnce('b', *this))
     {
         glm::vec3 vec = generateRandomVector(730.5f);
         std::cout << "adding random velocity: " << vec << std::endl;
