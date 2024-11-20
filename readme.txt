@@ -31,7 +31,8 @@ Technical:
 - HUD system/GUI system
 - Raytracing
 - Material system
-- Performance overhaul | lots of different ways, ex:
+- Finishing the tag-based physics system
+- Performance overhaul | lots of different ways, ex: 
                        | z-buffer for occlusion
                        | switching to matricies for all calculations, simd wrapper?
                        | research optimizations in cache memory access & how memory is moved to gpu
