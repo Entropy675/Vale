@@ -1,9 +1,6 @@
 #include "PhysicsController.h"
 
-// the biggest difference between movement here and movement in actual object is that this does modify collision mesh
-// maintains a small list of physics objects, cleared when the scene is changed
-// scene can load entities into either SceneManager or PhysicsController
-// only PhysicsEntities will work PhysicsController
+// maintains a list of active physics objects, cleared when the scene is changed
 PhysicsController::PhysicsController(ofMesh& environment)
     : Entity(glm::vec3(0, 0, 0)), env(environment)
 {

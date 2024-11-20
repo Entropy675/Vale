@@ -5,8 +5,9 @@
 #include "ofTexture.h"
 #include "SceneManager.h"
 #include "PhysicsController.h"
+#include "InputManager.h"
 
-class ofApp : public ofBaseApp 
+class ofApp : public ofBaseApp
 {
 public:
     ~ofApp();
@@ -46,6 +47,7 @@ public:
     // controls
     bool isCursorHidden = false;
     InputManager inputManager;
+    bool mainInputContext[NUM_KEYS] = {};
 
 private:
     void followPath(std::vector<glm::vec3>& pathPoints);

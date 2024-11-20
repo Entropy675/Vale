@@ -2,9 +2,8 @@
 #define INPUTMANAGER_H__
 #include <vector>
 #include <iostream>
-
-#define NUM_KEYS    4096
-
+#include "defs.h"
+#include "Entity.h"
 
 class InputManager
 {
@@ -29,7 +28,8 @@ public:
         return pressed[key];
     };
 
-    // have def here and put code in C++ file
+    bool getPressedOnce(int key, bool (&pressedImpulse)[NUM_KEYS]);
+    bool getPressedOnce(int key, Entity& ent);
 
     bool getHeld(int keyPressed) const
     {

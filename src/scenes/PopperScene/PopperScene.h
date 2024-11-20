@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "PhysicsEntity.h"
 #include "Scene.h"
+#include "InputManager.h"
 #include <vector>
 
 
