@@ -31,6 +31,11 @@ bool InputManager::getPressedOnce(int key, Entity& ent)
     return getPressedOnce(key, ent.getInputContext());
 }
 
+bool InputManager::getPressedOnce(int key)
+{
+    return getPressedOnce(key, defaultInputContext);
+}
+
 void InputManager::ofKeyPressed(int key)
 {
     if(debugInput) std::cout << "KeyPress: " << key << " ";//std::endl; // easier to visually understand without it

@@ -12,6 +12,8 @@ private:
     bool pressed[NUM_KEYS] = {}; // could be replaced with bitfields for efficiency
     int mapKeys[NUM_KEYS] = {};
 
+    bool defaultInputContext[NUM_KEYS] = {}; // default, everything using this is bound together...
+
     bool debugInput = true;
     float maxTimeout = 3.0f;
     float decrementkeyPressTime = 0.1f;
@@ -29,7 +31,8 @@ public:
     };
 
     bool getPressedOnce(int key, bool (&pressedContext)[NUM_KEYS]);
-    bool getPressedOnce(int key, Entity& ent);
+    bool getPressedOnce(int key, Entity& ent); // use this for local context
+    bool getPressedOnce(int key); // uses defaultInputContext, global (may be unreliable anywhere other then ofApp.cpp)
 
     bool getHeld(int keyPressed) const
     {
