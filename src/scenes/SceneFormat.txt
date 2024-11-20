@@ -3,7 +3,7 @@
  * A scene is linked with this header file + the individual scene object .cpp files
  * This is a strict structure because it is relatively straight forward &
  * there should be no limitations that arise from enforcing this layout
-*/ 
+*/
 
 - Here is a template for the layout of a scene:
 - inside /SomeScene directory:
@@ -21,9 +21,10 @@ class SomeObject : public Entity
 public:
     SomeObject(glm::vec3 pos = glm::vec3(0, 0, 0));
     ~SomeObject();
-	
+    Entity* clone() override { return new SomeObject(position) };
+
     void _setup() override;
-    void _update() override; 
+    void _update() override;
     void _draw() override;
 };
 
@@ -32,9 +33,10 @@ class SomePhysicsObject : public PhysicsEntity
 public:
     SomePhysicsObject(glm::vec3 pos = glm::vec3(0, 0, 0));
     ~SomePhysicsObject();
-	
+    Entity* clone() override { return new SomePhysicsObject(position) };
+
     void _setup() override;
-    void _update() override; 
+    void _update() override;
     void _draw() override;
 };
 
@@ -42,11 +44,11 @@ public:
 class SomeScene : public Scene
 {
 public:
-	SomeScene() 
-	{
-		sceneObjects.push_back(new SomeObject());
-		scenePhysicsObjects.push_back(new SomePhysicsObject());
-	};
+    SomeScene()
+    {
+        sceneObjects.push_back(new SomeObject());
+        scenePhysicsObjects.push_back(new SomePhysicsObject());
+    };
 };
 
 
@@ -55,9 +57,9 @@ public:
 
 NOTE:
 Whats the difference between PhysicsObjects and SceneObjects if both can move and have animations?
-Well, SceneObjects collision mesh is planned to be computed and stored once (or as rarely as possible), 
-while the PhysicsObjects can change their collision mesh dynamically. Basically if it moves its probably 
-better off as a PhysicsObject then a SceneObject because, although it might work as a scene object, 
-every time you modify the mesh it will remove that from the Scene mesh, and re add whith your new position 
+Well, SceneObjects collision mesh is planned to be computed and stored once (or as rarely as possible),
+while the PhysicsObjects can change their collision mesh dynamically. Basically if it moves its probably
+better off as a PhysicsObject then a SceneObject because, although it might work as a scene object,
+every time you modify the mesh it will remove that from the Scene mesh, and re add whith your new position
 modifying the mesh. Its bad, slow, awful, all those things, don't do it. Well at the moment its not implemented though lol.
 

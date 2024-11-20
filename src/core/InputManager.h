@@ -9,8 +9,8 @@ class InputManager
 {
 private:
     bool keys[NUM_KEYS] = {};
-    int mapKeys[NUM_KEYS] = {};
     bool pressed[NUM_KEYS] = {}; // could be replaced with bitfields for efficiency
+    int mapKeys[NUM_KEYS] = {};
 
     bool debugInput = true;
     float maxTimeout = 3.0f;
@@ -28,7 +28,7 @@ public:
         return pressed[key];
     };
 
-    bool getPressedOnce(int key, bool (&pressedImpulse)[NUM_KEYS]);
+    bool getPressedOnce(int key, bool (&pressedContext)[NUM_KEYS]);
     bool getPressedOnce(int key, Entity& ent);
 
     bool getHeld(int keyPressed) const

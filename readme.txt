@@ -1,5 +1,5 @@
 By Entropy (Sibte Kazmi)
-This was tested on an Ubuntu Linux system. 
+This was tested on an Ubuntu Linux system.
 The code should be transferrable to any environment configured to include OpenFrameworks libraries.
 
 Getting involved
@@ -7,7 +7,7 @@ This project is licensed under Creative Commons Non-Commercial (CC BY NC) - howe
 
 Forking/Branching/PRs
 Feel free to fork and use my code, as long as you maintain the license and contribute back to the community.
-I will thoroughly review any PRs submitted, and give a personal analysis. 
+I will thoroughly review any PRs submitted, and give a personal analysis.
 If sufficient standards are met the code will be integrated.
 
 --- BUILD ---
@@ -30,7 +30,8 @@ Compile and run
 Technical:
 - HUD system/GUI system
 - Raytracing
-- Performance overhaul | lots of different ways, ex: 
+- Material system
+- Performance overhaul | lots of different ways, ex:
                        | z-buffer for occlusion
                        | switching to matricies for all calculations, simd wrapper?
                        | research optimizations in cache memory access & how memory is moved to gpu

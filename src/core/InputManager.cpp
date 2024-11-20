@@ -13,16 +13,16 @@ InputManager::~InputManager()
 
 }
 
-bool InputManager::getPressedOnce(int key, bool (&pressedImpulse)[NUM_KEYS])
+bool InputManager::getPressedOnce(int key, bool (&pressedContext)[NUM_KEYS])
 {
     if (key < 0 || key >= NUM_KEYS) return false;
     if (!pressed[key])
     {
-        pressedImpulse[key] = false;
+        pressedContext[key] = false;
         return false;
     }
-    if (pressedImpulse[key]) return false;
-    pressedImpulse[key] = true;
+    if (pressedContext[key]) return false;
+    pressedContext[key] = true;
     return pressed[key];
 }
 
