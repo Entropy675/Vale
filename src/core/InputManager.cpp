@@ -38,11 +38,11 @@ bool InputManager::getPressedOnce(int key)
 
 void InputManager::ofKeyPressed(int key)
 {
-    if(debugInput) std::cout << "KeyPress: " << key << " ";//std::endl; // easier to visually understand without it
+    if(debugInput) std::cout << "KeyPress: " << (char)key << " ";//std::endl; // easier to visually understand without it
     if(mapKeys[key] != 0)
     {
         key = mapKeys[key];
-        if(debugInput) std::cout << "-> " << key << std::endl;
+        if(debugInput) std::cout << "-> " << (char)key << std::endl;
     }
     if (key < 0 || key >= NUM_KEYS) return;
     if (keys[key])
@@ -56,11 +56,11 @@ void InputManager::ofKeyPressed(int key)
 
 void InputManager::ofKeyReleased(int key)
 {
-    if(debugInput) std::cout << "KeyRelease: " << key << " ";
+    if(debugInput) std::cout << "KeyRelease: " << (char)key << " ";
     if(mapKeys[key] != 0)
     {
         key = mapKeys[key];
-        if(debugInput) std::cout << "-> " << key << std::endl;
+        if(debugInput) std::cout << "-> " << (char)key << std::endl;
     }
     if(debugInput) std::cout << std::endl;
     if (key < 0 || key >= NUM_KEYS) return;

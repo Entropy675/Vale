@@ -123,7 +123,7 @@ void BallObject::_update()
     moveTo(newPosition);
 
     // Apply gravity to the ball's acceleration
-    glm::vec3 gravity(0, -980/2, 0);  // Downward gravity in y-axis (adjust for scale)
+    glm::vec3 gravity(0, -980/3, 0);  // Downward gravity in y-axis (adjust for scale)
     addVelocity(gravity * ofGetLastFrameTime());  // Increment velocity based on gravity
 
     if (ofGetElapsedTimef() - lastActivationTime >= interval)
