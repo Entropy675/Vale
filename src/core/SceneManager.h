@@ -14,6 +14,7 @@ class SceneManager : public Entity
     ofMesh aggregateMesh; // Unified mesh for the entire scene
     PhysicsController phys;
 
+    int currentScene = 0;
     bool drawStaticMesh = true;
 
     public:
@@ -24,6 +25,10 @@ class SceneManager : public Entity
     void updateEnvironmentMesh();
     void loadScene(size_t index);
     void addScene(Scene* scene);
+
+    // use this to change scenes in order (if you don't want to specify the # with loadScene)
+    void next();
+    void prev();
 
     Entity* clone() const override { return nullptr; };
     void _setup() override;

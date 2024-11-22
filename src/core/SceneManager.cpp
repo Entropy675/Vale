@@ -62,12 +62,14 @@ void SceneManager::updateEnvironmentMesh()
 
 void SceneManager::loadScene(size_t index)
 {
-    std::cout << "SCENE: " << index << std::endl;
+    std::cout << "SCENE: " << currentScene << " -> " << index << std::endl;
     if (index < 0 || index >= scenes.size())
     {
         std::cerr << "Error: Scene index " << index << " is out of bounds." << std::endl;
         return;
     }
+
+    currentScene = index;
     for (Entity* ptr : entities) delete ptr;
     scenes[index]->loadScene(phys, &entities);
     _setup();
@@ -77,6 +79,26 @@ void SceneManager::addScene(Scene* scene)
 {
     scenes.push_back(scene);
     if (scenes.size() == 1) loadScene(0);
+}
+
+void SceneManager::next()
+{
+    if(scenes.size() == 0)
+    {
+        std::cout << "Cannot call next(), there are no scenes!" << std::endl;
+        return;
+    }
+    loadScene((currentScene + 1) % scenes.size());
+}
+
+void SceneManager::prev()
+{
+    if(scenes.size() == 0)
+    {
+        std::cout << "Cannot call prev(), there are no scenes!" << std::endl;
+        return;
+    }
+    loadScene((currentScene - 1 + scenes.size()) % scenes.size()); // wrap around making sure its not negative
 }
 
 void SceneManager::_setup()
