@@ -1,5 +1,6 @@
 #include "ofApp.h"
 #include "IslandScene.h"
+#include "JolfBaseScene.h"
 #include "PopperScene.h"
 
 // cleanup
@@ -35,6 +36,7 @@ void ofApp::setup()
     sceneManager.registerInputManager(&inputManager);
     sceneManager.addScene(new PopperScene());
     sceneManager.addScene(new IslandScene());
+    sceneManager.addScene(new JolfBaseScene());
     sceneManager.setup();
 
     /// map these keys so that shift works properly
@@ -47,7 +49,7 @@ void ofApp::setup()
     cam.move(0, 400, 0);
     cam.setFov(60);
     cam.setNearClip(1.0f);  // Minimum distance from the camera to render objects (near clipping plane)
-    cam.setFarClip(31000.0f);
+    cam.setFarClip(41000.0f);
     moveSpeed = 60.0f;
 
     // Setup terrain object variables
