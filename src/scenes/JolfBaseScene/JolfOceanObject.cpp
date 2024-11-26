@@ -1,26 +1,26 @@
-#include "IslandScene.h"
+#include "JolfBaseScene.h"
 
-OceanObject::OceanObject(glm::vec3 pos, float nScale, float sp)
+JolfOceanObject::JolfOceanObject(glm::vec3 pos, float nScale, float sp)
     : Entity(pos), noiseScale(nScale), spread(sp)
 {
     noiseZ = 0.0f;
     addTag("ocean");
 }
 
-OceanObject::~OceanObject() {}
+JolfOceanObject::~JolfOceanObject() {}
 
 
-Entity* OceanObject::clone() const {
-    return new OceanObject(position, noiseScale, spread);
+Entity* JolfOceanObject::clone() const {
+    return new JolfOceanObject(position, noiseScale, spread);
 }
-void OceanObject::updateNormals()
+void JolfOceanObject::updateNormals()
 {
     // Clear previous normals
     mesh.clearNormals();
 
     // Define a light direction that changes gradually over time (simulate sun movement)
     // lightDir = glm::normalize(glm::vec3(sin(ofGetElapsedTimef() * 0.2f) * 0.5f, -0.8f, cos(ofGetElapsedTimef() * 0.2f) * 0.5f));
-    lightDir = glm::vec3(sin(ofGetElapsedTimef() * 0.05f), -0.35f, -0.5f);
+    lightDir = glm::vec3(0.0f, -0.35f, -0.5f);
     glm::vec3 viewDir = glm::normalize(glm::vec3(0.0f, 0.0f, 1.0f)); // Adjust as needed for camera direction
 
     // Calculate normals based on adjacent vertices
@@ -45,13 +45,13 @@ void OceanObject::updateNormals()
 
             // Calculate angle-based shadow intensity
             float angleFactor = glm::dot(normal, lightDir);
-            float shadowIntensity = glm::clamp( angleFactor * 0.01f, angleFactor * 0.01f, 0.7f); // Fine-tuned range
+            float shadowIntensity = glm::clamp(0.3f + angleFactor * 0.8f, 0.0f, 1.0f); // Fine-tuned range
             glm::vec3 shadedNormal = normal * shadowIntensity;
 
             // Fresnel effect for edge reflectivity
             float fresnelPower = 3.0f;  // Controls sharpness of reflectivity
             float fresnelEffect = pow(1.0f - glm::dot(viewDir, normal), fresnelPower);
-            shadedNormal = glm::mix(shadedNormal, lightDir, fresnelEffect * 0.3f);
+            shadedNormal = glm::mix(shadedNormal, lightDir, fresnelEffect * 0.6f);
 
             // Add the shaded normal to the mesh
             mesh.addNormal(glm::normalize(shadedNormal));
@@ -59,7 +59,7 @@ void OceanObject::updateNormals()
     }
 }
 
-void OceanObject::_setup()
+void JolfOceanObject::_setup()
 {
     material.setShininess(32);  // Higher shininess for sharper specular highlights
     material.setSpecularColor(ofColor(255, 255, 255, 180)); // Subtle white highlight
@@ -82,7 +82,7 @@ void OceanObject::_setup()
     {
         for (int x = 0; x < dimensions.x; x++)
         {
-            float z = ofNoise(x, y, noiseZ) * noiseScale;
+            float z = ofNoise(x * noiseScale, y * noiseScale, noiseZ) * 170.0f;
             glm::vec3 vertex = glm::vec3(x * spread, y * spread, z);
             vertices.push_back(vertex);
             mesh.addVertex(vertex);
@@ -110,7 +110,7 @@ void OceanObject::_setup()
     _update();
 }
 
-void OceanObject::_update()
+void JolfOceanObject::_update()
 {
     noiseZ += 0.03f;
     for (int y = 0; y < dimensions.z; y++)
@@ -123,7 +123,7 @@ void OceanObject::_update()
             // Generate the wave height & update z with wave height
             int floatHeightOffset = 30;
             float waveHeight = generateWaveHeight(x + ofGetElapsedTimef() * floatHeightOffset, y + ofGetElapsedTimef() * floatHeightOffset);
-            float z = waveHeight + ofNoise(x, y, noiseZ) * noiseScale;
+            float z = waveHeight + ofNoise(x * noiseScale, y * noiseScale, noiseZ) * 130.0f;
 
             vertices[index].z = z;
             mesh.setVertex(index, vertices[index]);
@@ -133,7 +133,7 @@ void OceanObject::_update()
 
 }
 
-void OceanObject::_draw()
+void JolfOceanObject::_draw()
 {
     // draw water
     material.begin();
@@ -142,9 +142,9 @@ void OceanObject::_draw()
 }
 
 // Sinosoidal function generates height at a given position for uniform-ish waves
-float OceanObject::generateWaveHeight(float x, float y)
+float JolfOceanObject::generateWaveHeight(float x, float y)
 {
-    float wx = sin(x * 0.1f) * 50.0f + cos(x * 0.09f + y * 0.03f) * 55.0f;
-    float wy = sin(y * 0.1f) * 45.0f + cos(y * 0.09f + x * 0.03f) * 50.0f;
+    float wx = sin(x * 0.1f) * 40.0f + cos(x * 0.09f + y * 0.03f) * 45.0f;
+    float wy = sin(y * 0.1f) * 35.0f + cos(y * 0.09f + x * 0.03f) * 40.0f;
     return wx + wy;
 }
