@@ -16,10 +16,7 @@ public:
     ~EnvironmentObject() {};
 
     PhysicsEntity* clone() const override { return new EnvironmentObject(env); };
-    void _collision(PhysicsEntity& target) override
-    {
-        // global env collision logic, runs against every entity in the scene
-    };
+    void _collision(PhysicsEntity& target) override {}; // environment collision logic, runs against every physicsentity in the scene, represents all entities
 
     const ofMesh& getMesh() const override { return env; };
 
@@ -28,6 +25,8 @@ public:
     void _update() override {};
     void _draw() override {};
 };
+
+
 
 class PhysicsController : public Entity
 {

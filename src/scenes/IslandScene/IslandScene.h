@@ -21,7 +21,7 @@ class OceanObject : public Entity
     float generateWaveHeight(float x, float y);
 
 public:
-    OceanObject(glm::vec3 pos = glm::vec3(0, -330, 0), float nScale = 3.8f, float sp = 1050.0f);
+    OceanObject(glm::vec3 pos = glm::vec3(0, -330, 0), float nScale = 70.5f, float sp = 750.0f);
     ~OceanObject();
 
     Entity* clone() const override;

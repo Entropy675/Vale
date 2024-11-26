@@ -82,7 +82,7 @@ void OceanObject::_setup()
     {
         for (int x = 0; x < dimensions.x; x++)
         {
-            float z = ofNoise(x * noiseScale, y * noiseScale, noiseZ) * 400.0f;
+            float z = ofNoise(x, y, noiseZ) * noiseScale;
             glm::vec3 vertex = glm::vec3(x * spread, y * spread, z);
             vertices.push_back(vertex);
             mesh.addVertex(vertex);
@@ -123,7 +123,7 @@ void OceanObject::_update()
             // Generate the wave height & update z with wave height
             int floatHeightOffset = 30;
             float waveHeight = generateWaveHeight(x + ofGetElapsedTimef() * floatHeightOffset, y + ofGetElapsedTimef() * floatHeightOffset);
-            float z = waveHeight + ofNoise(x * noiseScale, y * noiseScale, noiseZ) * 50.0f;
+            float z = waveHeight + ofNoise(x, y, noiseZ) * noiseScale;
 
             vertices[index].z = z;
             mesh.setVertex(index, vertices[index]);
