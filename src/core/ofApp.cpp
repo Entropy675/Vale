@@ -2,6 +2,7 @@
 #include "IslandScene.h"
 #include "JolfBaseScene.h"
 #include "PopperScene.h"
+#include "RaytracingScene.h"
 
 // cleanup
 ofApp::~ofApp()
@@ -34,6 +35,7 @@ void ofApp::setup()
 
     // add scenes / scene setups
     sceneManager.registerInputManager(&inputManager);
+    sceneManager.addScene(new RaytracingScene());
     sceneManager.addScene(new PopperScene());
     sceneManager.addScene(new IslandScene());
     sceneManager.addScene(new JolfBaseScene());
