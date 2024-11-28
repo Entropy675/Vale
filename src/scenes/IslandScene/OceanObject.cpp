@@ -121,10 +121,9 @@ void OceanObject::_update()
             std::size_t index = x + y * dimensions.x;
 
             // Generate the wave height & update z with wave height
-            int floatHeightOffset = 30;
             float waveHeight = generateWaveHeight(x + ofGetElapsedTimef() * floatHeightOffset, y + ofGetElapsedTimef() * floatHeightOffset);
-            float z = waveHeight + ofNoise(x, y, noiseZ) * noiseScale;
-
+            waveHeight += generateWaveHeight(x - ofGetElapsedTimef() * floatHeightOffset, y - ofGetElapsedTimef() * 0.1f*floatHeightOffset);
+            float z = waveHeight + ofNoise(x, y, noiseZ) * noiseScale + ofNoise(x, y, noiseZ) * 0.3f*noiseScale + ofNoise(x, y, noiseZ) * 0.7f*noiseScale;
             vertices[index].z = z;
             mesh.setVertex(index, vertices[index]);
         }

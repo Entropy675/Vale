@@ -66,4 +66,4 @@ public:
     ofMatrix4x4 getTransformationMatrix() const;
 };
 
-#endif // ENTITY_H__
+#endif

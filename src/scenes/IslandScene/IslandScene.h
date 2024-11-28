@@ -15,13 +15,14 @@ class OceanObject : public Entity
     std::vector<glm::vec3> vertices;
     ofQuaternion waterRotation;
     glm::vec3 dimensions = glm::vec3(500, 10, 500);
+    int floatHeightOffset = 25;
 
     // helpers
     void updateNormals();
     float generateWaveHeight(float x, float y);
 
 public:
-    OceanObject(glm::vec3 pos = glm::vec3(0, -330, 0), float nScale = 70.5f, float sp = 750.0f);
+    OceanObject(glm::vec3 pos = glm::vec3(0, -330, 0), float nScale = 15.5f, float sp = 450.0f);
     ~OceanObject();
 
     Entity* clone() const override;

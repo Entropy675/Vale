@@ -15,13 +15,13 @@ protected:
 
     glm::vec3 angularVelocity = glm::vec3(0, 0, 0);
     glm::vec3 angularAcceleration = glm::vec3(0, 0, 0);
-    
-    
-    // current ideas: 
-    // - a type of function pointer for collision(PhysicsEntity) behaviour 
+
+
+    // current ideas:
+    // - a type of function pointer for collision(PhysicsEntity) behaviour
     // - a map for default tag -> collision behaviour
     //   (ways to add to this map, automatically call based on tags in collision)
-    
+
 public:
     // Constructors
     PhysicsEntity(glm::vec3 dimension = glm::vec3(0, 0, 0));
@@ -29,11 +29,11 @@ public:
     virtual ~PhysicsEntity();
 
     void collision(PhysicsEntity& target); // internal
-    
+
     virtual void _collision(PhysicsEntity& target) = 0;
     // Due to the nature of these, we will be copying them. Need a good, explicit copy ctor.
-    // So write one in this clone method. This must return a new copy in heap of this entity. 
-    
+    // So write one in this clone method. This must return a new copy in heap of this entity.
+
     // --- Getters ---
 
     // physics
@@ -69,7 +69,7 @@ public:
 
     // All in one:
     void setPhysicsState(const glm::vec3& newPosition, const glm::vec3& newVelocity, const glm::vec3& newAcceleration);
-    
+
 };
 
-#endif // ENTITY_H__
+#endif
