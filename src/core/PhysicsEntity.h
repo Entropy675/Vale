@@ -5,6 +5,22 @@
 #include "ofTexture.h"
 #include "Entity.h"
 
+/*
+if this has been called: physicsEntity.addTag("sphere");
+Something like this happens in that func:
+physicsEntity.addPhysicsContext(0, {
+    [](const glm::vec3& point) { return glm::length(point) < 5.0f; }, // Bounding equation
+    [](const glm::vec3& point) { return glm::normalize(point); }      // Collision normal
+});
+where those funcs are looked up from a table and the values are passable in the tag itself.
+*/
+
+struct PhysicsContext
+{
+    std::function<bool(const glm::vec3&)> boundingEquation; // Checks for collision
+    std::function<glm::vec3(const glm::vec3&)> collisionNormal; // Computes collision normal
+};
+
 class PhysicsEntity : public Entity
 {
 protected:
@@ -16,11 +32,22 @@ protected:
     glm::vec3 angularVelocity = glm::vec3(0, 0, 0);
     glm::vec3 angularAcceleration = glm::vec3(0, 0, 0);
 
+    std::unordered_map<size_t, PhysicsContext> tagsIndexToContext; // Map from tag index to PhysicsContext
 
-    // current ideas:
-    // - a type of function pointer for collision(PhysicsEntity) behaviour
-    // - a map for default tag -> collision behaviour
-    //   (ways to add to this map, automatically call based on tags in collision)
+    // Check if a context exists for a given tag index
+    bool hasPhysicsContext(size_t tagIndex) const { return tagsIndexToContext.find(tagIndex) != tagsIndexToContext.end(); }
+    const std::unordered_map<size_t, PhysicsContext>& getAllPhysicsContexts() const { return tagsIndexToContext; };
+    void addPhysicsContext(size_t tagIndex, const PhysicsContext& context)
+    {
+        if (tagsIndexToContext.find(tagIndex) != tagsIndexToContext.end()) { return; }
+        tagsIndexToContext[tagIndex] = context;
+    }
+    // Retrieve a PhysicsContext by tag index
+    PhysicsContext* getPhysicsContext(size_t tagIndex)
+    {
+        auto it = tagsIndexToContext.find(tagIndex);
+        return (it != tagsIndexToContext.end()) ? &it->second : nullptr; // Return nullptr if not found
+    }
 
 public:
     // Constructors

@@ -1,7 +1,7 @@
 #include "PhysicsController.h"
 
 // maintains a list of active physics objects, cleared when the scene is changed
-PhysicsController::PhysicsController(ofMesh& environment)
+PhysicsController::PhysicsController(EnvironmentObject& environment)
     : Entity(glm::vec3(0, 0, 0)), env(environment)
 {
     addTag("physics_controller");

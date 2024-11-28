@@ -28,7 +28,7 @@ bool InputManager::getPressedOnce(int key, bool (&pressedContext)[NUM_KEYS])
 
 bool InputManager::getPressedOnce(int key, Entity& ent)
 {
-    return getPressedOnce(key, ent.getInputContext());
+    return getPressedOnce(key, ent.inputContext);
 }
 
 bool InputManager::getPressedOnce(int key)

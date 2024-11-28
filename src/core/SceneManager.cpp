@@ -47,7 +47,7 @@ void SceneManager::updateEnvironmentMesh()
             transformedVertex.z += translation.z;
 
             entityMesh.setVertex(i, ofVec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z)); // Update the vertex
-            aggregateMesh.addVertex(entityMesh.getVertex(i));
+            aggregateMesh.addVertex(entityMesh.getVertex(i), entity->getId());
         }
 
         // Append the transformed mesh to the aggregate mesh
@@ -122,7 +122,7 @@ void SceneManager::_draw()
 {
     phys.draw();
     for (Entity* ptr : entities) ptr->draw();
-    if (drawStaticMesh) aggregateMesh.drawWireframe();
+    if (drawStaticMesh) aggregateMesh.getMesh().drawWireframe();
 }
 
 void SceneManager::registerInputManager(InputManager* input)
