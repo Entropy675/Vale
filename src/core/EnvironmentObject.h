@@ -26,13 +26,14 @@ public:
     void addVertex(const glm::vec3& v, int id)
     {
         // Add vertex to mesh and KDTree
-        mesh.addVertex(v);
         kdTree.addPoint(v, id);
     }
 
     void setupEnvironment()
     {
+        if (kdTree.getAllPoints().size() == 0) return;
         kdTree.constructKDTree(); // Build the KDTree after all points are added
+        if (kdTree.getAllPoints().size() != mesh.getNumVertices()) recomputeMesh();
     }
 
     int nearestNeighbour(const glm::vec3& queryPoint) // returns id of nearest neighbour
@@ -47,17 +48,30 @@ public:
         return kdTree.getKNNIDs(queryPoint, k);
     }
 
+    void recomputeMesh()
+    {
+        std::cout << "Environment Mesh Recomputing: kdtree - " << kdTree.getAllPoints().size() << " | mesh - " << mesh.getNumVertices() << std::endl;
+        mesh.clear();
+        for (PointID i : kdTree.getAllPoints()) mesh.addVertex(i.position);
+    };
+
+    const ofMesh& getMesh() const override
+    {
+        return mesh;
+    }; // Return a const
+
+
     PhysicsEntity* clone() const override { return nullptr; } // Cannot be cloned
 
-    void _collision(PhysicsEntity& target) override 
+    void _collision(PhysicsEntity& target) override
     {
         // Placeholder for environment collision logic
         // Runs against every PhysicsEntity in the scene
         // !! Assumes target is not self !!
         // Uses the id of the nearest point to the target, then calls that physics entities list
-        // of physics metadata objects isColliding(vec3) functions on the target point. If any are, 
+        // of physics metadata objects isColliding(vec3) functions on the target point. If any are,
         // check if the next nearest entity collides (so go through nearest neighbours list ignoring repeated ID's)
-        // once we have the list of ID's to calculate collision for, we run their collision functions against the target.  
+        // once we have the list of ID's to calculate collision for, we run their collision functions against the target.
     }
 
     // Placeholder functions (not currently used)

@@ -26,7 +26,8 @@ void SceneManager::updateEnvironmentMesh()
         glm::vec3 scale = entity->getScale();
         ofQuaternion rotation = entity->getRotation();
         glm::vec3 translation = entity->getTranslation();
-        std::cout << "Entity mesh vertex count BEFORE: " << entityMesh.getNumVertices() << std::endl;
+
+        if (entity->getMesh().getNumVertices() == 0) continue;
         // Transform each vertex in the entity's mesh
         for (size_t i = 0; i < entityMesh.getNumVertices(); i++)
         {
@@ -56,7 +57,7 @@ void SceneManager::updateEnvironmentMesh()
         std::cout << "Appended " << entityMesh.getNumVertices() << " vertices from entity." << std::endl;
 
     }
-
+    aggregateMesh.setupEnvironment();
     std::cout << "updateEnvironmentMesh success" << std::endl;
 }
 
