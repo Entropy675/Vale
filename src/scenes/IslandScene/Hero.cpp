@@ -1,14 +1,17 @@
 #include "Hero.h"
 
-Entity* Hero::clone() const {
+Entity* Hero::clone() const
+{
     return new Hero(*this);
 }
 
-void Hero::_collision(PhysicsEntity& target) {
+void Hero::_collision(PhysicsEntity& target)
+{
     // Collision logic
 }
 
-void Hero::_input() {
+void Hero::_input()
+{
     // Input logic
 }
 
@@ -27,10 +30,13 @@ void Hero::_setup()
 
 }
 
-void Hero::_update() {
+void Hero::_update()
+{
+
 }
 
-void Hero::_draw() {
-    ofSetColor(0, 0, 255); 
+void Hero::_draw()
+{
+    ofSetColor(0, 0, 255);
     mesh.draw();
 }

@@ -12,9 +12,10 @@ protected:
     std::vector<Entity*> sceneObjects;
     std::vector<PhysicsEntity*> scenePhysicsObjects; // unaltered copy
     std::vector<std::vector<Entity*>*> allReferences;
+
+    // if 'player' tag present in entity, then add to playersInScene.
+    std::vector<Player*> playersInScene;
     glm::vec3 defaultCameraPosition;
-    std::vector<Player*> playersInScene; 
-    // if 'player' tag present in entity, then add to playersInScene. 
 
 public:
     Scene() : defaultCameraPosition(0.0f, 0.0f, 0.0f) {}
@@ -25,9 +26,7 @@ public:
     bool loadSceneFromFile(std::string& path); // TODO not done yet...
     bool saveSceneToFile(std::string& path);
 
-    std::vector<Player*>* getPlayersInScene() {
-        return &playersInScene;
-    }
+    std::vector<Player*>* getPlayersInScene() { return &playersInScene; };
 
     void addEntity(PhysicsEntity* physEntity);
     void addEntity(Entity* Entity);

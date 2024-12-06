@@ -25,7 +25,6 @@ void TagManager::initialize(const std::unordered_map<std::string, std::string>& 
     addTag("physics_controller");
     addTag("scene_manager");
     addTag("player");
-    addTag("hero");
 }
 
 bool TagManager::addTag(const std::string& tag, const std::string& contextInfo)
