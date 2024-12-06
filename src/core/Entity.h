@@ -3,6 +3,7 @@
 #include "defs.h"
 #include "ofMain.h"
 #include "ofTexture.h"
+#include "TagManager.h"
 
 // #define PRINTALLENTITIES
 class InputManager;
@@ -20,7 +21,6 @@ protected:
     ofMesh mesh;
     bool drawDefaultMaterial = false;
 
-
     vector<std::string> tags;
     InputManager* inputManager = nullptr;
 
@@ -30,7 +30,7 @@ protected:
     glm::vec3 translation = glm::vec3(0, 0, 0); // x, y, z
 
     friend class InputManager; // for input context direct access
-
+    friend class TagManager;   // for tags direct access
 public:
     // Constructors
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
@@ -53,7 +53,8 @@ public:
     virtual const ofMesh& getMesh() const                               { return mesh; }; // Return a const
 
     // tags
-    virtual void addTag(const std::string& tag)                         { if (!hasTag(tag)) tags.push_back(tag); };
+    virtual void addTag(const std::string& tag)                         { TagManager::applyTag(this, tag); };
+            // { if (!hasTag(tag)) tags.push_back(tag); };
     virtual bool hasTag(const std::string& tag) const                   { return std::find(tags.begin(), tags.end(), tag) != tags.end(); };
     virtual void removeTag(const std::string& tag)
     {

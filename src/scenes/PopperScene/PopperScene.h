@@ -61,6 +61,7 @@ public:
     // cleanup is handled in parent
     PopperScene()
     {
+        TagManager::addTag("ball");
         sceneObjects.push_back(new ContainerObject());
         for (int i = 0; i < 12; i++)
         {
