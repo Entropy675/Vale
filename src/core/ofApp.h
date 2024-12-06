@@ -34,14 +34,8 @@ public:
     // std::vector<Entity*> entities; replaced with manager
     SceneManager sceneManager;
 
-    // cam
-    ofCamera cam;
-    float cameraFloor;
-    float moveSpeed; // player camera movement speed
     int currentTargetIndex;
-    float cameraSpeed; // auto camera movement speed
     std::vector<glm::vec3> path;
-    glm::vec3 cameraPosition;
     bool followPathBlindly = true;
 
     // controls

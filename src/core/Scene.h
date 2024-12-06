@@ -4,7 +4,6 @@
 #include <vector>
 #include "Entity.h"
 #include "PhysicsController.h"
-#include "Player.h"
 
 class Scene // responsible for the mem of its own entities
 {
@@ -12,8 +11,7 @@ protected:
     std::vector<Entity*> sceneObjects;
     std::vector<PhysicsEntity*> scenePhysicsObjects; // unaltered copy
     std::vector<std::vector<Entity*>*> allReferences;
-    // should eventually handle seperately as well as part of sceneObjects
-    // std::vector<Player*> playersInScene;
+    // if 'player' tag present in entity, then add to playersInScene. 
 
 public:
     Scene();
@@ -23,6 +21,9 @@ public:
     void loadScene(PhysicsController& phys, std::vector<Entity*>* list);
     bool loadSceneFromFile(std::string& path); // TODO not done yet...
     bool saveSceneToFile(std::string& path);
+
+    void addEntity(PhysicsEntity* physEntity);
+    void addEntity(Entity* Entity);
 };
 
 

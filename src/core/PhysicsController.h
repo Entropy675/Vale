@@ -22,6 +22,8 @@ class PhysicsController : public Entity
     void _setup() override;
     void _update() override;
     void _draw() override;
+
+    void addEntity(PhysicsEntity* physEntity) { return physicsObjects.push_back(physEntity); }
 };
 
 #endif

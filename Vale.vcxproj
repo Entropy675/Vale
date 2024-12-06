@@ -85,7 +85,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)src/core;$(ProjectDir)src/scenes/IslandScene;$(ProjectDir)src/scenes/PopperScene;$(ProjectDir)src/core</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(ProjectDir)src/core;$(ProjectDir)src/scenes/IslandScene;$(ProjectDir)src/scenes/PopperScene;$(ProjectDir)src/;$(ProjectDir)src/scenes/JolfBaseScene;$(ProjectDir)src/scenes/RaytracingScene;$(ProjectDir)src/core/ofxKDTree</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
       <ObjectFileName>$(IntDir)\Build\%(RelativeDir)\$(Configuration)\</ObjectFileName>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -106,7 +106,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Camera.cpp" />
-    <ClCompile Include="src\core\DefaultPlayer.cpp" />
     <ClCompile Include="src\core\Entity.cpp" />
     <ClCompile Include="src\core\InputManager.cpp" />
     <ClCompile Include="src\core\ofApp.cpp" />
@@ -114,11 +113,14 @@
     <ClCompile Include="src\core\PhysicsEntity.cpp" />
     <ClCompile Include="src\core\Scene.cpp" />
     <ClCompile Include="src\core\SceneManager.cpp" />
+    <ClCompile Include="src\core\TagManager.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\scenes\IslandScene\IslandObject.cpp" />
     <ClCompile Include="src\scenes\IslandScene\OceanObject.cpp" />
+    <ClCompile Include="src\scenes\JolfBaseScene\JolfOceanObject.cpp" />
     <ClCompile Include="src\scenes\PopperScene\BallObject.cpp" />
     <ClCompile Include="src\scenes\PopperScene\ContainerObject.cpp" />
+    <ClCompile Include="src\scenes\RaytracingScene\RaytracingObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
@@ -133,17 +135,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\Camera.h" />
-    <ClInclude Include="src\core\DefaultPlayer.h" />
     <ClInclude Include="src\core\Entity.h" />
     <ClInclude Include="src\core\InputManager.h" />
     <ClInclude Include="src\core\ofApp.h" />
+    <ClInclude Include="src\core\ofxKDTree\nanoflann.hpp" />
+    <ClInclude Include="src\core\ofxKDTree\ofxKDTree.h" />
     <ClInclude Include="src\core\PhysicsController.h" />
     <ClInclude Include="src\core\PhysicsEntity.h" />
-    <ClInclude Include="src\core\Player.h" />
     <ClInclude Include="src\core\Scene.h" />
     <ClInclude Include="src\core\SceneManager.h" />
+    <ClInclude Include="src\core\TagManager.h" />
+    <ClInclude Include="src\defs.h" />
     <ClInclude Include="src\scenes\IslandScene\IslandScene.h" />
+    <ClInclude Include="src\scenes\JolfBaseScene\JolfBaseScene.h" />
     <ClInclude Include="src\scenes\PopperScene\PopperScene.h" />
+    <ClInclude Include="src\scenes\RaytracingScene\RaytracingScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

@@ -3,7 +3,6 @@
 
 #include "Entity.h"
 #include "Scene.h"
-#include "DefaultPlayer.h"
 
 // ----------  Scene objects  ----------
 class OceanObject : public Entity
@@ -54,6 +53,40 @@ public:
 };
 
 
+class Player : public PhysicsEntity {
+protected:
+    std::string name;       
+    float health;           
+    float radius;           
+    int resolution;       
+    ofTexture playerSkin; 
+    float playerFloor;      
+    float moveSpeed;       
+
+public:
+    // Constructor to initialize all members
+    Player(glm::vec3 pos, std::string name, float health, float radius, int resolution, float playerFloor, float moveSpeed)
+        : PhysicsEntity(pos),
+        name(name),
+        health(health),
+        radius(radius),
+        resolution(resolution),
+        playerFloor(playerFloor),
+        moveSpeed(moveSpeed),
+        playerSkin(playerSkin) {
+        addTag("player"); // Mark this entity as a player
+    }
+
+    Entity* clone() const override { return new Player(*this); }
+    void _collision(PhysicsEntity& target) override { }
+    void _input() override { }
+    void _setup() override { }
+    void _update() override { }
+    void _draw() override { }
+
+    float getPlayerSpeed() const { return moveSpeed; }
+};
+
 // ---------- Scene definition ----------
 class IslandScene : public Scene
 {
@@ -64,10 +97,19 @@ public:
         sceneObjects.push_back(new OceanObject());
         sceneObjects.push_back(new IslandObject());   
 
-        // players
-       // sceneObjects.push_back(new DefaultPlayer(ofVec3f(0,650,0)));
+        Player* playerTest = new Player(
+            glm::vec3(0.0f, 0.0f, 0.0f), // Position
+            "Player1",                   // Name
+            100.0f,                      // Health
+            1.0f,                        // Radius
+            32,                          // Resolution
+            0.0f,                        // Player floor level
+            5.0f                       // Movement speed
+        );
 
-        
+        scenePhysicsObjects.push_back(playerTest);
+
+    
     };
 };
 

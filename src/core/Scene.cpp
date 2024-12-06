@@ -51,6 +51,16 @@ bool Scene::loadSceneFromFile(std::string& path)
 
 bool Scene::saveSceneToFile(std::string& path)
 {
-    // save current scene to a file
+    // save current scene to a files
     return false;
+}
+
+void Scene::addEntity(PhysicsEntity* physEntity) 
+{
+    scenePhysicsObjects.push_back(physEntity);
+}
+
+void Scene::addEntity(Entity* entity) 
+{
+    sceneObjects.push_back(entity);
 }

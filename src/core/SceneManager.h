@@ -5,6 +5,8 @@
 #include "Scene.h"
 #include "PhysicsController.h"
 #include "EnvironmentObject.h"
+#include "Camera.h"
+
 
 // entity that holds active entities, and scenes that you can switch to
 class SceneManager : public Entity
@@ -14,6 +16,7 @@ class SceneManager : public Entity
     std::vector<Entity*> entities; // mem managed by this class (copies from scene)
     EnvironmentObject aggregateMesh; // Unified mesh for the entire scene
     PhysicsController phys;
+    Camera* cam;
 
     int currentScene = 0;
     bool drawStaticMesh = true;
@@ -36,6 +39,10 @@ class SceneManager : public Entity
     void _update() override;
     void _draw() override;
     void registerInputManager(InputManager* input) override;
+
+
+    void mouseMoved(ofMouseEventArgs& mouse);
+
 };
 
 #endif

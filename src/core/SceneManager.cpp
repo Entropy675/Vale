@@ -72,7 +72,12 @@ void SceneManager::loadScene(size_t index)
 
     currentScene = index;
     for (Entity* ptr : entities) delete ptr;
+    cam = new Camera();
+    cam->setup();
+    cam->registerInputManager(inputManager);
+    // camera to add to physEntities
     scenes[index]->loadScene(phys, &entities);
+    phys.addEntity(cam);
     _setup();
 }
 
@@ -121,13 +126,21 @@ void SceneManager::_update()
 
 void SceneManager::_draw()
 {
+    cam->camBegin();
     phys.draw();
     for (Entity* ptr : entities) ptr->draw();
     if (drawStaticMesh) aggregateMesh.getMesh().drawWireframe();
+    cam->camEnd();
 }
 
 void SceneManager::registerInputManager(InputManager* input)
 {
     inputManager = input;
     phys.registerInputManager(input);
+   
+}
+
+
+void SceneManager::mouseMoved(ofMouseEventArgs& mouse) {
+    cam->mouseMoved(mouse);
 }
