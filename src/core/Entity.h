@@ -32,10 +32,13 @@ protected:
     friend class InputManager; // for input context direct access
     friend class TagManager;   // for tags direct access
 public:
+    // testing
+    vector<std::string> getTags() { return tags; }
     // Constructors
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
     Entity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     virtual ~Entity();
+    
 
     void update(); // internal
     void draw();

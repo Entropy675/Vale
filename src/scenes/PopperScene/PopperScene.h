@@ -61,6 +61,7 @@ public:
     // cleanup is handled in parent
     PopperScene()
     {
+        defaultCameraPosition = glm::vec3(0.0f, 500.0f, 0.0f);
         TagManager::addTag("ball");
         sceneObjects.push_back(new ContainerObject());
         for (int i = 0; i < 12; i++)

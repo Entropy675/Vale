@@ -72,7 +72,11 @@ void SceneManager::loadScene(size_t index)
 
     currentScene = index;
     for (Entity* ptr : entities) delete ptr;
-    scenes[index]->loadScene(phys, &entities);
+    cam = new Camera(scenes[currentScene]->getDefaultCameraPosition());
+    cam->setup();
+    cam->registerInputManager(inputManager);
+    // camera to add to physEntities
+    scenes[currentScene]->loadScene(phys, &entities);
     _setup();
 }
 
@@ -111,6 +115,9 @@ void SceneManager::_setup()
         ptr->setup();
     }
     updateEnvironmentMesh();
+    if (phys.addCam(cam)) {
+        cam->setPlayersInScene(scenes[currentScene]->getPlayersInScene());
+    }
 }
 
 void SceneManager::_update()
@@ -121,13 +128,21 @@ void SceneManager::_update()
 
 void SceneManager::_draw()
 {
+    cam->camBegin();
     phys.draw();
     for (Entity* ptr : entities) ptr->draw();
     if (drawStaticMesh) aggregateMesh.getMesh().drawWireframe();
+    cam->camEnd();
 }
 
 void SceneManager::registerInputManager(InputManager* input)
 {
     inputManager = input;
     phys.registerInputManager(input);
+   
+}
+
+
+void SceneManager::mouseMoved(ofMouseEventArgs& mouse) {
+    cam->mouseMoved(mouse);
 }

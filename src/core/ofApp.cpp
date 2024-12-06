@@ -18,9 +18,20 @@ void ofApp::setup()
     // listeners
     ofAddListener(ofEvents().mouseMoved, this, &ofApp::mouseMoved);
 
-    cameraFloor = 0;
-    cameraSpeed = 5.0f;
-    currentTargetIndex = 0;
+
+    // Custom tags (you can add more whenever you want, TagManager::addTag(tag, context))
+    std::unordered_map<std::string, std::string> customTags = {
+        {"player", "Tag for player entities (should be attached to player)"},
+        {"enemy", "Tag for enemy entities"}
+    };
+    std::unordered_map<std::string, PhysicsMetadata> customPhysicsTags = {
+        {"player_physics", PhysicsMetadata("player_physics", nullptr, nullptr, nullptr)},
+        {"enemy_physics", PhysicsMetadata("enemy_physics", nullptr, nullptr, nullptr)}
+    }; // PhysicsMetadata("physics_tag", bounding equation, normal equation, extra context void*)
+
+
+    // Initialize TagManager (you can call this as many times as you want to add more tags)
+    TagManager::initialize(customTags, customPhysicsTags);
 
     // Light setup
     sun.setPointLight();
@@ -47,27 +58,6 @@ void ofApp::setup()
     inputManager.map('A', 'a');
     inputManager.map('D', 'd');
 
-    // Custom tags (you can add more whenever you want, TagManager::addTag(tag, context))
-    std::unordered_map<std::string, std::string> customTags = {
-        {"player", "Tag for player entities (should be attached to player)"},
-        {"enemy", "Tag for enemy entities"}
-    };
-    std::unordered_map<std::string, PhysicsMetadata> customPhysicsTags = {
-        {"player_physics", PhysicsMetadata("player_physics", nullptr, nullptr, nullptr)},
-        {"enemy_physics", PhysicsMetadata("enemy_physics", nullptr, nullptr, nullptr)}
-    }; // PhysicsMetadata("physics_tag", bounding equation, normal equation, extra context void*)
-
-
-    // Initialize TagManager (you can call this as many times as you want to add more tags)
-    TagManager::initialize(customTags, customPhysicsTags);
-
-    // cam
-    cam.move(0, 400, 0);
-    cam.setFov(60);
-    cam.setNearClip(1.0f);  // Minimum distance from the camera to render objects (near clipping plane)
-    cam.setFarClip(41000.0f);
-    moveSpeed = 60.0f;
-
     // Setup terrain object variables
     ofEnableLighting();
     ofEnableDepthTest();
@@ -77,6 +67,7 @@ void ofApp::setup()
 //----------------------HELPER-FUNCTIIONS-----------------------
 //--------------------------------------------------------------
 
+/*
 void ofApp::followPath(std::vector<glm::vec3>& pathPoints)
 {
     float minY = 10.0f;
@@ -98,6 +89,9 @@ void ofApp::followPath(std::vector<glm::vec3>& pathPoints)
     if (cam.getPosition().y < minY)
         cam.move(0, minY - cam.getPosition().y, 0);
 }
+*/
+
+
 
 //--------------------------------------------------------------
 //-----------------------UPDATE-CALLBACK------------------------
@@ -115,7 +109,7 @@ void ofApp::update()
 
     if(followPathBlindly)
     {
-        followPath(path);
+        //followPath(path);
         if (path.empty()) followPathBlindly = false;
         return;
     }
@@ -125,16 +119,8 @@ void ofApp::update()
     else if (inputManager.getPressedOnce('2')) sceneManager.next();
 
     if (inputManager.getPressedOnce('t')) sceneManager.toggleStaticMesh();
-    if (inputManager.getPressedOnce('q')) path.push_back(cam.getPosition());
+  //  if (inputManager.getPressedOnce('q')) path.push_back(cam.getPosition());
     if (inputManager.getPressedOnce('e')) followPathBlindly = !followPathBlindly;
-
-    if (inputManager.getHeld(' ')) cam.move(0, moveSpeed, 0); // Move up (Space key)
-    if (inputManager.getHeld(OF_KEY_SHIFT)) cam.boom(-moveSpeed); // Move down (Shift key)
-
-    if (inputManager.getHeld('w')) cam.dolly(-moveSpeed); // Move forward
-    if (inputManager.getHeld('s')) cam.dolly(moveSpeed); // Move backward
-    if (inputManager.getHeld('a')) cam.truck(-moveSpeed); // Move left
-    if (inputManager.getHeld('d')) cam.truck(moveSpeed); // Move right'
 }
 
 //--------------------------------------------------------------
@@ -143,9 +129,7 @@ void ofApp::update()
 
 void ofApp::draw()
 {
-    cam.begin();
     sceneManager.draw();
-    cam.end();
 }
 
 //--------------------------------------------------------------
@@ -159,16 +143,7 @@ void ofApp::keyReleased(int key) { inputManager.ofKeyReleased(key); }
 //--------------------------------------------------------------
 void ofApp::mouseMoved(ofMouseEventArgs& mouse)
 {
-    // Reset to a default forward-facing orientation
-    cam.setGlobalOrientation(glm::quat());
-
-    float deltaX = mouse.x - ofGetWidth() / 2;
-    float deltaY = mouse.y - ofGetHeight() / 2;
-
-    // Rotate the camera based on mouse movement
-    float sensitivity = .35f;
-    cam.panDeg(-sensitivity*1.4 * deltaX);   // Pan (left-right rotation)
-    cam.tiltDeg(-sensitivity * deltaY);   // Tilt (up-down rotation)
+    sceneManager.mouseMoved(mouse);
 }
 
 //--------------------------------------------------------------
