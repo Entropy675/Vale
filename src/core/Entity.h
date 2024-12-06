@@ -3,6 +3,7 @@
 #include "defs.h"
 #include "ofMain.h"
 #include "ofTexture.h"
+#include "TagManager.h"
 
 // #define PRINTALLENTITIES
 class InputManager;
@@ -20,7 +21,6 @@ protected:
     ofMesh mesh;
     bool drawDefaultMaterial = false;
 
-
     vector<std::string> tags;
     InputManager* inputManager = nullptr;
 
@@ -28,6 +28,9 @@ protected:
     glm::vec3 scale = glm::vec3(1, 1, 1);
     ofQuaternion rotation;
     glm::vec3 translation = glm::vec3(0, 0, 0); // x, y, z
+
+    friend class InputManager; // for input context direct access
+    friend class TagManager;   // for tags direct access
 public:
     // Constructors
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
@@ -46,19 +49,24 @@ public:
     virtual void registerInputManager(InputManager* input)              { inputManager = input; };
     virtual void _input()                                               { return; }; // optional: called before update only when an inputManager is registered.
 
-    // references
-    virtual const ofMesh& getMesh() const                               { return mesh; }; // Return a const reference to ofMesh
-    virtual ofMesh& getMeshRef()                                        { return mesh; }; // Return a const reference to ofMesh
-    bool (&getInputContext())[NUM_KEYS]                                 { return inputContext; }
+    // mesh reference
+    virtual const ofMesh& getMesh() const                               { return mesh; }; // Return a const
 
-    // setters
-    void addTag(const std::string& tag)                                 { if (!hasTag(tag)) tags.push_back(tag); };
+    // tags
+    virtual void addTag(const std::string& tag)                         { TagManager::applyTag(this, tag); };
+            // { if (!hasTag(tag)) tags.push_back(tag); };
+    virtual bool hasTag(const std::string& tag) const                   { return std::find(tags.begin(), tags.end(), tag) != tags.end(); };
+    virtual void removeTag(const std::string& tag)
+    {
+        auto it = std::find(tags.begin(), tags.end(), tag);
+        if (it != tags.end())
+            tags.erase(it);
+    }
 
     // getters
     ofQuaternion getRotation() const                                    { return rotation; };
     glm::vec3 getScale() const                                          { return scale; };
     glm::vec3 getTranslation() const                                    { return translation + position; };
-    bool hasTag(const std::string& tag) const                           { return std::find(tags.begin(), tags.end(), tag) != tags.end(); };
 
     // helpers
     ofMesh copyMesh() const                                             { return mesh; };
@@ -66,4 +74,4 @@ public:
     ofMatrix4x4 getTransformationMatrix() const;
 };
 
-#endif // ENTITY_H__
+#endif

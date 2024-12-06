@@ -2,6 +2,7 @@
 #include "IslandScene.h"
 #include "JolfBaseScene.h"
 #include "PopperScene.h"
+#include "RaytracingScene.h"
 
 // cleanup
 ofApp::~ofApp()
@@ -36,6 +37,7 @@ void ofApp::setup()
     sceneManager.registerInputManager(&inputManager);
     sceneManager.addScene(new PopperScene());
     sceneManager.addScene(new IslandScene());
+    sceneManager.addScene(new RaytracingScene());
     sceneManager.addScene(new JolfBaseScene());
     sceneManager.setup();
 
@@ -44,6 +46,20 @@ void ofApp::setup()
     inputManager.map('S', 's');
     inputManager.map('A', 'a');
     inputManager.map('D', 'd');
+
+    // Custom tags (you can add more whenever you want, TagManager::addTag(tag, context))
+    std::unordered_map<std::string, std::string> customTags = {
+        {"player", "Tag for player entities (should be attached to player)"},
+        {"enemy", "Tag for enemy entities"}
+    };
+    std::unordered_map<std::string, PhysicsMetadata> customPhysicsTags = {
+        {"player_physics", PhysicsMetadata("player_physics", nullptr, nullptr, nullptr)},
+        {"enemy_physics", PhysicsMetadata("enemy_physics", nullptr, nullptr, nullptr)}
+    }; // PhysicsMetadata("physics_tag", bounding equation, normal equation, extra context void*)
+
+
+    // Initialize TagManager (you can call this as many times as you want to add more tags)
+    TagManager::initialize(customTags, customPhysicsTags);
 
     // cam
     cam.move(0, 400, 0);

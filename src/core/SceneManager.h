@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Scene.h"
 #include "PhysicsController.h"
+#include "EnvironmentObject.h"
 
 // entity that holds active entities, and scenes that you can switch to
 class SceneManager : public Entity
@@ -11,7 +12,7 @@ class SceneManager : public Entity
     private:
     std::vector<Scene*> scenes; // mem managed by this class
     std::vector<Entity*> entities; // mem managed by this class (copies from scene)
-    ofMesh aggregateMesh; // Unified mesh for the entire scene
+    EnvironmentObject aggregateMesh; // Unified mesh for the entire scene
     PhysicsController phys;
 
     int currentScene = 0;

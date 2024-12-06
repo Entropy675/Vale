@@ -24,7 +24,7 @@ private:
 
     int mapKeys[NUM_KEYS] = {};
 
-    bool debugInput = true;
+    bool debugInput = false;
 
 public:
     InputManager();

@@ -3,6 +3,7 @@
 
 #include "ofMain.h"
 #include "ofTexture.h"
+#include "PhysicsMetadata.h"
 #include "Entity.h"
 
 class PhysicsEntity : public Entity
@@ -15,13 +16,30 @@ protected:
 
     glm::vec3 angularVelocity = glm::vec3(0, 0, 0);
     glm::vec3 angularAcceleration = glm::vec3(0, 0, 0);
-    
-    
-    // current ideas: 
-    // - a type of function pointer for collision(PhysicsEntity) behaviour 
-    // - a map for default tag -> collision behaviour
-    //   (ways to add to this map, automatically call based on tags in collision)
-    
+
+    std::unordered_map<size_t, PhysicsMetadata> tagsIndexToContext; // Map from tag index to PhysicsMetadata
+
+    // Check if a context exists for a given tag index
+    bool hasPhysicsMetadata(size_t tagIndex) const { return tagsIndexToContext.find(tagIndex) != tagsIndexToContext.end(); }
+    const std::unordered_map<size_t, PhysicsMetadata>& getAllPhysicsMetadata() const { return tagsIndexToContext; };
+    void addPhysicsMetadata(size_t tagIndex, const PhysicsMetadata& context)
+    {
+        if (tagsIndexToContext.find(tagIndex) != tagsIndexToContext.end()) { return; }
+        tagsIndexToContext[tagIndex] = context;
+    }
+    // Retrieve a PhysicsMetadata by tag index
+    bool getPhysicsMetadata(size_t tagIndex, PhysicsMetadata& out)
+    {
+        auto it = tagsIndexToContext.find(tagIndex);
+        if (it != tagsIndexToContext.end())
+        {
+            out = it->second;
+            return true;
+        }
+        return false;
+    }
+
+    friend class TagManager;
 public:
     // Constructors
     PhysicsEntity(glm::vec3 dimension = glm::vec3(0, 0, 0));
@@ -29,11 +47,11 @@ public:
     virtual ~PhysicsEntity();
 
     void collision(PhysicsEntity& target); // internal
-    
+
     virtual void _collision(PhysicsEntity& target) = 0;
     // Due to the nature of these, we will be copying them. Need a good, explicit copy ctor.
-    // So write one in this clone method. This must return a new copy in heap of this entity. 
-    
+    // So write one in this clone method. This must return a new copy in heap of this entity.
+
     // --- Getters ---
 
     // physics
@@ -44,7 +62,19 @@ public:
     glm::vec3 getAngularVelocity() const                        { return angularVelocity; };
     glm::vec3 getAngularAcceleration() const                    { return angularAcceleration; };
 
-     // object properties
+    bool getPhysicsMetadata(int entityId, PhysicsMetadata& out) const
+    {
+        auto it = tagsIndexToContext.find(entityId);
+        if (it != tagsIndexToContext.end())
+        {
+            out = it->second;
+            return true;
+        }
+        return false;
+    }
+
+
+    // object properties
     glm::vec3 getFacingDirection() const                        { return rotation * glm::vec3(0, 0, 1); };
     ofQuaternion getFacingRotation() const                      { return rotation; };
     float getMass() const                                       { return mass; }; // mass
@@ -69,7 +99,7 @@ public:
 
     // All in one:
     void setPhysicsState(const glm::vec3& newPosition, const glm::vec3& newVelocity, const glm::vec3& newAcceleration);
-    
+
 };
 
-#endif // ENTITY_H__
+#endif

@@ -26,7 +26,8 @@ void SceneManager::updateEnvironmentMesh()
         glm::vec3 scale = entity->getScale();
         ofQuaternion rotation = entity->getRotation();
         glm::vec3 translation = entity->getTranslation();
-        std::cout << "Entity mesh vertex count BEFORE: " << entityMesh.getNumVertices() << std::endl;
+
+        if (entity->getMesh().getNumVertices() == 0) continue;
         // Transform each vertex in the entity's mesh
         for (size_t i = 0; i < entityMesh.getNumVertices(); i++)
         {
@@ -47,7 +48,7 @@ void SceneManager::updateEnvironmentMesh()
             transformedVertex.z += translation.z;
 
             entityMesh.setVertex(i, ofVec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z)); // Update the vertex
-            aggregateMesh.addVertex(entityMesh.getVertex(i));
+            aggregateMesh.addVertex(entityMesh.getVertex(i), entity->getId());
         }
 
         // Append the transformed mesh to the aggregate mesh
@@ -56,7 +57,7 @@ void SceneManager::updateEnvironmentMesh()
         std::cout << "Appended " << entityMesh.getNumVertices() << " vertices from entity." << std::endl;
 
     }
-
+    aggregateMesh.setupEnvironment();
     std::cout << "updateEnvironmentMesh success" << std::endl;
 }
 
@@ -122,7 +123,7 @@ void SceneManager::_draw()
 {
     phys.draw();
     for (Entity* ptr : entities) ptr->draw();
-    if (drawStaticMesh) aggregateMesh.drawWireframe();
+    if (drawStaticMesh) aggregateMesh.getMesh().drawWireframe();
 }
 
 void SceneManager::registerInputManager(InputManager* input)
