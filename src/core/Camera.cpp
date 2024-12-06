@@ -3,7 +3,7 @@
 
 void Camera::_setup()
 {
-    camera.setPosition(startingPos);
+    camera.setPosition(position);
     camera.setFov(60);
     camera.setNearClip(1.0f);
     camera.setFarClip(31000.0f);
@@ -16,7 +16,6 @@ void Camera::_update()
 
 void Camera::_input()
 {
-    float moveSpeed = 10; // some default value move to header
     bool defaultControls = true;
     if (playersInScene.size())
     {
@@ -41,9 +40,9 @@ void Camera::_input()
     {
         currPlayer++;
         currPlayer %= playersInScene.size();
-        camera.setPosition(playersInScene[currPlayer]->getPosition());
+        camera.setPosition(playersInScene[currPlayer]->getPosition() - this->getPosition());
     }
-    playersInScene[currPlayer]->moveTo(camera.getPosition());
+    playersInScene[currPlayer]->moveTo(camera.getPosition() + position);
 }
 
 void Camera::mouseMoved(ofMouseEventArgs& mouseMovement)
