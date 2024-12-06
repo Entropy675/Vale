@@ -17,7 +17,7 @@ void Camera::_update()
 void Camera::_input()
 {
     float moveSpeed = 10; // some default move to header
-    if (currPlayer) moveSpeed = currPlayer->getPlayerSpeed();
+    if (playersInScene.size()) moveSpeed = playersInScene[currPlayer]->getPlayerSpeed();
     if (inputManager->getHeld('w')) camera.dolly(-moveSpeed); // Move forward
     if (inputManager->getHeld('s')) camera.dolly(moveSpeed); // Move backward
     if (inputManager->getHeld('a')) camera.truck(-moveSpeed); // Move left
@@ -26,24 +26,16 @@ void Camera::_input()
     if (inputManager->getHeld(' ')) camera.move(0, moveSpeed, 0); // Move up (Space key)
     if (inputManager->getHeld(OF_KEY_SHIFT)) camera.boom(-moveSpeed); // Move down (Shift key)
 
-    if (!currPlayer) return; // the rest of the func is if we have a player/players
-
-    currPlayer->moveTo(camera.getPosition());
+    if (!playersInScene.size()) return; // the rest of the func is if we have a player/players
 
     //switch Players
     if (inputManager->getPressedOnce('p'))
     {
-        for (Player* player : playersInScene)
-        {
-            if (player->getPlayerName() != currPlayer->getPlayerName())
-            {
-                currPlayer = player;
-                camera.setPosition(player->getPosition());
-                std::cout << "Switching to Player: " << player->getPlayerName() << std::endl;
-                break;
-            }
-        }
+        currPlayer++;
+        currPlayer %= playersInScene.size();
+        camera.setPosition(playersInScene[currPlayer]->getPosition());
     }
+    playersInScene[currPlayer]->moveTo(camera.getPosition());
 }
 
 void Camera::mouseMoved(ofMouseEventArgs& mouseMovement)
@@ -71,6 +63,7 @@ void Camera::camEnd() {
 bool Camera::setPlayer(std::vector<PhysicsEntity*>* physicsObjects)
 {
     bool success = false;
+    currPlayer = 0;
     playersInScene.clear();
 
     for (PhysicsEntity* ptr : *physicsObjects)
@@ -80,13 +73,12 @@ bool Camera::setPlayer(std::vector<PhysicsEntity*>* physicsObjects)
         if (ptr->hasTag("player"))
         {
             std::cout << "is player id: " << ptr->getId() << std::endl;
-            currPlayer = static_cast<Player*>(ptr); // assumes player class if player tag
-            playersInScene.push_back(currPlayer);
+            playersInScene.push_back(static_cast<Player*>(ptr)); // assumes player class if player tag
             success = true;
         }
     }
 
-    if (success) std::cout << "Cam is set to: " << currPlayer->getPlayerName() << std::endl;
+    if (success) std::cout << "Cam is set to: " << playersInScene[currPlayer]->getPlayerName() << std::endl;
     return success;
 }
 

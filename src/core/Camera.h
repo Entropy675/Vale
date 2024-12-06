@@ -12,7 +12,7 @@ class Camera : public PhysicsEntity
 
 private:
     ofCamera camera;
-    Player* currPlayer;
+    int currPlayer;
     vector <Player*> playersInScene;
     glm::vec3 startingPos = glm::vec3(0,0,0);
 
