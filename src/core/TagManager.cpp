@@ -24,6 +24,8 @@ void TagManager::initialize(const std::unordered_map<std::string, std::string>& 
     addTag("physics");
     addTag("physics_controller");
     addTag("scene_manager");
+    addTag("player");
+    addTag("hero");
 }
 
 bool TagManager::addTag(const std::string& tag, const std::string& contextInfo)
@@ -106,3 +108,5 @@ bool TagManager::getTagDefaultContext(const std::string& tag, PhysicsMetadata& c
     }
     return false; // Tag not found
 }
+
+

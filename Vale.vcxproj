@@ -107,6 +107,7 @@
   <ItemGroup>
     <ClCompile Include="src\core\Camera.cpp" />
     <ClCompile Include="src\core\Entity.cpp" />
+    <ClCompile Include="src\core\Hero.cpp" />
     <ClCompile Include="src\core\InputManager.cpp" />
     <ClCompile Include="src\core\ofApp.cpp" />
     <ClCompile Include="src\core\PhysicsController.cpp" />
@@ -136,12 +137,14 @@
   <ItemGroup>
     <ClInclude Include="src\core\Camera.h" />
     <ClInclude Include="src\core\Entity.h" />
+    <ClInclude Include="src\core\Hero.h" />
     <ClInclude Include="src\core\InputManager.h" />
     <ClInclude Include="src\core\ofApp.h" />
     <ClInclude Include="src\core\ofxKDTree\nanoflann.hpp" />
     <ClInclude Include="src\core\ofxKDTree\ofxKDTree.h" />
     <ClInclude Include="src\core\PhysicsController.h" />
     <ClInclude Include="src\core\PhysicsEntity.h" />
+    <ClInclude Include="src\core\Player.h" />
     <ClInclude Include="src\core\Scene.h" />
     <ClInclude Include="src\core\SceneManager.h" />
     <ClInclude Include="src\core\TagManager.h" />

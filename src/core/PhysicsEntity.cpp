@@ -4,6 +4,10 @@ PhysicsEntity::PhysicsEntity(glm::vec3 dim) : Entity(dim)
 {
     rotation = ofQuaternion(0, 0, 0, 1);
     addTag("physics");
+    std::cout << getId() << ": PRINTING ALL TAGS IN PHYS ENTITY INIT: " << std::endl;
+    for (std::string s : tags)
+        std::cout << s << ", " << std::endl;
+    
 }
 
 PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(meshRef, dim) 

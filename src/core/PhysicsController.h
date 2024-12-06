@@ -3,14 +3,16 @@
 
 #include "PhysicsEntity.h"
 #include "EnvironmentObject.h"
+class Camera;
+class Player;
 
 class PhysicsController : public Entity
 {
-    private:
+private:
     std::vector<PhysicsEntity*> physicsObjects; // mem managed by this class
     EnvironmentObject& env;
 
-    public:
+public:
     PhysicsController(EnvironmentObject& environment);
     ~PhysicsController();
 
@@ -23,6 +25,7 @@ class PhysicsController : public Entity
     void _update() override;
     void _draw() override;
 
+    bool addCam(Camera* camEntity);
     void addEntity(PhysicsEntity* physEntity) { return physicsObjects.push_back(physEntity); }
 };
 

@@ -1,8 +1,6 @@
 #include "Scene.h"
 
 
-Scene::Scene() {}
-
 Scene::~Scene()
 {
     for (std::vector<Entity*>* list : allReferences)
@@ -57,6 +55,12 @@ bool Scene::saveSceneToFile(std::string& path)
 
 void Scene::addEntity(PhysicsEntity* physEntity) 
 {
+    // keep track of current players in Scene
+    if (physEntity->hasTag("player")) {
+        Player* playerPtr = static_cast<Player*>(physEntity);
+        playersInScene.push_back(playerPtr);
+        std::cout << "Added to players in scene: " << playerPtr->getPlayerName() << std::endl;
+    }
     scenePhysicsObjects.push_back(physEntity);
 }
 

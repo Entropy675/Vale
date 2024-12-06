@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "Scene.h"
+#include "Hero.h"
 
 // ----------  Scene objects  ----------
 class OceanObject : public Entity
@@ -53,62 +54,28 @@ public:
 };
 
 
-class Player : public PhysicsEntity {
-protected:
-    std::string name;       
-    float health;           
-    float radius;           
-    int resolution;       
-    ofTexture playerSkin; 
-    float playerFloor;      
-    float moveSpeed;       
-
-public:
-    // Constructor to initialize all members
-    Player(glm::vec3 pos, std::string name, float health, float radius, int resolution, float playerFloor, float moveSpeed)
-        : PhysicsEntity(pos),
-        name(name),
-        health(health),
-        radius(radius),
-        resolution(resolution),
-        playerFloor(playerFloor),
-        moveSpeed(moveSpeed),
-        playerSkin(playerSkin) {
-        addTag("player"); // Mark this entity as a player
-    }
-
-    Entity* clone() const override { return new Player(*this); }
-    void _collision(PhysicsEntity& target) override { }
-    void _input() override { }
-    void _setup() override { }
-    void _update() override { }
-    void _draw() override { }
-
-    float getPlayerSpeed() const { return moveSpeed; }
-};
-
 // ---------- Scene definition ----------
 class IslandScene : public Scene
 {
+
 public:
     // cleanup is handled in parent
     IslandScene()
     {
-        sceneObjects.push_back(new OceanObject());
-        sceneObjects.push_back(new IslandObject());   
+        defaultCameraPosition = glm::vec3(0.0f, 1000.0f, 0.0f);
 
-        Player* playerTest = new Player(
-            glm::vec3(0.0f, 0.0f, 0.0f), // Position
-            "Player1",                   // Name
-            100.0f,                      // Health
-            1.0f,                        // Radius
-            32,                          // Resolution
-            0.0f,                        // Player floor level
-            5.0f                       // Movement speed
-        );
+       // addEntity(new OceanObject());
+        addEntity(new IslandObject());
 
-        scenePhysicsObjects.push_back(playerTest);
+        Hero* heroTest1 = new Hero("Gilbert", glm::vec3(600.0f, 500.0f, 100.0f), 10.0f, 500);
 
+
+        Hero* heroTest2 = new Hero("Filbert", glm::vec3(100.0f, 500.0f, 600.0f), 10.0f, 100);
+
+
+        // camera and player association test 
+        addEntity(heroTest1);
+        addEntity(heroTest2);
     
     };
 };

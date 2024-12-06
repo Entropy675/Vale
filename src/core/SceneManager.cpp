@@ -72,12 +72,11 @@ void SceneManager::loadScene(size_t index)
 
     currentScene = index;
     for (Entity* ptr : entities) delete ptr;
-    cam = new Camera();
+    cam = new Camera(scenes[currentScene]->getDefaultCameraPosition());
     cam->setup();
     cam->registerInputManager(inputManager);
     // camera to add to physEntities
-    scenes[index]->loadScene(phys, &entities);
-    phys.addEntity(cam);
+    scenes[currentScene]->loadScene(phys, &entities);
     _setup();
 }
 
@@ -116,6 +115,9 @@ void SceneManager::_setup()
         ptr->setup();
     }
     updateEnvironmentMesh();
+    if (phys.addCam(cam)) {
+        cam->setPlayersInScene(scenes[currentScene]->getPlayersInScene());
+    }
 }
 
 void SceneManager::_update()

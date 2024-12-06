@@ -13,6 +13,7 @@ Entity* BallObject::clone() const
 
 void BallObject::_collision(PhysicsEntity& target)
 {
+
     if(!target.hasTag("ball"))
     {
         if (glm::length(position) - radius > distance)
