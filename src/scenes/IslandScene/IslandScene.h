@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "Scene.h"
+#include "Hero.h"
 
 // ----------  Scene objects  ----------
 class OceanObject : public Entity
@@ -43,7 +44,7 @@ class IslandObject : public Entity
     glm::vec3 dimensions = glm::vec3(100, 10, 100);
 
 public:
-    IslandObject(glm::vec3 pos = glm::vec3(0, 0, 0), float rad = 700, int res = 64, float sp = 10, float ns = 3.5f);
+    IslandObject(glm::vec3 pos = glm::vec3(0, 0, 0), float rad = 700, int res = 32, float sp = 10, float ns = 3.5f);
     ~IslandObject();
 
     Entity* clone() const override;
@@ -56,14 +57,26 @@ public:
 // ---------- Scene definition ----------
 class IslandScene : public Scene
 {
+
 public:
     // cleanup is handled in parent
     IslandScene()
     {
-        // doesn't have to do with loading two scenes into the scene manager
-        // it has to do with loading an ocean object with an island object.
-        sceneObjects.push_back(new OceanObject());
-        sceneObjects.push_back(new IslandObject());
+        defaultCameraPosition = glm::vec3(0.0f, 1000.0f, 0.0f);
+
+       // addEntity(new OceanObject());
+        addEntity(new IslandObject());
+
+        Hero* heroTest1 = new Hero("Gilbert", glm::vec3(600.0f, 500.0f, 100.0f), 10.0f, 500);
+
+
+        Hero* heroTest2 = new Hero("Filbert", glm::vec3(100.0f, 500.0f, 600.0f), 10.0f, 100);
+
+
+        // camera and player association test 
+        addEntity(heroTest1);
+        addEntity(heroTest2);
+    
     };
 };
 

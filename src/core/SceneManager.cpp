@@ -26,7 +26,8 @@ void SceneManager::updateEnvironmentMesh()
         glm::vec3 scale = entity->getScale();
         ofQuaternion rotation = entity->getRotation();
         glm::vec3 translation = entity->getTranslation();
-        std::cout << "Entity mesh vertex count BEFORE: " << entityMesh.getNumVertices() << std::endl;
+
+        if (entity->getMesh().getNumVertices() == 0) continue;
         // Transform each vertex in the entity's mesh
         for (size_t i = 0; i < entityMesh.getNumVertices(); i++)
         {
@@ -56,7 +57,7 @@ void SceneManager::updateEnvironmentMesh()
         std::cout << "Appended " << entityMesh.getNumVertices() << " vertices from entity." << std::endl;
 
     }
-
+    aggregateMesh.setupEnvironment();
     std::cout << "updateEnvironmentMesh success" << std::endl;
 }
 
@@ -71,7 +72,15 @@ void SceneManager::loadScene(size_t index)
 
     currentScene = index;
     for (Entity* ptr : entities) delete ptr;
-    scenes[index]->loadScene(phys, &entities);
+    phys.clear();
+
+    cam = new Camera(scenes[currentScene]->getDefaultCameraPosition());
+    cam->registerInputManager(inputManager);
+    cam->setup();
+
+    scenes[currentScene]->loadScene(phys, &entities);
+    std::cout << "adding phys cam... " << std::endl;
+    phys.addCam(cam);
     _setup();
 }
 
@@ -120,13 +129,21 @@ void SceneManager::_update()
 
 void SceneManager::_draw()
 {
+    cam->camBegin();
     phys.draw();
     for (Entity* ptr : entities) ptr->draw();
     if (drawStaticMesh) aggregateMesh.getMesh().drawWireframe();
+    cam->camEnd();
 }
 
 void SceneManager::registerInputManager(InputManager* input)
 {
     inputManager = input;
     phys.registerInputManager(input);
+
+}
+
+
+void SceneManager::mouseMoved(ofMouseEventArgs& mouse) {
+    cam->mouseMoved(mouse);
 }

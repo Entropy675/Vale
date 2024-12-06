@@ -1,20 +1,20 @@
 #include "PhysicsEntity.h"
 
-PhysicsEntity::PhysicsEntity(glm::vec3 dim) : Entity(dim) 
+PhysicsEntity::PhysicsEntity(glm::vec3 dim) : Entity(dim)
 {
     rotation = ofQuaternion(0, 0, 0, 1);
     addTag("physics");
 }
 
-PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(meshRef, dim) 
+PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(meshRef, dim)
 {
     rotation = ofQuaternion(0, 0, 0, 1);
-} 
+}
 
 PhysicsEntity::~PhysicsEntity() {}; // each PhysicsEntity manages its own cleanup in its dtor
 
 
-void PhysicsEntity::collision(PhysicsEntity& target) 
+void PhysicsEntity::collision(PhysicsEntity& target)
 {
     _collision(target);
 }

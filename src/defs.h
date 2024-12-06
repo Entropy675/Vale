@@ -3,4 +3,5 @@
 
 #define NUM_KEYS    4096
 
+#include "ofMain.h"
 #endif

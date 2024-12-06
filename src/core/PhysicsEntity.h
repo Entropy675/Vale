@@ -3,23 +3,8 @@
 
 #include "ofMain.h"
 #include "ofTexture.h"
+#include "PhysicsMetadata.h"
 #include "Entity.h"
-
-struct PhysicsMetadata
-{
-    std::string tag;
-    void* context = nullptr; // optional personal or privately shared & mutable version of below (what handles this ones mem?)
-
-    std::function<bool(const glm::vec3&)> boundingEquation; // Checks for collision
-    std::function<glm::vec3(const glm::vec3&)> collisionNormal; // Computes & returns collision normal
-        
-    PhysicsMetadata(std::string tg = "invalid", 
-                    std::function<bool(const glm::vec3&)> boundingEq = [](const glm::vec3&) { return false; },
-                    std::function<glm::vec3(const glm::vec3&)> collisionNorm = [](const glm::vec3&) { return glm::vec3(0, 0, 0); },
-                    void* ctx = nullptr)
-            : tag(std::move(tg)), context(ctx), boundingEquation(std::move(boundingEq)), collisionNormal(std::move(collisionNorm)) {}
-    
-};
 
 class PhysicsEntity : public Entity
 {
@@ -43,12 +28,29 @@ protected:
         tagsIndexToContext[tagIndex] = context;
     }
     // Retrieve a PhysicsMetadata by tag index
-    PhysicsMetadata* getPhysicsMetadata(size_t tagIndex)
+    bool getPhysicsMetadata(size_t tagIndex, PhysicsMetadata& out)
     {
         auto it = tagsIndexToContext.find(tagIndex);
-        return (it != tagsIndexToContext.end()) ? &it->second : nullptr; // Return nullptr if not found
+        if (it != tagsIndexToContext.end())
+        {
+            out = it->second;
+            return true;
+        }
+        return false;
     }
 
+    bool removePhysicsMetadata(size_t tagIndex)
+    {
+        auto it = tagsIndexToContext.find(tagIndex);
+        if (it != tagsIndexToContext.end())
+        {
+            tagsIndexToContext.erase(it);
+            return true; // Successfully removed
+        }
+        return false; // No metadata found for the given tag index
+    }
+
+    friend class TagManager;
 public:
     // Constructors
     PhysicsEntity(glm::vec3 dimension = glm::vec3(0, 0, 0));
@@ -71,12 +73,32 @@ public:
     glm::vec3 getAngularVelocity() const                        { return angularVelocity; };
     glm::vec3 getAngularAcceleration() const                    { return angularAcceleration; };
 
-     // object properties
+    bool getPhysicsMetadata(int entityId, PhysicsMetadata& out) const
+    {
+        auto it = tagsIndexToContext.find(entityId);
+        if (it != tagsIndexToContext.end())
+        {
+            out = it->second;
+            return true;
+        }
+        return false;
+    }
+
+
+    // object properties
     glm::vec3 getFacingDirection() const                        { return rotation * glm::vec3(0, 0, 1); };
     ofQuaternion getFacingRotation() const                      { return rotation; };
     float getMass() const                                       { return mass; }; // mass
 
     // --- Setters ---
+    void removeTag(const std::string& tag) override
+    {
+        auto it = std::find(tags.begin(), tags.end(), tag);
+        if (it != tags.end())
+            tags.erase(it);
+        if (TagManager::hasPhysicsTag(tag))
+            removePhysicsMetadata(std::distance(tags.begin(), it));
+    }
 
     // Physics functions
     void setMass(float massValue)                            { mass = massValue; };

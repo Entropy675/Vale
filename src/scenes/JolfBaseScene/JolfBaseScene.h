@@ -37,8 +37,6 @@ public:
     // cleanup is handled in parent
     JolfBaseScene()
     {
-        // doesn't have to do with loading two scenes into the scene manager
-        // it has to do with loading an ocean object with an island object.
         sceneObjects.push_back(new JolfOceanObject());
         //sceneObjects.push_back(new IslandObject());
     };

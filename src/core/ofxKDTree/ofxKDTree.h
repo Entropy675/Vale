@@ -67,6 +67,7 @@ public:
     ~ofxKDTree() { clear(); }
 
     void addPoint(const glm::vec3& sample, int id) { samples.emplace_back(sample, id); }
+    const std::vector<PointID>& getAllPoints() const { return samples; }
 
     void clear()
     {
@@ -88,7 +89,7 @@ public:
 
     // idea: check for collision against this guy, if true check for next nearist, etc until one is untrue
     // gives id of the current nearist neighbour
-    int nearestNeighbour(const glm::vec3& query_pt) 
+    int nearestNeighbour(const glm::vec3& query_pt)
     {
         if (!mat_index)
             throw std::runtime_error("KDTree not built yet!");
@@ -105,7 +106,7 @@ public:
     }
 
     // gives all info for nearest neighbours
-    void getKNN(const glm::vec3& query_pt, int k, std::vector<size_t>& indexes, std::vector<float>& dists) 
+    void getKNN(const glm::vec3& query_pt, int k, std::vector<size_t>& indexes, std::vector<float>& dists)
     {
         if (!mat_index)
             throw std::runtime_error("KDTree not built yet!");
@@ -120,14 +121,14 @@ public:
     }
 
     // gives all ids of nearest neighbours
-    std::vector<int> getKNNIDs(const glm::vec3& query_pt, int k) 
+    std::vector<int> getKNNIDs(const glm::vec3& query_pt, int k)
     {
         std::vector<size_t> indexes;
         std::vector<float> dists;
         getKNN(query_pt, k, indexes, dists);
 
         std::vector<int> ids;
-        for (size_t i = 0; i < indexes.size(); ++i) 
+        for (size_t i = 0; i < indexes.size(); ++i)
             ids.push_back(samples[indexes[i]].id);
         return ids; // Return the IDs of the nearest neighbors
     }

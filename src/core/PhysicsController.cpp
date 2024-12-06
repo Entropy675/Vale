@@ -1,4 +1,6 @@
 #include "PhysicsController.h"
+#include "Camera.h"
+#include "Player.h"
 
 // maintains a list of active physics objects, cleared when the scene is changed
 PhysicsController::PhysicsController(EnvironmentObject& environment)
@@ -65,4 +67,13 @@ void PhysicsController::_draw()
 {
     for (PhysicsEntity* ptr : physicsObjects)
         ptr->draw();
+}
+
+bool PhysicsController::addCam(Camera* cam)
+{
+    if (!cam) std::cout << "!! attempted to add null cam to physics" << std::endl;
+    addEntity(cam);
+    cam->setPlayer(&physicsObjects);
+
+    return false;
 }
