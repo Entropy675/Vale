@@ -69,19 +69,11 @@ void PhysicsController::_draw()
         ptr->draw();
 }
 
-bool PhysicsController::addCam(Camera* cam) {
-    for (PhysicsEntity* ptr : physicsObjects)
-    {
-        if (ptr->hasTag("player")) {
-            Player* playerPtr = static_cast<Player*>(ptr);
-            if (playerPtr) {
-                cam->setPlayer(playerPtr);
-                addEntity(cam);
-                return true;
-                std::cerr << "Cam is set to: " << playerPtr->getPlayerName() << std::endl;
-            }
-        }
-        std::cout << "No players found" << std::endl;
-    }
+bool PhysicsController::addCam(Camera* cam)
+{
+    if (!cam) std::cout << "!! attempted to add null cam to physics" << std::endl;
+    addEntity(cam);
+    cam->setPlayer(&physicsObjects);
+
     return false;
 }

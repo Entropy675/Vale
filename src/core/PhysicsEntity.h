@@ -39,6 +39,17 @@ protected:
         return false;
     }
 
+    bool removePhysicsMetadata(size_t tagIndex)
+    {
+        auto it = tagsIndexToContext.find(tagIndex);
+        if (it != tagsIndexToContext.end())
+        {
+            tagsIndexToContext.erase(it);
+            return true; // Successfully removed
+        }
+        return false; // No metadata found for the given tag index
+    }
+
     friend class TagManager;
 public:
     // Constructors
@@ -80,6 +91,14 @@ public:
     float getMass() const                                       { return mass; }; // mass
 
     // --- Setters ---
+    void removeTag(const std::string& tag) override
+    {
+        auto it = std::find(tags.begin(), tags.end(), tag);
+        if (it != tags.end())
+            tags.erase(it);
+        if (TagManager::hasPhysicsTag(tag))
+            removePhysicsMetadata(std::distance(tags.begin(), it));
+    }
 
     // Physics functions
     void setMass(float massValue)                            { mass = massValue; };

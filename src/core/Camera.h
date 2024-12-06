@@ -7,14 +7,14 @@
 #include "defs.h"
 
 
-class Camera : public PhysicsEntity 
+class Camera : public PhysicsEntity
 {
-	
+
 private:
-    ofCamera camera; 
-    Player* currPlayer;
-    vector <Player*>* playersInScene; 
-    glm::vec3 startingPos;
+    ofCamera camera;
+    int currPlayer;
+    vector <Player*> playersInScene;
+    glm::vec3 startingPos = glm::vec3(0,0,0);
 
 public:
     Camera(glm::vec3 startingPos) : startingPos(startingPos) {}
@@ -24,12 +24,11 @@ public:
     void _draw() override {};
     void _input() override;
     void _collision(PhysicsEntity& ) override {  };
-    void camBegin(); 
-    void camEnd(); 
+    void camBegin();
+    void camEnd();
     void mouseMoved(ofMouseEventArgs&);
-    bool setPlayer(Player*); 
-    void setPlayersInScene(std::vector<Player*>* players) { playersInScene = players;
-    }
+
+    bool setPlayer(std::vector<PhysicsEntity*>* loadedEntities);
 
 };
 
