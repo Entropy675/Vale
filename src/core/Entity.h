@@ -13,6 +13,7 @@ class Entity
 private:
     bool setupDone = false;
     static long long uniqueCounter;
+    static std::unordered_map<int, Entity*> idToEntityMap;
     bool inputContext[NUM_KEYS] = {};
 
 protected:
@@ -32,13 +33,12 @@ protected:
     friend class InputManager; // for input context direct access
     friend class TagManager;   // for tags direct access
 public:
-    // testing
-    vector<std::string> getTags() { return tags; }
     // Constructors
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
     Entity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     virtual ~Entity();
 
+    static Entity* getEntityById(int id)                                { return idToEntityMap[id]; };
 
     void update(); // internal
     void draw();
@@ -56,6 +56,7 @@ public:
     virtual const ofMesh& getMesh() const                               { return mesh; }; // Return a const
 
     // tags
+    const vector<std::string>& getTags() const                          { return tags; }
     virtual void addTag(const std::string& tag)                         { TagManager::applyTag(this, tag); };
             // { if (!hasTag(tag)) tags.push_back(tag); };
     virtual bool hasTag(const std::string& tag) const                   { return std::find(tags.begin(), tags.end(), tag) != tags.end(); };
