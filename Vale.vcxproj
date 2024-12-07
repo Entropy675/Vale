@@ -107,11 +107,11 @@
   <ItemGroup>
     <ClCompile Include="src\core\Camera.cpp" />
     <ClCompile Include="src\core\Entity.cpp" />
+    <ClCompile Include="src\core\EnvironmentObject.cpp" />
     <ClCompile Include="src\core\InputManager.cpp" />
     <ClCompile Include="src\core\ofApp.cpp" />
     <ClCompile Include="src\core\PhysicsController.cpp" />
     <ClCompile Include="src\core\PhysicsEntity.cpp" />
-    <ClCompile Include="src\core\Player.cpp" />
     <ClCompile Include="src\core\Scene.cpp" />
     <ClCompile Include="src\core\SceneManager.cpp" />
     <ClCompile Include="src\core\TagManager.cpp" />

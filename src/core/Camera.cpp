@@ -23,9 +23,11 @@ void Camera::_input()
         // Switch players
         if (inputManager->getPressedOnce('p'))
         {
+            playersInScene[currPlayer]->disableCameraAssignment();
             currPlayer++;
             currPlayer %= playersInScene.size();
             camera.setPosition(playersInScene[currPlayer]->getPosition());
+            playersInScene[currPlayer]->enableCameraAssignment();
         }
     }
 
@@ -75,7 +77,10 @@ bool Camera::setPlayer(std::vector<PhysicsEntity*>* physicsObjects)
         if (ptr->hasTag("player"))
         {
             std::cout << "is player id: " << ptr->getId() << std::endl;
-            playersInScene.push_back(static_cast<Player*>(ptr)); // assumes player class if player tag
+            Player* chosenPlayer = static_cast<Player*>(ptr);
+            chosenPlayer->enableCameraAssignment();
+            playersInScene.push_back(chosenPlayer); // assumes player class if player tag
+            
             success = true;
         }
     }
