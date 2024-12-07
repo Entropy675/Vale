@@ -38,7 +38,7 @@ public:
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
     Entity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     virtual ~Entity();
-    
+
 
     void update(); // internal
     void draw();
@@ -67,6 +67,7 @@ public:
     }
 
     // getters
+    glm::vec3 getPosition() const                               { return position; };
     ofQuaternion getRotation() const                                    { return rotation; };
     glm::vec3 getScale() const                                          { return scale; };
     glm::vec3 getTranslation() const                                    { return translation + position; };

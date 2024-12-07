@@ -43,7 +43,7 @@ void PhysicsController::collisionCheck()
 {
     for (PhysicsEntity* obj : physicsObjects)
     {
-        obj->collision(env);
+        env.collision(*obj);
         for (PhysicsEntity* otherObj : physicsObjects)
         {
             if (obj == otherObj) continue;

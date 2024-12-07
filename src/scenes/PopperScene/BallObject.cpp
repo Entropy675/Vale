@@ -27,7 +27,7 @@ void BallObject::_collision(PhysicsEntity& target)
 
             // Reflect velocity to simulate bounce if needed
             glm::vec3 reflectedVelocity = glm::reflect(velocity, collisionNormal);
-            setVelocity(reflectedVelocity * 0.6f);  // Apply some damping factor
+            setVelocity(reflectedVelocity * 0.8f);  // Apply some damping factor
         }
 
     }
