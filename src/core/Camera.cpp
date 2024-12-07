@@ -13,38 +13,33 @@ void Camera::_update()
 {
 
 }
-
 void Camera::_input()
 {
-    float moveSpeed = 10; // some default value move to header
+    float moveSpeed = 10; // Move this to the header for configuration
     bool defaultControls = true;
+
     if (playersInScene.size())
     {
-        moveSpeed = playersInScene[currPlayer]->getPlayerSpeed();
-        defaultControls = playersInScene[currPlayer]->defaultControlsEnabled();
-    }
-
-    if (defaultControls)
-    {
-        if (inputManager->getHeld('w')) camera.dolly(-moveSpeed); // Move forward
-        if (inputManager->getHeld('s')) camera.dolly(moveSpeed); // Move backward
-        if (inputManager->getHeld('a')) camera.truck(-moveSpeed); // Move left
-        if (inputManager->getHeld('d')) camera.truck(moveSpeed); // Move right'
-
-        if (inputManager->getHeld(' ')) camera.move(0, moveSpeed, 0); // Move up (Space key)
-        if (inputManager->getHeld(OF_KEY_SHIFT)) camera.boom(-moveSpeed); // Move down (Shift key)
-    }
-    if (!playersInScene.size()) return; // the rest of the func is if we have a player/players
-
-    //switch Players
-    if (inputManager->getPressedOnce('p'))
-    {
-        currPlayer++;
-        currPlayer %= playersInScene.size();
         camera.setPosition(playersInScene[currPlayer]->getPosition());
+        // Switch players
+        if (inputManager->getPressedOnce('p'))
+        {
+            currPlayer++;
+            currPlayer %= playersInScene.size();
+            camera.setPosition(playersInScene[currPlayer]->getPosition());
+        }
     }
-    playersInScene[currPlayer]->moveTo(camera.getPosition());
+
+    else {
+        if (inputManager->getHeld('w')) camera.dolly(-moveSpeed); // Move forward
+        if (inputManager->getHeld('s')) camera.dolly(moveSpeed);  // Move backward
+        if (inputManager->getHeld('a')) camera.truck(-moveSpeed); // Move left
+        if (inputManager->getHeld('d')) camera.truck(moveSpeed);  // Move right
+        if (inputManager->getHeld(' ')) camera.move(0, moveSpeed, 0); // Move Up
+        if (inputManager->getHeld(OF_KEY_SHIFT)) camera.boom(-moveSpeed); // Move Down
+    }
 }
+
 
 void Camera::mouseMoved(ofMouseEventArgs& mouseMovement)
 {

@@ -107,16 +107,18 @@
   <ItemGroup>
     <ClCompile Include="src\core\Camera.cpp" />
     <ClCompile Include="src\core\Entity.cpp" />
-    <ClCompile Include="src\core\Hero.cpp" />
     <ClCompile Include="src\core\InputManager.cpp" />
     <ClCompile Include="src\core\ofApp.cpp" />
     <ClCompile Include="src\core\PhysicsController.cpp" />
     <ClCompile Include="src\core\PhysicsEntity.cpp" />
+    <ClCompile Include="src\core\Player.cpp" />
     <ClCompile Include="src\core\Scene.cpp" />
     <ClCompile Include="src\core\SceneManager.cpp" />
     <ClCompile Include="src\core\TagManager.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\scenes\IslandScene\Hero.cpp" />
     <ClCompile Include="src\scenes\IslandScene\IslandObject.cpp" />
+    <ClCompile Include="src\scenes\IslandScene\MountainObject.cpp" />
     <ClCompile Include="src\scenes\IslandScene\OceanObject.cpp" />
     <ClCompile Include="src\scenes\JolfBaseScene\JolfOceanObject.cpp" />
     <ClCompile Include="src\scenes\PopperScene\BallObject.cpp" />
@@ -137,7 +139,7 @@
   <ItemGroup>
     <ClInclude Include="src\core\Camera.h" />
     <ClInclude Include="src\core\Entity.h" />
-    <ClInclude Include="src\core\Hero.h" />
+    <ClInclude Include="src\core\EnvironmentObject.h" />
     <ClInclude Include="src\core\InputManager.h" />
     <ClInclude Include="src\core\ofApp.h" />
     <ClInclude Include="src\core\ofxKDTree\nanoflann.hpp" />
@@ -149,6 +151,7 @@
     <ClInclude Include="src\core\SceneManager.h" />
     <ClInclude Include="src\core\TagManager.h" />
     <ClInclude Include="src\defs.h" />
+    <ClInclude Include="src\scenes\IslandScene\Hero.h" />
     <ClInclude Include="src\scenes\IslandScene\IslandScene.h" />
     <ClInclude Include="src\scenes\JolfBaseScene\JolfBaseScene.h" />
     <ClInclude Include="src\scenes\PopperScene\PopperScene.h" />

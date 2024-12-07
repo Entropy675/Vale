@@ -7,7 +7,7 @@ Entity* Hero::clone() const
 
 void Hero::_collision(PhysicsEntity& target)
 {
-    // Collision logic
+    if (target.hasTag("island"));
 }
 
 void Hero::_input()
@@ -32,7 +32,7 @@ void Hero::_setup()
 
 void Hero::_update()
 {
-
+    Player::_update(); 
 }
 
 void Hero::_draw()
