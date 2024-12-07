@@ -3,7 +3,7 @@
 
 void Camera::_setup()
 {
-    camera.setPosition(startingPos);
+    camera.setPosition(position);
     camera.setFov(60);
     camera.setNearClip(1.0f);
     camera.setFarClip(31000.0f);
@@ -15,7 +15,6 @@ void Camera::_update()
 }
 void Camera::_input()
 {
-    float moveSpeed = 10; // Move this to the header for configuration
     bool defaultControls = true;
 
     if (playersInScene.size())

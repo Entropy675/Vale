@@ -22,33 +22,10 @@ protected:
     // Check if a context exists for a given tag index
     bool hasPhysicsMetadata(size_t tagIndex) const { return tagsIndexToContext.find(tagIndex) != tagsIndexToContext.end(); }
     const std::unordered_map<size_t, PhysicsMetadata>& getAllPhysicsMetadata() const { return tagsIndexToContext; };
-    void addPhysicsMetadata(size_t tagIndex, const PhysicsMetadata& context)
-    {
-        if (tagsIndexToContext.find(tagIndex) != tagsIndexToContext.end()) { return; }
-        tagsIndexToContext[tagIndex] = context;
-    }
-    // Retrieve a PhysicsMetadata by tag index
-    bool getPhysicsMetadata(size_t tagIndex, PhysicsMetadata& out)
-    {
-        auto it = tagsIndexToContext.find(tagIndex);
-        if (it != tagsIndexToContext.end())
-        {
-            out = it->second;
-            return true;
-        }
-        return false;
-    }
 
-    bool removePhysicsMetadata(size_t tagIndex)
-    {
-        auto it = tagsIndexToContext.find(tagIndex);
-        if (it != tagsIndexToContext.end())
-        {
-            tagsIndexToContext.erase(it);
-            return true; // Successfully removed
-        }
-        return false; // No metadata found for the given tag index
-    }
+    void addPhysicsMetadata(size_t tagIndex, const PhysicsMetadata& context);
+    bool getPhysicsMetadata(size_t tagIndex, PhysicsMetadata& out); // Retrieve a PhysicsMetadata by tag index
+    bool removePhysicsMetadata(size_t tagIndex);
 
     friend class TagManager;
 public:
@@ -58,31 +35,18 @@ public:
     virtual ~PhysicsEntity();
 
     void collision(PhysicsEntity& target); // internal
-
-    virtual void _collision(PhysicsEntity& target) = 0;
-    // Due to the nature of these, we will be copying them. Need a good, explicit copy ctor.
-    // So write one in this clone method. This must return a new copy in heap of this entity.
+    virtual void _collision(PhysicsEntity& target) {}; // define your collision behavior
 
     // --- Getters ---
 
     // physics
-    glm::vec3 getPosition() const                               { return position; };
     glm::vec3 getVelocity() const                               { return velocity; };
     glm::vec3 getAcceleration() const                           { return acceleration; };
 
     glm::vec3 getAngularVelocity() const                        { return angularVelocity; };
     glm::vec3 getAngularAcceleration() const                    { return angularAcceleration; };
 
-    bool getPhysicsMetadata(int entityId, PhysicsMetadata& out) const
-    {
-        auto it = tagsIndexToContext.find(entityId);
-        if (it != tagsIndexToContext.end())
-        {
-            out = it->second;
-            return true;
-        }
-        return false;
-    }
+    bool getPhysicsMetadata(int entityId, PhysicsMetadata& out) const;
 
 
     // object properties
@@ -91,14 +55,7 @@ public:
     float getMass() const                                       { return mass; }; // mass
 
     // --- Setters ---
-    void removeTag(const std::string& tag) override
-    {
-        auto it = std::find(tags.begin(), tags.end(), tag);
-        if (it != tags.end())
-            tags.erase(it);
-        if (TagManager::hasPhysicsTag(tag))
-            removePhysicsMetadata(std::distance(tags.begin(), it));
-    }
+    void removeTag(const std::string& tag) override;
 
     // Physics functions
     void setMass(float massValue)                            { mass = massValue; };

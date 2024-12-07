@@ -1,14 +1,26 @@
 #include "Entity.h"
 
 long long Entity::uniqueCounter = 0;
+std::unordered_map<int, Entity*> Entity::idToEntityMap;
 
 Entity::Entity(glm::vec3 pos)
-    : position(pos), hashId(++uniqueCounter) { addTag("entity"); }
+    : position(pos), hashId(++uniqueCounter)
+{
+    addTag("entity");
+    idToEntityMap.insert({hashId, this});
+}
 
 Entity::Entity(const ofMesh& meshRef, glm::vec3 pos)
-    : position(pos), hashId(++uniqueCounter), mesh(meshRef) {}
+    : position(pos), hashId(++uniqueCounter), mesh(meshRef)
+{
+    addTag("entity");
+    idToEntityMap.insert({hashId, this});
+}
 
-Entity::~Entity() {}; // each entity manages its own cleanup in its dtor
+Entity::~Entity()
+{
+    idToEntityMap.erase(hashId);
+}; // each entity manages its own cleanup in its dtor
 
 void Entity::update()
 {

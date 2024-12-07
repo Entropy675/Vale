@@ -8,8 +8,9 @@
 struct PointID
 {
     glm::vec3 position;
-    int id;
-    PointID(const glm::vec3& pos, int id) : position(pos), id(id) {}
+    int id; // associated entity
+    int radius; // radius of influence
+    PointID(const glm::vec3& pos, int id, int rad) : position(pos), id(id), radius(rad) {}
 };
 
 template <typename DataSource, typename _DistanceType = float>
@@ -66,7 +67,7 @@ public:
 
     ~ofxKDTree() { clear(); }
 
-    void addPoint(const glm::vec3& sample, int id) { samples.emplace_back(sample, id); }
+    void addPoint(const glm::vec3& sample, int id, int rad) { samples.emplace_back(sample, id, rad); }
     const std::vector<PointID>& getAllPoints() const { return samples; }
 
     void clear()

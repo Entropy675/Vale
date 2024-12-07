@@ -15,10 +15,10 @@ protected:
 
     // if 'player' tag present in entity, then add to playersInScene.
     std::vector<Player*> playersInScene;
-    glm::vec3 defaultCameraPosition;
+    glm::vec3 defaultCameraOffset = glm::vec3(0.0f, 0.0f, 0.0f);
 
 public:
-    Scene() : defaultCameraPosition(0.0f, 0.0f, 0.0f) {}
+    Scene() {};
     virtual ~Scene();
 
     void setup();
@@ -30,7 +30,7 @@ public:
 
     void addEntity(PhysicsEntity* physEntity);
     void addEntity(Entity* Entity);
-    const glm::vec3& getDefaultCameraPosition() const { return defaultCameraPosition; };
+    const glm::vec3& getDefaultCameraOffset() const { return defaultCameraOffset; };
 
 };
 

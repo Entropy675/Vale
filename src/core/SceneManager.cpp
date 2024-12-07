@@ -74,7 +74,7 @@ void SceneManager::loadScene(size_t index)
     for (Entity* ptr : entities) delete ptr;
     phys.clear();
 
-    cam = new Camera(scenes[currentScene]->getDefaultCameraPosition());
+    cam = new Camera(scenes[currentScene]->getDefaultCameraOffset());
     cam->registerInputManager(inputManager);
     cam->setup();
 

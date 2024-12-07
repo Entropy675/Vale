@@ -81,9 +81,9 @@ public:
     // cleanup is handled in parent
     IslandScene()
     {
-        defaultCameraPosition = glm::vec3(0.0f, 1000.0f, 0.0f);
+        defaultCameraOffset = glm::vec3(0.0f, -700.0f, 0.0f);
 
-       // addEntity(new OceanObject());
+        addEntity(new OceanObject());
         addEntity(new IslandObject());
       //  addEntity(new MountainObject());
 
@@ -93,10 +93,10 @@ public:
         Hero* heroTest2 = new Hero("Filbert", glm::vec3(100.0f, 1000.0f, 600.0f), 10.0f, 100);
 
 
-        // camera and player association test 
+        // camera and player association test
         addEntity(heroTest1);
         addEntity(heroTest2);
-    
+
     };
 };
 
