@@ -43,6 +43,21 @@ void EnvironmentObject::_collision(PhysicsEntity& target)
     // of physics metadata objects isColliding(vec3) functions on the target point
     // once we have the list of points/ID's to calculate collision for, we run their collision functions against the target
     // average the normal gotten across all collisions against the points, and apply that force
+
+    // hardcoded implementation for now - Player collision
+    int nearestID = nearestNeighbour(target.getPosition());
+    Entity* temp = Entity::getEntityById(nearestID);
+
+    float distanceToEntity = glm::length(target.getPosition());
+    if (temp->hasTag("island")) {
+        if (distanceToEntity < 1000) {
+            glm::vec3 normal = glm::normalize(target.getPosition());
+            target.moveTo(normal * 1000); 
+            target.setVelocity(glm::vec3(0, 0, 0));
+            target.setAcceleration(glm::vec3(0, 0, 0));
+            target.setCollisionTag("island");
+        }
+    }
 }
 
 int EnvironmentObject::nearestNeighbour(const glm::vec3& queryPoint) // returns id of nearest neighbour

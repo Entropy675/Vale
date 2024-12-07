@@ -83,10 +83,13 @@ public:
     {
         defaultCameraOffset = glm::vec3(0.0f, -700.0f, 0.0f);
 
+        TagManager::addTag("island");
         //addEntity(new OceanObject());
         addEntity(new IslandObject());
         //addEntity(new MountainObject());
 
+
+        TagManager::addTag("hero");
         Hero* heroTest1 = new Hero("Gilbert", glm::vec3(600.0f, 1000.0f, 100.0f), 10.0f, 200);
 
 

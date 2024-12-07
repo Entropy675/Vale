@@ -54,6 +54,8 @@ void Hero::_update() {
                 // simulate jump
                 setVelocity(getVelocity() + glm::vec3(0, moveSpeed * 10, 0));
                 isOnGround = false;
+                // if player is jumping, they could be colliding with other entities but not the island or water, but for now... clearing every jump, could replace this to only clear if its water or island
+                collisionTag.empty();
             }
         }
     }
@@ -63,16 +65,17 @@ void Hero::_update() {
     newPosition += getVelocity() * deltaTime;
 
 
-    // hardcoded implementation for now
-    float distanceToIsland = glm::length(newPosition);
-
-    if (distanceToIsland < 1000) {
-        glm::vec3 normal = glm::normalize(newPosition);
-        newPosition = normal * 1000;
-        setVelocity(glm::vec3(0, 0, 0));
-        setAcceleration(glm::vec3(0, 0, 0));
-        isOnGround = true;
+    if (!collisionTag.empty()) {
+        // collision occured, check what the entity was
+        if (collisionTag == "island") {
+            std::cout << name << "collided with island" << std::endl;
+            isOnGround = true;
+        }
     }
+    // if collision, with island then do this...
+
+    // hardcoded implementation for now
+    
 
     moveTo(newPosition);
 }
