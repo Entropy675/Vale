@@ -13,37 +13,32 @@ void Camera::_update()
 {
 
 }
-
 void Camera::_input()
 {
     bool defaultControls = true;
+
     if (playersInScene.size())
     {
-        moveSpeed = playersInScene[currPlayer]->getPlayerSpeed();
-        defaultControls = playersInScene[currPlayer]->defaultControlsEnabled();
+        camera.setPosition(playersInScene[currPlayer]->getPosition());
+        // Switch players
+        if (inputManager->getPressedOnce('p'))
+        {
+            currPlayer++;
+            currPlayer %= playersInScene.size();
+            camera.setPosition(playersInScene[currPlayer]->getPosition());
+        }
     }
 
-    if (defaultControls)
-    {
+    else {
         if (inputManager->getHeld('w')) camera.dolly(-moveSpeed); // Move forward
-        if (inputManager->getHeld('s')) camera.dolly(moveSpeed); // Move backward
+        if (inputManager->getHeld('s')) camera.dolly(moveSpeed);  // Move backward
         if (inputManager->getHeld('a')) camera.truck(-moveSpeed); // Move left
-        if (inputManager->getHeld('d')) camera.truck(moveSpeed); // Move right'
-
-        if (inputManager->getHeld(' ')) camera.move(0, moveSpeed, 0); // Move up (Space key)
-        if (inputManager->getHeld(OF_KEY_SHIFT)) camera.boom(-moveSpeed); // Move down (Shift key)
+        if (inputManager->getHeld('d')) camera.truck(moveSpeed);  // Move right
+        if (inputManager->getHeld(' ')) camera.move(0, moveSpeed, 0); // Move Up
+        if (inputManager->getHeld(OF_KEY_SHIFT)) camera.boom(-moveSpeed); // Move Down
     }
-    if (!playersInScene.size()) return; // the rest of the func is if we have a player/players
-
-    //switch Players
-    if (inputManager->getPressedOnce('p'))
-    {
-        currPlayer++;
-        currPlayer %= playersInScene.size();
-        camera.setPosition(playersInScene[currPlayer]->getPosition() - this->getPosition());
-    }
-    playersInScene[currPlayer]->moveTo(camera.getPosition() + position);
 }
+
 
 void Camera::mouseMoved(ofMouseEventArgs& mouseMovement)
 {

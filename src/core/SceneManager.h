@@ -19,7 +19,7 @@ class SceneManager : public Entity
     Camera* cam;
 
     int currentScene = 0;
-    bool drawStaticMesh = true;
+    bool drawStaticMesh = false;
 
     public:
     SceneManager();
