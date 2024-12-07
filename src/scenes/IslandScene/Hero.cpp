@@ -1,4 +1,5 @@
 #include "Hero.h"
+#include "Camera.h" 
 
 Entity* Hero::clone() const
 {
@@ -7,7 +8,6 @@ Entity* Hero::clone() const
 
 void Hero::_collision(PhysicsEntity& target)
 {
-    if (target.hasTag("island"));
 }
 
 void Hero::_input()
@@ -36,34 +36,49 @@ void Hero::_update() {
 
     glm::vec3 newPosition = getPosition();
 
+    glm::vec3 forward = glm::normalize(playerOrientation); // Forward vector (camera facing direction)
+
+    glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0, 1, 0)));
+    glm::vec3 up(0, 1, 0);
+
+    glm::vec3 tempVelocityBuffer = glm::vec3(0, 0, 0);
+
     if (cameraAssigned) {
+        // Movement input
         if (inputManager->getHeld('w')) {
-            newPosition += glm::vec3(0, 0, -moveSpeed) * deltaTime;
+            newPosition += glm::vec3(forward.x, 0, forward.z) * moveSpeed * deltaTime; // Move forward on the XZ plane
         }
         if (inputManager->getHeld('s')) {
-            newPosition += glm::vec3(0, 0, moveSpeed) * deltaTime;
+            newPosition -= glm::vec3(forward.x, 0, forward.z) * moveSpeed * deltaTime; // Move backward on the XZ plane
         }
         if (inputManager->getHeld('a')) {
-            newPosition += glm::vec3(-moveSpeed, 0, 0) * deltaTime;
+            newPosition -= glm::vec3(right.x, 0, right.z) * moveSpeed * deltaTime; // Strafe left on the XZ plane
         }
         if (inputManager->getHeld('d')) {
-            newPosition += glm::vec3(moveSpeed, 0, 0) * deltaTime;
+            newPosition += glm::vec3(right.x, 0, right.z) * moveSpeed * deltaTime; // Strafe right on the XZ plane
         }
+
         if (isOnGround) {
             if (inputManager->getPressedOnce(' ')) {
                 // simulate jump
-                setVelocity(getVelocity() + glm::vec3(0, moveSpeed * 10, 0));
+                tempVelocityBuffer = (getVelocity() + glm::vec3(0, moveSpeed, 0));
                 isOnGround = false;
                 // if player is jumping, they could be colliding with other entities but not the island or water, but for now... clearing every jump, could replace this to only clear if its water or island
-                collisionTag.empty();
             }
         }
     }
-    setAcceleration(getAcceleration() + gravity);
-    setVelocity(getVelocity() + (getAcceleration() * deltaTime));
+    if (!isOnGround) {
+        // in the air, laws of physics apply
+        // idea: could mess around with acceleration if your not in the air too, implement running and acceleration resets when you stop 
+        setAcceleration(getAcceleration() + gravity);
+        // simulate jump with velocity buffer)
+        setVelocity((getVelocity() + tempVelocityBuffer) + (getAcceleration() * deltaTime));
 
-    newPosition += getVelocity() * deltaTime;
+        newPosition += getVelocity() * deltaTime;
+    }
 
+    std::cout << name << "moving too" << newPosition << std::endl;
+    moveTo(newPosition);
 
     if (!collisionTag.empty()) {
         // collision occured, check what the entity was
@@ -72,12 +87,6 @@ void Hero::_update() {
             isOnGround = true;
         }
     }
-    // if collision, with island then do this...
-
-    // hardcoded implementation for now
-    
-
-    moveTo(newPosition);
 }
 
 

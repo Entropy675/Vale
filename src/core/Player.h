@@ -5,6 +5,8 @@
 #include "InputManager.h"
 #include "Scene.h"
 
+class Camera;
+
 class Player : public PhysicsEntity
 {
 protected:
@@ -12,6 +14,7 @@ protected:
     float health;
     float moveSpeed;
     bool cameraAssigned = false; 
+    glm::vec3 playerOrientation = glm::vec3(0, 0, 0);
 
 public:
     Player(std::string name, glm::vec3 pos = glm::vec3(0, 0, 0), float health = 100.0f, float moveSpeed = 50.0f)
@@ -30,5 +33,6 @@ public:
     void enableCameraAssignment() { cameraAssigned = true; }
     void disableCameraAssignment() { cameraAssigned = false; }
 
+    void setPlayerOrientation(glm::vec3 facingDirection) { playerOrientation = facingDirection; }
 };
 #endif

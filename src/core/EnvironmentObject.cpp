@@ -44,20 +44,30 @@ void EnvironmentObject::_collision(PhysicsEntity& target)
     // once we have the list of points/ID's to calculate collision for, we run their collision functions against the target
     // average the normal gotten across all collisions against the points, and apply that force
 
-    // hardcoded implementation for now - Player collision
     int nearestID = nearestNeighbour(target.getPosition());
     Entity* temp = Entity::getEntityById(nearestID);
 
-    float distanceToEntity = glm::length(target.getPosition());
+    glm::vec3 islandPos = temp->getPosition(); 
+    islandPos += glm::vec3(0, -8000, 0);
+    float distanceToEntity = glm::distance(target.getPosition(), islandPos); 
     if (temp->hasTag("island")) {
-        if (distanceToEntity < 1000) {
-            glm::vec3 normal = glm::normalize(target.getPosition());
-            target.moveTo(normal * 1000); 
+        if (distanceToEntity < 10000) {
+            glm::vec3 normal = glm::normalize(target.getPosition() - islandPos); 
+            target.moveTo(islandPos + normal * 10000); 
             target.setVelocity(glm::vec3(0, 0, 0));
             target.setAcceleration(glm::vec3(0, 0, 0));
+
+            glm::vec3 currentPos = target.getPosition();
+            // Apply slight vertical offset to avoid repetitive collision
+            target.moveTo(glm::vec3(currentPos.x, currentPos.y + 10, currentPos.z));
             target.setCollisionTag("island");
         }
+        else {
+            target.setCollisionTag("");
+        }
+
     }
+
 }
 
 int EnvironmentObject::nearestNeighbour(const glm::vec3& queryPoint) // returns id of nearest neighbour

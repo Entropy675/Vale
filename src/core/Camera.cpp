@@ -15,20 +15,18 @@ void Camera::_update()
 }
 void Camera::_input()
 {
-    bool defaultControls = true;
-
     if (playersInScene.size())
     {
-        camera.setPosition(playersInScene[currPlayer]->getPosition());
-        // Switch players
         if (inputManager->getPressedOnce('p'))
         {
             playersInScene[currPlayer]->disableCameraAssignment();
             currPlayer++;
             currPlayer %= playersInScene.size();
-            camera.setPosition(playersInScene[currPlayer]->getPosition());
             playersInScene[currPlayer]->enableCameraAssignment();
         }
+        camera.setPosition(playersInScene[currPlayer]->getPosition());
+
+        playersInScene[currPlayer]->setPlayerOrientation(camera.getLookAtDir());
     }
 
     else {
@@ -69,7 +67,6 @@ bool Camera::setPlayer(std::vector<PhysicsEntity*>* physicsObjects)
     bool success = false;
     currPlayer = 0;
     playersInScene.clear();
-
     for (PhysicsEntity* ptr : *physicsObjects)
     {
         if (!ptr) continue;
@@ -77,15 +74,16 @@ bool Camera::setPlayer(std::vector<PhysicsEntity*>* physicsObjects)
         if (ptr->hasTag("player"))
         {
             std::cout << "is player id: " << ptr->getId() << std::endl;
-            Player* chosenPlayer = static_cast<Player*>(ptr);
-            chosenPlayer->enableCameraAssignment();
-            playersInScene.push_back(chosenPlayer); // assumes player class if player tag
-            
+            playersInScene.push_back(static_cast<Player*>(ptr)); // assumes player class if player tag          
             success = true;
         }
     }
-
-    if (success) std::cout << "Cam is set to: " << playersInScene[currPlayer]->getPlayerName() << std::endl;
+    if (success)
+    {
+        std::cout << "Cam is set to: " << playersInScene[currPlayer]->getPlayerName() << std::endl;
+        playersInScene[currPlayer]->enableCameraAssignment();
+    }
     return success;
 }
+
 
