@@ -17,7 +17,7 @@ public:
     void clear();
     void addVertex(const glm::vec3& v, int id);
     void setupEnvironment();
-    void recomputeMesh();
+    void recomputeMesh(); 
 
     int nearestNeighbour(const glm::vec3& queryPoint); // returns id of nearest neighbour
     std::vector<int> getNearestNeighbours(const glm::vec3& queryPoint, int k); // returns list of nearest neighbours

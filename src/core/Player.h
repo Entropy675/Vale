@@ -5,18 +5,16 @@
 #include "InputManager.h"
 #include "Scene.h"
 
+class Camera;
+
 class Player : public PhysicsEntity
 {
 protected:
     std::string name;
     float health;
     float moveSpeed;
-    bool isOnGround = true; 
-    
-    const glm::vec3 gravity = glm::vec3(0, -9.8f, 0);
-    // should not be here
-    float lastFrameTime = 0.0f;
-    float deltaTime = 0.0f;
+    bool cameraAssigned = false; 
+    glm::vec3 playerOrientation = glm::vec3(0, 0, 0);
 
 public:
     Player(std::string name, glm::vec3 pos = glm::vec3(0, 0, 0), float health = 100.0f, float moveSpeed = 50.0f)
@@ -25,14 +23,16 @@ public:
     virtual Entity* clone() const = 0;
     virtual void _collision(PhysicsEntity& target) = 0;
     virtual void _setup() = 0;
-    virtual void _update(); 
+    virtual void _update() = 0;
     virtual void _draw() = 0;
 
 
     std::string getPlayerName() const                   { return name; };
     float getPlayerSpeed() const                        { return moveSpeed; };
 
-    void setPlayerJump()                                  { isOnGround = false; }
+    void enableCameraAssignment() { cameraAssigned = true; }
+    void disableCameraAssignment() { cameraAssigned = false; }
 
+    void setPlayerOrientation(glm::vec3 facingDirection) { playerOrientation = facingDirection; }
 };
 #endif

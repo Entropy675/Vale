@@ -81,16 +81,22 @@ public:
     // cleanup is handled in parent
     IslandScene()
     {
-        defaultCameraOffset = glm::vec3(0.0f, -700.0f, 0.0f);
+    //  defaultCameraOffset = glm::vec3(0.0f, -700.0f, 0.0f);
+
+        TagManager::addTag("ocean");
+        TagManager::addTag("island");
 
         addEntity(new OceanObject());
         addEntity(new IslandObject());
-      //  addEntity(new MountainObject());
+        // mountainObject WIP 
+        //addEntity(new MountainObject());
 
-        Hero* heroTest1 = new Hero("Gilbert", glm::vec3(600.0f, 1000.0f, 100.0f), 10.0f, 200);
+
+        TagManager::addTag("hero");
+        Hero* heroTest1 = new Hero("Gilbert", glm::vec3(600.0f, 1000.0f, 100.0f), 10.0f, 1000);
 
 
-        Hero* heroTest2 = new Hero("Filbert", glm::vec3(100.0f, 1000.0f, 600.0f), 10.0f, 100);
+         Hero* heroTest2 = new Hero("Filbert", glm::vec3(100.0f, 1000.0f, 600.0f), 10.0f, 500);
 
 
         // camera and player association test
