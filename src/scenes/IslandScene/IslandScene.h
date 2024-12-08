@@ -69,9 +69,9 @@ public:
 
         Hero* hero2 = new Hero("Filbert", glm::vec3(3000.0f, 1000.0f, 1200.0f), 10.0f, 1000, ofColor::blue);
 
-        Hero* hero3 = new Hero("Filbert", glm::vec3(300.0f, 1000.0f, 1800.0f), 10.0f, 1000, ofColor::red);
+        Hero* hero3 = new Hero("Tilbert", glm::vec3(300.0f, 1000.0f, 1800.0f), 10.0f, 1000, ofColor::red);
 
-        Hero* hero4 = new Hero("Filbert", glm::vec3(1200.0f, 1000.0f, 3000.0f), 10.0f, 1000, ofColor::purple);
+        Hero* hero4 = new Hero("Bilbert", glm::vec3(1200.0f, 1000.0f, 3000.0f), 10.0f, 1000, ofColor::purple);
 
 
         addEntity(hero1);
