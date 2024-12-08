@@ -70,8 +70,9 @@ public:
         for (int i = 0; i < 25; i++)
         {
             glm::vec3 randomVector = generateRandomVector(3600);
-            if (randomVector.y > 0)
+            if (randomVector.y < 0)
                 randomVector.y = -randomVector.y;
+            randomVector.y -= 400;
 
             EnemyBox* enemyBox = new EnemyBox(randomVector);
             scenePhysicsObjects.push_back(enemyBox);
