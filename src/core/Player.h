@@ -13,7 +13,7 @@ protected:
     std::string name;
     float health;
     float moveSpeed;
-    bool cameraAssigned = false; 
+    bool cameraAssigned = false;
     glm::vec3 playerOrientation = glm::vec3(0, 0, 0);
 
 public:
@@ -30,8 +30,7 @@ public:
     std::string getPlayerName() const                   { return name; };
     float getPlayerSpeed() const                        { return moveSpeed; };
 
-    void enableCameraAssignment() { cameraAssigned = true; }
-    void disableCameraAssignment() { cameraAssigned = false; }
+    void toggleCameraAssignment() { cameraAssigned = !cameraAssigned; }
 
     void setPlayerOrientation(glm::vec3 facingDirection) { playerOrientation = facingDirection; }
 };
