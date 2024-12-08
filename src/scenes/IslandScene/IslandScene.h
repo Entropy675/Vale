@@ -81,7 +81,7 @@ public:
     // cleanup is handled in parent
     IslandScene()
     {
-        defaultCameraOffset = glm::vec3(0.0f, -700.0f, 0.0f);
+    //    defaultCameraOffset = glm::vec3(0.0f, -700.0f, 0.0f);
 
         TagManager::addTag("island");
         //addEntity(new OceanObject());

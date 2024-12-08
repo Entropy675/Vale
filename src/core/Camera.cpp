@@ -19,12 +19,12 @@ void Camera::_input()
     {
         if (inputManager->getPressedOnce('p'))
         {
-            playersInScene[currPlayer]->disableCameraAssignment();
+            playersInScene[currPlayer]->disableCameraAssignment(); 
             currPlayer++;
             currPlayer %= playersInScene.size();
             playersInScene[currPlayer]->enableCameraAssignment();
         }
-        camera.setPosition(playersInScene[currPlayer]->getPosition());
+        camera.setPosition(playersInScene[currPlayer]->getPosition() + getPosition());
 
         playersInScene[currPlayer]->setPlayerOrientation(camera.getLookAtDir());
     }
@@ -52,6 +52,9 @@ void Camera::mouseMoved(ofMouseEventArgs& mouseMovement)
     float sensitivity = .35f;
     camera.panDeg(-sensitivity * 1.4 * deltaX);   // Pan (left-right rotation)
     camera.tiltDeg(-sensitivity * deltaY);   // Tilt (up-down rotation)
+    if (playersInScene.size()) {
+        camera.setPosition(playersInScene[currPlayer]->getPosition());
+    }
 }
 
 void Camera::camBegin() {

@@ -36,7 +36,7 @@ void Hero::_update() {
 
     glm::vec3 newPosition = getPosition();
 
-    glm::vec3 forward = glm::normalize(playerOrientation); // Forward vector (camera facing direction)
+    glm::vec3 forward = glm::normalize(playerOrientation); // forward vector (camera facing direction)
 
     glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0, 1, 0)));
     glm::vec3 up(0, 1, 0);
@@ -77,6 +77,7 @@ void Hero::_update() {
         newPosition += getVelocity() * deltaTime;
     }
 
+    
     std::cout << name << "moving too" << newPosition << std::endl;
     moveTo(newPosition);
 
@@ -90,8 +91,29 @@ void Hero::_update() {
 }
 
 
-void Hero::_draw()
-{
+void Hero::_draw() {
     ofSetColor(0, 0, 255);
-    mesh.draw();
+
+    glm::vec3 playerPos = getPosition();
+    float rotationAngle = atan2(playerOrientation.x, playerOrientation.z) * RAD_TO_DEG;
+
+    static glm::vec3 previousOrientation = playerOrientation;
+
+    if (playerOrientation != previousOrientation) {
+        ofPushMatrix();
+        ofRotateDeg(rotationAngle, 0, 1, 0);
+        mesh.draw();
+        ofPopMatrix();
+
+        previousOrientation = playerOrientation;
+    }
+    else {
+        ofPushMatrix();
+        ofTranslate(playerPos);
+        mesh.draw();
+        ofPopMatrix();
+    }
 }
+
+
+
