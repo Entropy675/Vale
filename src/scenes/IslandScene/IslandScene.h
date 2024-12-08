@@ -53,26 +53,6 @@ public:
     void _draw() override;
 };
 
-class MountainObject : public Entity
-{
-    ofMaterial material;
-    float radius;
-    int resolution;
-    float spread;
-    float noiseScale;
-    glm::vec3 dimensions = glm::vec3(100, 10, 100);
-
-public:
-    MountainObject(glm::vec3 pos = glm::vec3(0, 0, 0), float rad = 700, int res = 32, float sp = 10, float ns = 3.5f);
-    ~MountainObject();
-
-    Entity* clone() const override;
-    void _setup() override;
-    void _update() override;
-    void _draw() override;
-};
-
-
 // ---------- Scene definition ----------
 class IslandScene : public Scene
 {

@@ -12,7 +12,7 @@ void Hero::_collision(PhysicsEntity& target)
 
 void Hero::_input()
 {
-    // Input logic
+    // Input logic - handled by player 
 }
 
 void Hero::_setup()
