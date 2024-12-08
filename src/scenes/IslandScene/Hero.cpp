@@ -105,7 +105,6 @@ void Hero::_draw() {
     }
     else {
         ofPushMatrix();
-        ofTranslate(playerPos);
         mesh.draw();
         ofPopMatrix();
     }
