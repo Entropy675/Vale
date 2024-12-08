@@ -61,22 +61,23 @@ public:
     // cleanup is handled in parent
     IslandScene()
     {
-    //  defaultCameraOffset = glm::vec3(0.0f, -700.0f, 0.0f);
-
-        TagManager::addTag("ocean");
-        TagManager::addTag("island");
-
         addEntity(new OceanObject());
         addEntity(new IslandObject());
 
-        TagManager::addTag("hero");
-        Hero* heroTest1 = new Hero("Gilbert", glm::vec3(600.0f, 1000.0f, 100.0f), 10.0f, 1500);
+        Hero* hero1 = new Hero("Gilbert", glm::vec3(1800.0f, 1000.0f, 300.0f), 10.0f, 1500, ofColor::green);
 
 
-         Hero* heroTest2 = new Hero("Filbert", glm::vec3(100.0f, 1000.0f, 600.0f), 10.0f, 1000);
+        Hero* hero2 = new Hero("Filbert", glm::vec3(3000.0f, 1000.0f, 1200.0f), 10.0f, 1000, ofColor::blue);
 
-        addEntity(heroTest1);
-        addEntity(heroTest2);
+        Hero* hero3 = new Hero("Filbert", glm::vec3(300.0f, 1000.0f, 1800.0f), 10.0f, 1000, ofColor::red);
+
+        Hero* hero4 = new Hero("Filbert", glm::vec3(1200.0f, 1000.0f, 3000.0f), 10.0f, 1000, ofColor::purple);
+
+
+        addEntity(hero1);
+        addEntity(hero2);
+        addEntity(hero3);
+        addEntity(hero4);
 
     };
 };
