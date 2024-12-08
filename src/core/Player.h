@@ -2,6 +2,10 @@
 #define PLAYER_H__
 
 #include "PhysicsEntity.h"
+#include "InputManager.h"
+#include "Scene.h"
+
+class Camera;
 
 class Player : public PhysicsEntity
 {
@@ -9,7 +13,8 @@ protected:
     std::string name;
     float health;
     float moveSpeed;
-    bool defaultControls = true;
+    bool cameraAssigned = false; 
+    glm::vec3 playerOrientation = glm::vec3(0, 0, 0);
 
 public:
     Player(std::string name, glm::vec3 pos = glm::vec3(0, 0, 0), float health = 100.0f, float moveSpeed = 50.0f)
@@ -21,9 +26,13 @@ public:
     virtual void _update() = 0;
     virtual void _draw() = 0;
 
-    void toggleDefaultControls()                        { defaultControls = !defaultControls; };
-    bool defaultControlsEnabled() const                 { return defaultControls; };
+
     std::string getPlayerName() const                   { return name; };
     float getPlayerSpeed() const                        { return moveSpeed; };
+
+    void enableCameraAssignment() { cameraAssigned = true; }
+    void disableCameraAssignment() { cameraAssigned = false; }
+
+    void setPlayerOrientation(glm::vec3 facingDirection) { playerOrientation = facingDirection; }
 };
 #endif

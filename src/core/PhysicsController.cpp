@@ -43,7 +43,7 @@ void PhysicsController::collisionCheck()
 {
     for (PhysicsEntity* obj : physicsObjects)
     {
-        obj->collision(env);
+        env.collision(*obj);
         for (PhysicsEntity* otherObj : physicsObjects)
         {
             if (obj == otherObj) continue;
@@ -74,6 +74,7 @@ bool PhysicsController::addCam(Camera* cam)
     if (!cam) std::cout << "!! attempted to add null cam to physics" << std::endl;
     addEntity(cam);
     cam->setPlayer(&physicsObjects);
+
 
     return false;
 }

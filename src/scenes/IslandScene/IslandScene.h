@@ -53,6 +53,25 @@ public:
     void _draw() override;
 };
 
+class MountainObject : public Entity
+{
+    ofMaterial material;
+    float radius;
+    int resolution;
+    float spread;
+    float noiseScale;
+    glm::vec3 dimensions = glm::vec3(100, 10, 100);
+
+public:
+    MountainObject(glm::vec3 pos = glm::vec3(0, 0, 0), float rad = 700, int res = 32, float sp = 10, float ns = 3.5f);
+    ~MountainObject();
+
+    Entity* clone() const override;
+    void _setup() override;
+    void _update() override;
+    void _draw() override;
+};
+
 
 // ---------- Scene definition ----------
 class IslandScene : public Scene
@@ -62,21 +81,28 @@ public:
     // cleanup is handled in parent
     IslandScene()
     {
-        defaultCameraPosition = glm::vec3(0.0f, 1000.0f, 0.0f);
+    //  defaultCameraOffset = glm::vec3(0.0f, -700.0f, 0.0f);
 
-       // addEntity(new OceanObject());
+        TagManager::addTag("ocean");
+        TagManager::addTag("island");
+
+        addEntity(new OceanObject());
         addEntity(new IslandObject());
-
-        Hero* heroTest1 = new Hero("Gilbert", glm::vec3(600.0f, 500.0f, 100.0f), 10.0f, 500);
-
-
-        Hero* heroTest2 = new Hero("Filbert", glm::vec3(100.0f, 500.0f, 600.0f), 10.0f, 100);
+        // mountainObject WIP 
+        //addEntity(new MountainObject());
 
 
-        // camera and player association test 
+        TagManager::addTag("hero");
+        Hero* heroTest1 = new Hero("Gilbert", glm::vec3(600.0f, 1000.0f, 100.0f), 10.0f, 1000);
+
+
+         Hero* heroTest2 = new Hero("Filbert", glm::vec3(100.0f, 1000.0f, 600.0f), 10.0f, 500);
+
+
+        // camera and player association test
         addEntity(heroTest1);
         addEntity(heroTest2);
-    
+
     };
 };
 

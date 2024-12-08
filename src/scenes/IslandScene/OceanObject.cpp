@@ -112,6 +112,7 @@ void OceanObject::_setup()
 
 void OceanObject::_update()
 {
+    /*
     noiseZ += 0.03f;
     for (int y = 0; y < dimensions.z; y++)
     {
@@ -129,6 +130,7 @@ void OceanObject::_update()
         }
     }
     updateNormals();
+    */
 
 }
 

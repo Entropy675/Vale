@@ -4,7 +4,13 @@
 #include "Player.h"
 
 class Hero : public Player {
-    
+private: 
+    bool isOnGround = true;
+
+    const glm::vec3 gravity = glm::vec3(0, -9.8f, 0);
+    // should not be here
+    float lastFrameTime = 0.0f;
+    float deltaTime = 0.0f;
 public:
     Hero(std::string name, glm::vec3 pos, float health, float moveSpeed)
         : Player(name, pos, health, moveSpeed)
@@ -18,6 +24,8 @@ public:
     void _setup() override;
     void _update() override;
     void _draw() override;
+
+    void setPlayerJump() { isOnGround = false; }
 };
 
 #endif

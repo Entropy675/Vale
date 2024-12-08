@@ -12,13 +12,13 @@ class Camera : public PhysicsEntity
 
 private:
     ofCamera camera;
+    float moveSpeed = 10;
     int currPlayer;
     vector <Player*> playersInScene;
-    glm::vec3 startingPos = glm::vec3(0,0,0);
 
 public:
-    Camera(glm::vec3 startingPos) : startingPos(startingPos) {}
-    Entity* clone() const override { return new Camera(startingPos); };
+    Camera(glm::vec3 offset) : PhysicsEntity(offset) {}
+    Entity* clone() const override { return new Camera(position); };
     void _setup() override;
     void _update() override;
     void _draw() override {};
