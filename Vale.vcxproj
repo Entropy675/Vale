@@ -118,7 +118,6 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\scenes\IslandScene\Hero.cpp" />
     <ClCompile Include="src\scenes\IslandScene\IslandObject.cpp" />
-    <ClCompile Include="src\scenes\IslandScene\MountainObject.cpp" />
     <ClCompile Include="src\scenes\IslandScene\OceanObject.cpp" />
     <ClCompile Include="src\scenes\JolfBaseScene\JolfOceanObject.cpp" />
     <ClCompile Include="src\scenes\PopperScene\BallObject.cpp" />
