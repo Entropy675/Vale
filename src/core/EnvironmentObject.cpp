@@ -3,6 +3,7 @@
 EnvironmentObject::EnvironmentObject() : PhysicsEntity(glm::vec3(0, 0, 0))
 {
     mesh.setMode(OF_PRIMITIVE_LINE_STRIP); // Looks better for random points
+
 }
 
 EnvironmentObject::~EnvironmentObject() {}
@@ -44,14 +45,27 @@ void EnvironmentObject::_collision(PhysicsEntity& target)
     // once we have the list of points/ID's to calculate collision for, we run their collision functions against the target
     // average the normal gotten across all collisions against the points, and apply that force
 
+    // Update lastTime for the next frame
+
+
     int nearestID = nearestNeighbour(target.getPosition());
     Entity* temp = Entity::getEntityById(nearestID);
 
-    glm::vec3 islandPos = temp->getPosition(); 
-    islandPos += glm::vec3(0, -39150, 0);
-    float distanceToEntity = glm::distance(target.getPosition(), islandPos); 
+    glm::vec3 islandPos = temp->getPosition();
+    islandPos += glm::vec3(0, -39080, 0);
+    float distanceToEntity = glm::distance(target.getPosition(), islandPos);
 
-    if (temp->hasTag("island")) {
+    if (temp->hasTag("ocean"))
+    {
+        totalTime += 0.01f;
+        if (totalTime > 1.2f) {
+            target.moveTo(glm::vec3(0, 200, 0));
+            std::cout << "Drowned" << std::endl;
+            totalTime = 0.0f;
+        }
+        std::cout << "Drowning" << std::endl;
+    }
+    else if (temp->hasTag("island")) {
         if (distanceToEntity < 40000) {
             std::cout << "COLLISION" << std::endl;
             glm::vec3 normal = glm::normalize(target.getPosition() - islandPos); 
@@ -64,16 +78,13 @@ void EnvironmentObject::_collision(PhysicsEntity& target)
             
             target.moveTo(glm::vec3(currentPos.x, currentPos.y, currentPos.z));
             
-            target.setCollisionTag("island");
+            target.addTag("onGround");
         }
         else {
-            target.setCollisionTag("");
+            target.removeTag("onGround");
         }
     }
-    if (temp->hasTag("ocean")) {
-        target.moveTo(glm::vec3(0, 0, 0));
-        std::cout << "drowning" << std::endl;
-    }
+    
 
 }
 

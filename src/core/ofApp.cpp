@@ -46,9 +46,8 @@ void ofApp::setup()
 
     // add scenes / scene setups
     sceneManager.registerInputManager(&inputManager);
-    sceneManager.addScene(new PopperScene());
     sceneManager.addScene(new IslandScene());
-    sceneManager.addScene(new RaytracingScene());
+    sceneManager.addScene(new PopperScene());
     sceneManager.addScene(new JolfBaseScene());
     sceneManager.setup();
 
@@ -152,13 +151,16 @@ void ofApp::mouseDragged(int x, int y, int button) {}
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button)
 {
-    // Toggle cursor visibility
-    if (isCursorHidden)
-        ofShowCursor();
-    else
-        ofHideCursor();
+    if ( button == 0)
+    {
+        // Toggle cursor visibility
+        if (isCursorHidden)
+            ofShowCursor();
+        else
+            ofHideCursor();
 
-    isCursorHidden = !isCursorHidden; // Update the state
+        isCursorHidden = !isCursorHidden; // Update the state
+    }
 }
 
 //--------------------------------------------------------------

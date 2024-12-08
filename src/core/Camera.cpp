@@ -19,16 +19,16 @@ void Camera::_input()
     {
         if (inputManager->getPressedOnce('p'))
         {
-            playersInScene[currPlayer]->disableCameraAssignment(); 
+            playersInScene[currPlayer]->toggleCameraAssignment();
             currPlayer++;
             currPlayer %= playersInScene.size();
-            playersInScene[currPlayer]->enableCameraAssignment();
+            playersInScene[currPlayer]->toggleCameraAssignment();
         }
         playersInScene[currPlayer]->setPlayerOrientation(camera.getLookAtDir());
         // third person logic
         glm::vec3 playerPos = playersInScene[currPlayer]->getPosition();
 
-        // current player position + y offset, and then move backwards (radius + 200) pixels to get ideal third person perspective 
+        // current player position + y offset, and then move backwards (radius + 200) pixels to get ideal third person perspective
         camera.setPosition((playerPos + getPosition()) - (800 * camera.getLookAtDir()));
     }
 
@@ -82,14 +82,14 @@ bool Camera::setPlayer(std::vector<PhysicsEntity*>* physicsObjects)
         if (ptr->hasTag("player"))
         {
             std::cout << "is player id: " << ptr->getId() << std::endl;
-            playersInScene.push_back(static_cast<Player*>(ptr)); // assumes player class if player tag          
+            playersInScene.push_back(static_cast<Player*>(ptr)); // assumes player class if player tag
             success = true;
         }
     }
     if (success)
     {
         std::cout << "Cam is set to: " << playersInScene[currPlayer]->getPlayerName() << std::endl;
-        playersInScene[currPlayer]->enableCameraAssignment();
+        playersInScene[currPlayer]->toggleCameraAssignment();
     }
     return success;
 }

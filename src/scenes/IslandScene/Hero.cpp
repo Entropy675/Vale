@@ -1,5 +1,5 @@
 #include "Hero.h"
-#include "Camera.h" 
+#include "Camera.h"
 
 Entity* Hero::clone() const
 {
@@ -12,7 +12,7 @@ void Hero::_collision(PhysicsEntity& target)
 
 void Hero::_input()
 {
-    // Input logic
+    // Input logic - handled by player
 }
 
 void Hero::_setup()
@@ -27,6 +27,8 @@ void Hero::_setup()
     mesh.addNormals(tempMesh.getMesh().getNormals());
     mesh.addTexCoords(tempMesh.getMesh().getTexCoords());
     mesh.addIndices(tempMesh.getMesh().getIndices());
+
+    addTag("onGround");
 
 }
 void Hero::_update() {
@@ -58,11 +60,12 @@ void Hero::_update() {
             newPosition += glm::vec3(right.x, 0, right.z) * moveSpeed * deltaTime; // Strafe right on the XZ plane
         }
 
-        if (isOnGround) {
+        // double jump functionality
+        if (hasTag("onGround")) {
             if (inputManager->getPressedOnce(' ')) {
                 // simulate jump
-                tempVelocityBuffer = (getVelocity() + glm::vec3(0, moveSpeed, 0));
-                isOnGround = false;
+                tempVelocityBuffer = (getVelocity() + glm::vec3(0, moveSpeed * 1.0f, 0));
+                removeTag("onGround");
                 // if player is jumping, they could be colliding with other entities but not the island or water, but for now... clearing every jump, could replace this to only clear if its water or island
             }
         }
@@ -73,24 +76,15 @@ void Hero::_update() {
     setVelocity((getVelocity() + tempVelocityBuffer) + (getAcceleration() * deltaTime));
 
     newPosition += getVelocity() * deltaTime;
-    
+
     std::cout << name << "moving too" << newPosition << std::endl;
     moveTo(newPosition);
 
-    if (!collisionTag.empty()) {
-        // collision occured, check what the entity was
-        if (collisionTag == "island") {
-            std::cout << name << "collided with island" << std::endl;
-            isOnGround = true;
-        }
-    }
 }
 
 
 void Hero::_draw() {
     ofSetColor(0, 0, 255);
-
-    glm::vec3 playerPos = getPosition();
     float rotationAngle = atan2(playerOrientation.x, playerOrientation.z) * RAD_TO_DEG;
 
     static glm::vec3 previousOrientation = playerOrientation;
@@ -98,6 +92,7 @@ void Hero::_draw() {
     if (playerOrientation != previousOrientation) {
         ofPushMatrix();
         ofRotateDeg(rotationAngle, 0, 1, 0);
+        ofSetColor(heroColor);
         mesh.draw();
         ofPopMatrix();
 
@@ -105,6 +100,7 @@ void Hero::_draw() {
     }
     else {
         ofPushMatrix();
+        ofSetColor(heroColor);
         mesh.draw();
         ofPopMatrix();
     }
