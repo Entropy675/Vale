@@ -67,16 +67,12 @@ void Hero::_update() {
             }
         }
     }
-    if (!isOnGround) {
-        // in the air, laws of physics apply
-        // idea: could mess around with acceleration if your not in the air too, implement running and acceleration resets when you stop 
-        setAcceleration(getAcceleration() + gravity);
-        // simulate jump with velocity buffer)
-        setVelocity((getVelocity() + tempVelocityBuffer) + (getAcceleration() * deltaTime));
 
-        newPosition += getVelocity() * deltaTime;
-    }
+    setAcceleration(getAcceleration() + gravity);
+    // simulate jump with velocity buffer)
+    setVelocity((getVelocity() + tempVelocityBuffer) + (getAcceleration() * deltaTime));
 
+    newPosition += getVelocity() * deltaTime;
     
     std::cout << name << "moving too" << newPosition << std::endl;
     moveTo(newPosition);

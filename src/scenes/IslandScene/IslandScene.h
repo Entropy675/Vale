@@ -83,8 +83,10 @@ public:
     {
     //  defaultCameraOffset = glm::vec3(0.0f, -700.0f, 0.0f);
 
+        TagManager::addTag("ocean");
         TagManager::addTag("island");
-        //addEntity(new OceanObject());
+
+        addEntity(new OceanObject());
         addEntity(new IslandObject());
         // mountainObject WIP 
         //addEntity(new MountainObject());
