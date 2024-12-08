@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Scene.h"
 #include "Hero.h"
+#include "EnemyBox.h"
 
 // ----------  Scene objects  ----------
 class OceanObject : public Entity
@@ -16,7 +17,7 @@ class OceanObject : public Entity
     std::vector<glm::vec3> vertices;
     ofQuaternion waterRotation;
     glm::vec3 dimensions = glm::vec3(500, 10, 500);
-    int floatHeightOffset = 25; 
+    int floatHeightOffset = 25;
 
     // helpers
     void updateNormals();
@@ -61,23 +62,20 @@ public:
     // cleanup is handled in parent
     IslandScene()
     {
-    //  defaultCameraOffset = glm::vec3(0.0f, -700.0f, 0.0f);
-
-        TagManager::addTag("ocean");
-        TagManager::addTag("island");
-
         addEntity(new OceanObject());
         addEntity(new IslandObject());
+        addEntity(new Hero("Gilbert", glm::vec3(600.0f, 1200.0f, 100.0f), 10.0f, 1500));
+        addEntity(new Hero("Filbert", glm::vec3(100.0f, 1200.0f, 600.0f), 10.0f, 1000));
 
-        TagManager::addTag("hero");
-        Hero* heroTest1 = new Hero("Gilbert", glm::vec3(600.0f, 1000.0f, 100.0f), 10.0f, 1500);
+        for (int i = 0; i < 25; i++)
+        {
+            glm::vec3 randomVector = generateRandomVector(3600);
+            if (randomVector.y > 0)
+                randomVector.y = -randomVector.y;
 
-
-         Hero* heroTest2 = new Hero("Filbert", glm::vec3(100.0f, 1000.0f, 600.0f), 10.0f, 1000);
-
-        addEntity(heroTest1);
-        addEntity(heroTest2);
-
+            EnemyBox* enemyBox = new EnemyBox(randomVector);
+            scenePhysicsObjects.push_back(enemyBox);
+        }
     };
 };
 

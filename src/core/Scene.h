@@ -4,7 +4,8 @@
 #include <vector>
 #include "Entity.h"
 #include "PhysicsController.h"
-#include "Player.h"
+
+class Player;
 
 class Scene // responsible for the mem of its own entities
 {

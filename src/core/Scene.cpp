@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "Player.h"
 
 
 Scene::~Scene()
@@ -53,7 +54,7 @@ bool Scene::saveSceneToFile(std::string& path)
     return false;
 }
 
-void Scene::addEntity(PhysicsEntity* physEntity) 
+void Scene::addEntity(PhysicsEntity* physEntity)
 {
     // keep track of current players in Scene
     if (physEntity->hasTag("player")) {
@@ -64,7 +65,7 @@ void Scene::addEntity(PhysicsEntity* physEntity)
     scenePhysicsObjects.push_back(physEntity);
 }
 
-void Scene::addEntity(Entity* entity) 
+void Scene::addEntity(Entity* entity)
 {
     sceneObjects.push_back(entity);
 }

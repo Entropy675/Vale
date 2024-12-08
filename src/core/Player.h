@@ -13,7 +13,7 @@ protected:
     std::string name;
     float health;
     float moveSpeed;
-    bool cameraAssigned = false; 
+    bool cameraAssigned = false;
     glm::vec3 playerOrientation = glm::vec3(0, 0, 0);
 
 public:

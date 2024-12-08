@@ -3,8 +3,9 @@
 
 #include "Player.h"
 
-class Hero : public Player {
-private: 
+class Hero : public Player
+{
+private:
     bool isOnGround = true;
 
     const glm::vec3 gravity = glm::vec3(0, -25.6f, 0);

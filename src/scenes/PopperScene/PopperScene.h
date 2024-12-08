@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "PhysicsEntity.h"
 #include "Scene.h"
+#include "defs.h"
 #include "InputManager.h"
 #include <vector>
 
@@ -52,8 +53,6 @@ public:
     void _draw() override;
 };
 
-glm::vec3 generateRandomVector(float totalDistance);
-
 // ---------- Scene definition ----------
 class PopperScene : public Scene
 {
@@ -62,7 +61,6 @@ public:
     PopperScene()
     {
         defaultCameraOffset = glm::vec3(0.0f, -500.0f, 0.0f);
-        TagManager::addTag("ball");
         sceneObjects.push_back(new ContainerObject());
         for (int i = 0; i < 12; i++)
         {

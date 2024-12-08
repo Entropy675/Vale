@@ -4,4 +4,6 @@
 #define NUM_KEYS    4096
 
 #include "ofMain.h"
+
+glm::vec3 generateRandomVector(float totalDistance);
 #endif

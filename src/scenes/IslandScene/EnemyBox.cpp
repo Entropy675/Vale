@@ -1,5 +1,4 @@
 #include "EnemyBox.h"
-#include "Camera.h"
 
 void EnemyBox::_collision(PhysicsEntity& target)
 {
@@ -12,16 +11,20 @@ void EnemyBox::_input()
 
 void EnemyBox::_setup()
 {
-    float radius = 600;
-    int resolution = 24;
+    float size = 200; // length of the sides of the cube
+    int resolution = 2; // # subdivides
 
-    ofSpherePrimitive tempMesh;
-    tempMesh.set(radius, resolution);
-
+    ofBoxPrimitive tempMesh;
+    tempMesh.set(size, size, size, resolution, resolution, resolution);
     mesh.addVertices(tempMesh.getMesh().getVertices());
     mesh.addNormals(tempMesh.getMesh().getNormals());
     mesh.addTexCoords(tempMesh.getMesh().getTexCoords());
     mesh.addIndices(tempMesh.getMesh().getIndices());
+
+    material.setShininess(14);  // Higher shininess for sharper specular highlights
+    material.setDiffuseColor(ofColor(255, 10, 180));  // reddsh
+    material.setAmbientColor(ofColor(255, 155, 155));  // White ambient
+    material.setSpecularColor(ofColor(155, 255, 155));
 
 }
 
@@ -90,7 +93,9 @@ void EnemyBox::_update()
 void EnemyBox::_draw()
 {
     ofPushMatrix();
+    material.begin();
     mesh.draw();
+    material.end();
     ofPopMatrix();
 }
 

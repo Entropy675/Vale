@@ -4,6 +4,7 @@
 #include "PhysicsEntity.h"
 #include "IslandScene.h"
 #include "InputManager.h"
+#include "Player.h"
 #include "defs.h"
 
 
