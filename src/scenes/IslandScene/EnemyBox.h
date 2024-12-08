@@ -8,16 +8,15 @@ class EnemyBox : public PhysicsEntity
 private:
     int health;
     int moveSpeed;
+    ofMaterial material;
 
     // should not be here
     float lastFrameTime = 0.0f;
     float deltaTime = 0.0f;
 public:
     EnemyBox(glm::vec3 pos = glm::vec3(0, 0, 0), int hp = 100, int ms = 10)
-        : PhysicsEntity(position), health(hp), moveSpeed(ms)
+        : PhysicsEntity(pos), health(hp), moveSpeed(ms)
     {
-        TagManager::addTag("Enemy");
-        TagManager::addTag("Box");
         addTag("Enemy");
         addTag("Box");
     }

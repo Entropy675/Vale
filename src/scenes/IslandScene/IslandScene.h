@@ -3,7 +3,10 @@
 
 #include "Entity.h"
 #include "Scene.h"
+#include "EnemyBox.h"
 #include "Hero.h"
+
+glm::vec3 generateRandomVector(float totalDistance);
 
 // ----------  Scene objects  ----------
 class OceanObject : public Entity
@@ -16,7 +19,7 @@ class OceanObject : public Entity
     std::vector<glm::vec3> vertices;
     ofQuaternion waterRotation;
     glm::vec3 dimensions = glm::vec3(500, 10, 500);
-    int floatHeightOffset = 25; 
+    int floatHeightOffset = 25;
 
     // helpers
     void updateNormals();
@@ -79,6 +82,16 @@ public:
         addEntity(hero3);
         addEntity(hero4);
 
+        for (int i = 0; i < 25; i++)
+        {
+            glm::vec3 randomVector = generateRandomVector(3600);
+            if (randomVector.y < 0)
+                randomVector.y = -randomVector.y;
+            randomVector.y -= 400;
+
+            EnemyBox* enemyBox = new EnemyBox(randomVector);
+            scenePhysicsObjects.push_back(enemyBox);
+        }
     };
 };
 

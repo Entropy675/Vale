@@ -1,5 +1,5 @@
 #include "Hero.h"
-#include "Camera.h" 
+#include "Camera.h"
 
 Entity* Hero::clone() const
 {
@@ -12,7 +12,7 @@ void Hero::_collision(PhysicsEntity& target)
 
 void Hero::_input()
 {
-    // Input logic - handled by player 
+    // Input logic - handled by player
 }
 
 void Hero::_setup()
@@ -60,7 +60,7 @@ void Hero::_update() {
             newPosition += glm::vec3(right.x, 0, right.z) * moveSpeed * deltaTime; // Strafe right on the XZ plane
         }
 
-        // double jump functionality 
+        // double jump functionality
         if (hasTag("onGround")) {
             if (inputManager->getPressedOnce(' ')) {
                 // simulate jump
@@ -76,7 +76,7 @@ void Hero::_update() {
     setVelocity((getVelocity() + tempVelocityBuffer) + (getAcceleration() * deltaTime));
 
     newPosition += getVelocity() * deltaTime;
-    
+
     std::cout << name << "moving too" << newPosition << std::endl;
     moveTo(newPosition);
 
@@ -85,8 +85,6 @@ void Hero::_update() {
 
 void Hero::_draw() {
     ofSetColor(0, 0, 255);
-
-    glm::vec3 playerPos = getPosition();
     float rotationAngle = atan2(playerOrientation.x, playerOrientation.z) * RAD_TO_DEG;
 
     static glm::vec3 previousOrientation = playerOrientation;
