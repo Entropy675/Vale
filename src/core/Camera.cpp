@@ -24,9 +24,13 @@ void Camera::_input()
             currPlayer %= playersInScene.size();
             playersInScene[currPlayer]->enableCameraAssignment();
         }
-        camera.setPosition(playersInScene[currPlayer]->getPosition() + getPosition());
+        // third person logic
+        glm::vec3 playerPos = playersInScene[currPlayer]->getPosition(); 
 
         playersInScene[currPlayer]->setPlayerOrientation(camera.getLookAtDir());
+
+        // current player position + y offset, and then move backwards (radius + 200) pixels to get ideal third person perspective 
+        camera.setPosition((playerPos + getPosition()) - (800 * camera.getLookAtDir()));
     }
 
     else {
@@ -52,9 +56,7 @@ void Camera::mouseMoved(ofMouseEventArgs& mouseMovement)
     float sensitivity = .35f;
     camera.panDeg(-sensitivity * 1.4 * deltaX);   // Pan (left-right rotation)
     camera.tiltDeg(-sensitivity * deltaY);   // Tilt (up-down rotation)
-    if (playersInScene.size()) {
-        camera.setPosition(playersInScene[currPlayer]->getPosition());
-    }
+
 }
 
 void Camera::camBegin() {

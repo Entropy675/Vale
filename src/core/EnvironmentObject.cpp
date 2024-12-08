@@ -48,10 +48,11 @@ void EnvironmentObject::_collision(PhysicsEntity& target)
     Entity* temp = Entity::getEntityById(nearestID);
 
     glm::vec3 islandPos = temp->getPosition(); 
-    islandPos += glm::vec3(0, -39000, 0);
+    islandPos += glm::vec3(0, -39150, 0);
     float distanceToEntity = glm::distance(target.getPosition(), islandPos); 
     if (temp->hasTag("island")) {
         if (distanceToEntity < 40000) {
+            std::cout << "COLLISION" << std::endl;
             glm::vec3 normal = glm::normalize(target.getPosition() - islandPos); 
             target.moveTo(islandPos + normal * 40000); 
             target.setVelocity(glm::vec3(0, 0, 0));
