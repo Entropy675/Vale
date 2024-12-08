@@ -31,24 +31,8 @@ void EnemyBox::_setup()
 void EnemyBox::_update()
 {
     if (player == nullptr) return;
-    float currentFrameTime = ofGetElapsedTimef();
-    deltaTime = currentFrameTime - lastFrameTime;
-    lastFrameTime = currentFrameTime;
-
-    // Get current position of EnemyBox and the player
-    glm::vec3 currentPosition = getPosition();
-    glm::vec3 playerPosition = player->getPosition(); // Assuming `player` has a `getPosition()` method
-
-    // Calculate the direction vector towards the player
-    glm::vec3 directionToPlayer = glm::normalize(playerPosition - currentPosition);
-
-    // Set velocity towards the player
-    glm::vec3 velocityTowardsPlayer = -(directionToPlayer * moveSpeed);
-
-    // Update the position based on the velocity and delta time
-    glm::vec3 newPosition = currentPosition + velocityTowardsPlayer * deltaTime;
-
-    // Move the EnemyBox to the new position
+    glm::vec3 directionToPlayer = glm::normalize(player->getPosition() - getPosition());
+    glm::vec3 newPosition = getPosition() + directionToPlayer * moveSpeed * ofGetElapsedTimef();
     moveTo(newPosition);
 }
 

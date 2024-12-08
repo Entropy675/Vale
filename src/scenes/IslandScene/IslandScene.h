@@ -77,7 +77,7 @@ public:
         addEntity(hero1);
         for (int i = 0; i < 55; i++)
         {
-            glm::vec3 randomVector = generateRandomVector(36000);
+            glm::vec3 randomVector = generateRandomVector(26000);
             if (randomVector.y < 0)
                 randomVector.y = -randomVector.y;
             randomVector.y -= 400;
@@ -88,7 +88,7 @@ public:
         addEntity(hero2);
         for (int i = 0; i < 55; i++)
         {
-            glm::vec3 randomVector = generateRandomVector(36000);
+            glm::vec3 randomVector = generateRandomVector(26000);
             if (randomVector.y < 0)
                 randomVector.y = -randomVector.y;
             randomVector.y -= 400;
@@ -99,7 +99,7 @@ public:
         addEntity(hero3);
         for (int i = 0; i < 55; i++)
         {
-            glm::vec3 randomVector = generateRandomVector(36000);
+            glm::vec3 randomVector = generateRandomVector(26000);
             if (randomVector.y < 0)
                 randomVector.y = -randomVector.y;
             randomVector.y -= 400;
@@ -110,7 +110,7 @@ public:
         addEntity(hero4);
         for (int i = 0; i < 55; i++)
         {
-            glm::vec3 randomVector = generateRandomVector(36000);
+            glm::vec3 randomVector = generateRandomVector(26000);
             if (randomVector.y < 0)
                 randomVector.y = -randomVector.y;
             randomVector.y -= 400;
