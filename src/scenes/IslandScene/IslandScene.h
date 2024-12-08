@@ -16,7 +16,7 @@ class OceanObject : public Entity
     std::vector<glm::vec3> vertices;
     ofQuaternion waterRotation;
     glm::vec3 dimensions = glm::vec3(500, 10, 500);
-    int floatHeightOffset = 25;
+    int floatHeightOffset = 25; 
 
     // helpers
     void updateNormals();
@@ -53,26 +53,6 @@ public:
     void _draw() override;
 };
 
-class MountainObject : public Entity
-{
-    ofMaterial material;
-    float radius;
-    int resolution;
-    float spread;
-    float noiseScale;
-    glm::vec3 dimensions = glm::vec3(100, 10, 100);
-
-public:
-    MountainObject(glm::vec3 pos = glm::vec3(0, 0, 0), float rad = 700, int res = 32, float sp = 10, float ns = 3.5f);
-    ~MountainObject();
-
-    Entity* clone() const override;
-    void _setup() override;
-    void _update() override;
-    void _draw() override;
-};
-
-
 // ---------- Scene definition ----------
 class IslandScene : public Scene
 {
@@ -88,9 +68,6 @@ public:
 
         addEntity(new OceanObject());
         addEntity(new IslandObject());
-        // mountainObject WIP 
-        //addEntity(new MountainObject());
-
 
         TagManager::addTag("hero");
         Hero* heroTest1 = new Hero("Gilbert", glm::vec3(600.0f, 1000.0f, 100.0f), 10.0f, 1500);
@@ -98,8 +75,6 @@ public:
 
          Hero* heroTest2 = new Hero("Filbert", glm::vec3(100.0f, 1000.0f, 600.0f), 10.0f, 1000);
 
-
-        // camera and player association test
         addEntity(heroTest1);
         addEntity(heroTest2);
 

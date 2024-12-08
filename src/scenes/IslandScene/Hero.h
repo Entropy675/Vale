@@ -7,7 +7,7 @@ class Hero : public Player {
 private: 
     bool isOnGround = true;
 
-    const glm::vec3 gravity = glm::vec3(0, -9.8f, 0);
+    const glm::vec3 gravity = glm::vec3(0, -25.6f, 0);
     // should not be here
     float lastFrameTime = 0.0f;
     float deltaTime = 0.0f;
