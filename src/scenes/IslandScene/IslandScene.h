@@ -18,7 +18,7 @@ class OceanObject : public Entity
     glm::vec3 lightDir;
     std::vector<glm::vec3> vertices;
     ofQuaternion waterRotation;
-    glm::vec3 dimensions = glm::vec3(500, 10, 500);
+    glm::vec3 dimensions = glm::vec3(300, 10, 300);
     int floatHeightOffset = 25;
 
     // helpers
@@ -26,7 +26,7 @@ class OceanObject : public Entity
     float generateWaveHeight(float x, float y);
 
 public:
-    OceanObject(glm::vec3 pos = glm::vec3(0, -330, 0), float nScale = 15.5f, float sp = 450.0f);
+    OceanObject(glm::vec3 pos = glm::vec3(0, -330, 0), float nScale = 15.5f, float sp = 800.0f);
     ~OceanObject();
 
     Entity* clone() const override;
@@ -56,6 +56,7 @@ public:
     void _draw() override;
 };
 
+
 // ---------- Scene definition ----------
 class IslandScene : public Scene
 {
@@ -68,28 +69,53 @@ public:
         addEntity(new IslandObject());
 
         Hero* hero1 = new Hero("Gilbert", glm::vec3(1800.0f, 1000.0f, 300.0f), 10.0f, 1500, ofColor::green);
-
-
         Hero* hero2 = new Hero("Filbert", glm::vec3(3000.0f, 1000.0f, 1200.0f), 10.0f, 1000, ofColor::blue);
-
         Hero* hero3 = new Hero("Tilbert", glm::vec3(300.0f, 1000.0f, 1800.0f), 10.0f, 1000, ofColor::red);
-
         Hero* hero4 = new Hero("Bilbert", glm::vec3(1200.0f, 1000.0f, 3000.0f), 10.0f, 1000, ofColor::purple);
 
 
         addEntity(hero1);
-        addEntity(hero2);
-        addEntity(hero3);
-        addEntity(hero4);
-
-        for (int i = 0; i < 25; i++)
+        for (int i = 0; i < 55; i++)
         {
-            glm::vec3 randomVector = generateRandomVector(3600);
+            glm::vec3 randomVector = generateRandomVector(36000);
             if (randomVector.y < 0)
                 randomVector.y = -randomVector.y;
             randomVector.y -= 400;
 
-            EnemyBox* enemyBox = new EnemyBox(randomVector);
+            EnemyBox* enemyBox = new EnemyBox(randomVector, hero1);
+            scenePhysicsObjects.push_back(enemyBox);
+        }
+        addEntity(hero2);
+        for (int i = 0; i < 55; i++)
+        {
+            glm::vec3 randomVector = generateRandomVector(36000);
+            if (randomVector.y < 0)
+                randomVector.y = -randomVector.y;
+            randomVector.y -= 400;
+
+            EnemyBox* enemyBox = new EnemyBox(randomVector, hero2);
+            scenePhysicsObjects.push_back(enemyBox);
+        }
+        addEntity(hero3);
+        for (int i = 0; i < 55; i++)
+        {
+            glm::vec3 randomVector = generateRandomVector(36000);
+            if (randomVector.y < 0)
+                randomVector.y = -randomVector.y;
+            randomVector.y -= 400;
+
+            EnemyBox* enemyBox = new EnemyBox(randomVector, hero3);
+            scenePhysicsObjects.push_back(enemyBox);
+        }
+        addEntity(hero4);
+        for (int i = 0; i < 55; i++)
+        {
+            glm::vec3 randomVector = generateRandomVector(36000);
+            if (randomVector.y < 0)
+                randomVector.y = -randomVector.y;
+            randomVector.y -= 400;
+
+            EnemyBox* enemyBox = new EnemyBox(randomVector, hero4);
             scenePhysicsObjects.push_back(enemyBox);
         }
     };

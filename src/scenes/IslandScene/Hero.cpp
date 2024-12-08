@@ -64,7 +64,7 @@ void Hero::_update() {
         if (hasTag("onGround")) {
             if (inputManager->getPressedOnce(' ')) {
                 // simulate jump
-                tempVelocityBuffer = (getVelocity() + glm::vec3(0, moveSpeed * 1.50f, 0));
+                tempVelocityBuffer = (getVelocity() + glm::vec3(0, moveSpeed * 1.0f, 0));
                 removeTag("onGround");
                 // if player is jumping, they could be colliding with other entities but not the island or water, but for now... clearing every jump, could replace this to only clear if its water or island
             }

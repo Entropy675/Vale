@@ -30,63 +30,26 @@ void EnemyBox::_setup()
 
 void EnemyBox::_update()
 {
-    return;
-
-    /*
+    if (player == nullptr) return;
     float currentFrameTime = ofGetElapsedTimef();
     deltaTime = currentFrameTime - lastFrameTime;
     lastFrameTime = currentFrameTime;
 
-    glm::vec3 newPosition = getPosition();
+    // Get current position of EnemyBox and the player
+    glm::vec3 currentPosition = getPosition();
+    glm::vec3 playerPosition = player->getPosition(); // Assuming `player` has a `getPosition()` method
 
-    glm::vec3 forward = glm::normalize(playerOrientation); // forward vector (camera facing direction)
+    // Calculate the direction vector towards the player
+    glm::vec3 directionToPlayer = glm::normalize(playerPosition - currentPosition);
 
-    glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0, 1, 0)));
-    glm::vec3 up(0, 1, 0);
+    // Set velocity towards the player
+    glm::vec3 velocityTowardsPlayer = -(directionToPlayer * moveSpeed);
 
-    glm::vec3 tempVelocityBuffer = glm::vec3(0, 0, 0);
+    // Update the position based on the velocity and delta time
+    glm::vec3 newPosition = currentPosition + velocityTowardsPlayer * deltaTime;
 
-    if (cameraAssigned) {
-        // Movement input
-        if (inputManager->getHeld('w')) {
-            newPosition += glm::vec3(forward.x, 0, forward.z) * moveSpeed * deltaTime; // Move forward on the XZ plane
-        }
-        if (inputManager->getHeld('s')) {
-            newPosition -= glm::vec3(forward.x, 0, forward.z) * moveSpeed * deltaTime; // Move backward on the XZ plane
-        }
-        if (inputManager->getHeld('a')) {
-            newPosition -= glm::vec3(right.x, 0, right.z) * moveSpeed * deltaTime; // Strafe left on the XZ plane
-        }
-        if (inputManager->getHeld('d')) {
-            newPosition += glm::vec3(right.x, 0, right.z) * moveSpeed * deltaTime; // Strafe right on the XZ plane
-        }
-
-        if (isOnGround) {
-            if (inputManager->getPressedOnce(' ')) {
-                // simulate jump
-                tempVelocityBuffer = (getVelocity() + glm::vec3(0, moveSpeed, 0));
-                isOnGround = false;
-                // if player is jumping, they could be colliding with other entities but not the island or water, but for now... clearing every jump, could replace this to only clear if its water or island
-            }
-        }
-    }
-
-    setAcceleration(getAcceleration() + gravity);
-    // simulate jump with velocity buffer)
-    setVelocity((getVelocity() + tempVelocityBuffer) + (getAcceleration() * deltaTime));
-
-    newPosition += getVelocity() * deltaTime;
-
-    std::cout << name << "moving too" << newPosition << std::endl;
+    // Move the EnemyBox to the new position
     moveTo(newPosition);
-
-    if (!collisionTag.empty()) {
-        // collision occured, check what the entity was
-        if (collisionTag == "island") {
-            std::cout << name << "collided with island" << std::endl;
-            isOnGround = true;
-        }
-    }*/
 }
 
 
