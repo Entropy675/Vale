@@ -27,9 +27,6 @@ protected:
     bool getPhysicsMetadata(size_t tagIndex, PhysicsMetadata& out); // Retrieve a PhysicsMetadata by tag index
     bool removePhysicsMetadata(size_t tagIndex);
 
-    // temporary 
-    std::string collisionTag;
-
     friend class TagManager;
 public:
     // Constructors
@@ -58,11 +55,9 @@ public:
     float getMass() const   
     { return mass; }; // mass
 
-    std::string getCollisionTag() const { return collisionTag;}
 
     // --- Setters ---
     void removeTag(const std::string& tag) override;
-    void setCollisionTag(const std::string& entityTag) { collisionTag = entityTag;}
     
     // Physics functions
     void setMass(float massValue)                            { mass = massValue; };

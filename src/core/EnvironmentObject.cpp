@@ -43,13 +43,13 @@ void EnvironmentObject::_collision(PhysicsEntity& target)
     // of physics metadata objects isColliding(vec3) functions on the target point
     // once we have the list of points/ID's to calculate collision for, we run their collision functions against the target
     // average the normal gotten across all collisions against the points, and apply that force
-
     int nearestID = nearestNeighbour(target.getPosition());
     Entity* temp = Entity::getEntityById(nearestID);
 
     glm::vec3 islandPos = temp->getPosition(); 
-    islandPos += glm::vec3(0, -39150, 0);
+    islandPos += glm::vec3(0, -39080, 0);
     float distanceToEntity = glm::distance(target.getPosition(), islandPos); 
+
     if (temp->hasTag("island")) {
         if (distanceToEntity < 40000) {
             std::cout << "COLLISION" << std::endl;
@@ -60,13 +60,18 @@ void EnvironmentObject::_collision(PhysicsEntity& target)
 
             glm::vec3 currentPos = target.getPosition();
             // Apply slight vertical offset to avoid repetitive collision
-            target.moveTo(glm::vec3(currentPos.x, currentPos.y + 10, currentPos.z));
-            target.setCollisionTag("island");
+            
+            target.moveTo(glm::vec3(currentPos.x, currentPos.y, currentPos.z));
+            
+            target.addTag("onGround");
         }
         else {
-            target.setCollisionTag("");
+            target.removeTag("onGround");
         }
-
+    }
+    if (temp->hasTag("ocean")) {
+        target.moveTo(glm::vec3(0, 0, 0));
+        std::cout << "drowning" << std::endl;
     }
 
 }

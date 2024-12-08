@@ -46,8 +46,8 @@ void ofApp::setup()
 
     // add scenes / scene setups
     sceneManager.registerInputManager(&inputManager);
-    sceneManager.addScene(new PopperScene());
     sceneManager.addScene(new IslandScene());
+    sceneManager.addScene(new PopperScene());
     sceneManager.addScene(new RaytracingScene());
     sceneManager.addScene(new JolfBaseScene());
     sceneManager.setup();
