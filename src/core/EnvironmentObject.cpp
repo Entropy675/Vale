@@ -58,33 +58,34 @@ void EnvironmentObject::_collision(PhysicsEntity& target)
     if (temp->hasTag("ocean"))
     {
         totalTime += 0.01f;
-        if (totalTime > 1.2f) {
+        if (totalTime > 1.2f)
+        {
             target.moveTo(glm::vec3(0, 200, 0));
             std::cout << "Drowned" << std::endl;
             totalTime = 0.0f;
         }
-        std::cout << "Drowning" << std::endl;
     }
-    else if (temp->hasTag("island")) {
-        if (distanceToEntity < 40000) {
+    else if (temp->hasTag("island"))
+    {
+        if (distanceToEntity < 40000)
+        {
             std::cout << "COLLISION" << std::endl;
-            glm::vec3 normal = glm::normalize(target.getPosition() - islandPos); 
-            target.moveTo(islandPos + normal * 40000); 
+            glm::vec3 normal = glm::normalize(target.getPosition() - islandPos);
+            target.moveTo(islandPos + normal * 40000);
             target.setVelocity(glm::vec3(0, 0, 0));
             target.setAcceleration(glm::vec3(0, 0, 0));
 
             glm::vec3 currentPos = target.getPosition();
             // Apply slight vertical offset to avoid repetitive collision
-            
+
             target.moveTo(glm::vec3(currentPos.x, currentPos.y, currentPos.z));
-            
+
             target.addTag("onGround");
         }
-        else {
+        else
             target.removeTag("onGround");
-        }
     }
-    
+
 
 }
 

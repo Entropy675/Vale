@@ -1,10 +1,9 @@
 #ifndef TAGMANAGER_H__
 #define TAGMANAGER_H__
 
+#include "defs.h"
 #include "PhysicsMetadata.h"
 #include <unordered_map>
-#include <string>
-#include <iostream>
 
 class Entity;
 class PhysicsEntity;

@@ -140,7 +140,7 @@ void SceneManager::registerInputManager(InputManager* input)
 {
     inputManager = input;
     phys.registerInputManager(input);
-
+    input->setActiveEntities(&entities);
 }
 
 

@@ -1,7 +1,7 @@
 #include "InputManager.h"
-#include <iostream>
-
 #include "ofMain.h"
+
+
 
 InputManager::InputManager()
 {
@@ -67,3 +67,58 @@ void InputManager::ofKeyReleased(int key)
     keys[key] = false;
     pressed[key] = false;
 }
+
+
+void InputManager::ofMouseMoved(ofMouseEventArgs& mouse)
+{
+    std::cout << "Input Manager: Mouse Moved (" << mouse.scrollX << ", " << mouse.scrollY << ")."
+    << " " << mouse.button << " " << mouse.modifiers << " " << mouse.type << std::endl;
+}
+
+void InputManager::ofMouseDragged(int x, int y, int button)
+{
+    std::cout << "Input manager detected mouse dragged window at position: (" << x << ", " << y << ") with button: " << button << "." << std::endl;
+}
+
+void InputManager::ofMousePressed(int x, int y, int button)
+{
+    //for (Entity* e : *activeEntities)
+    //    e->mousePressed(x, y, button);
+    std::cout << "Input manager detected mouse pressed window at position: (" << x << ", " << y << ") with button: " << button << "." << std::endl;
+}
+
+void InputManager::ofMouseReleased(int x, int y, int button)
+{
+    std::cout << "Input manager detected mouse released window at position: (" << x << ", " << y << ") with button: " << button << "." << std::endl;
+}
+
+void InputManager::ofMouseEntered(int x, int y)
+{
+    std::cout << "Input manager detected mouse entering window at position: (" << x << ", " << y << ")." << std::endl;
+}
+
+void InputManager::ofMouseExited(int x, int y)
+{
+    std::cout << "Input manager detected mouse leaving window at position: (" << x << ", " << y << ")." << std::endl;
+}
+
+void InputManager::ofWindowResized(int w, int h)
+{
+    std::cout << "Input manager recieved window resized event, new width: " << w << " new height: " << h;
+}
+
+void InputManager::ofDragEvent(ofDragInfo dragInfo)
+{
+    std::cout << "InputManager recieved ofDragInfo (dragged into window file paths):" << std::endl;
+    for (std::string& i : dragInfo.files)
+        std::cout << i << std::endl;
+    std::cout << "At position: " << dragInfo.position << std::endl;
+}
+
+void InputManager::ofGotMessage(ofMessage msg)
+{
+
+    std::cout << "InputManager recieved ofMessage:" << std::endl;
+    std::cout <<  msg.message << std::endl;
+}
+

@@ -23,12 +23,16 @@ private:
     bool defaultInputContext[NUM_KEYS] = {}; // default, everything using this is bound together...
 
     int mapKeys[NUM_KEYS] = {};
+    std::vector<Entity*>* activeEntities = nullptr; // for callbacks
 
     bool debugInput = false;
+    ofMouseEventArgs mouseArgs;
 
 public:
     InputManager();
     ~InputManager();
+
+    void setActiveEntities(std::vector<Entity*>* entities) { activeEntities = entities; }
 
     // another way of accessing input... a very raw way...
     const bool (&getInputArray() const)[NUM_KEYS]   { return keys; }
@@ -68,9 +72,19 @@ public:
         if (keyPressed < 0 || keyPressed >= NUM_KEYS) return;
         mapKeys[keyPressed] = 0;
     };
-    void ofKeyPressed(int keyPressed);
-    void ofKeyReleased(int keyPressed);
 
+    // forwarded input functions
+    void ofKeyPressed(int key);
+    void ofKeyReleased(int key);
+    void ofMouseMoved(ofMouseEventArgs& mouse);
+    void ofMouseDragged(int x, int y, int button);
+    void ofMousePressed(int x, int y, int button);
+    void ofMouseReleased(int x, int y, int button);
+    void ofMouseEntered(int x, int y);
+    void ofMouseExited(int x, int y);
+    void ofWindowResized(int w, int h);
+    void ofGotMessage(ofMessage msg);
+    void ofDragEvent(ofDragInfo dragInfo);     // openframeworks file dragged into window event
 };
 
 #endif
