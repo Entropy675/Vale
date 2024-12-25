@@ -4,6 +4,7 @@
 #include <iostream>
 #include "defs.h"
 #include "Entity.h"
+#include "PhysicsEntity.h"
 
 /*
  * InputManager
@@ -23,7 +24,9 @@ private:
     bool defaultInputContext[NUM_KEYS] = {}; // default, everything using this is bound together...
 
     int mapKeys[NUM_KEYS] = {};
+
     std::vector<Entity*>* activeEntities = nullptr; // for callbacks
+    std::vector<PhysicsEntity*>* activePhysicsEntities = nullptr;
 
     bool debugInput = false;
     ofMouseEventArgs mouseArgs;
@@ -33,6 +36,7 @@ public:
     ~InputManager();
 
     void setActiveEntities(std::vector<Entity*>* entities) { activeEntities = entities; }
+    void setActivePhysicsEntities(std::vector<PhysicsEntity*>* physicsEntities) { activePhysicsEntities = physicsEntities; }
 
     // another way of accessing input... a very raw way...
     const bool (&getInputArray() const)[NUM_KEYS]   { return keys; }

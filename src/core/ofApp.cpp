@@ -33,7 +33,7 @@ void ofApp::setup()
     // Initialize TagManager (you can call this as many times as you want to add more tags)
     TagManager::initialize(customTags, customPhysicsTags);
 
-    // Light setup
+    // Light setup (next system after cleanup)
     sun.setPointLight();
     sun.setAmbientColor(ofColor::darkSlateGrey);
     sun.setDiffuseColor(0.4);
@@ -77,10 +77,10 @@ void ofApp::update()
 }
 
 //--------------------------------------------------------------
-//------------------------DRAW-CALLBACKS------------------------
+//------------------------DRAW-CALLBACK-------------------------
 //--------------------------------------------------------------
 
-void ofApp::draw() { sceneManager.draw(); }
+void ofApp::draw()                                      { sceneManager.draw(); }
 
 //--------------------------------------------------------------
 //-----------------------INPUT-CALLBACKS------------------------
@@ -89,7 +89,19 @@ void ofApp::keyPressed(int key)                         { inputManager.ofKeyPres
 void ofApp::keyReleased(int key)                        { inputManager.ofKeyReleased(key); }
 void ofApp::mouseMoved(ofMouseEventArgs& mouse)         { inputManager.ofMouseMoved(mouse); }
 void ofApp::mouseDragged(int x, int y, int button)      { inputManager.ofMouseDragged(x, y, button); }
-void ofApp::mousePressed(int x, int y, int button)      { inputManager.ofMousePressed(x, y, button); }
+void ofApp::mousePressed(int x, int y, int button)
+{
+    inputManager.ofMousePressed(x, y, button);
+
+    if ( button == 0)
+    {   // Toggle cursor visibility
+        if (isCursorHidden)
+            ofShowCursor();
+        else
+            ofHideCursor();
+        isCursorHidden = !isCursorHidden;
+    }
+}
 void ofApp::mouseReleased(int x, int y, int button)     { inputManager.ofMouseReleased(x, y, button); }
 void ofApp::mouseEntered(int x, int y)                  { inputManager.ofMouseEntered(x, y); }
 void ofApp::mouseExited(int x, int y)                   { inputManager.ofMouseExited(x, y); }
@@ -97,17 +109,3 @@ void ofApp::windowResized(int w, int h)                 { inputManager.ofWindowR
 void ofApp::gotMessage(ofMessage& msg)                   { inputManager.ofGotMessage(msg); }
 void ofApp::dragEvent(ofDragInfo& dragInfo)              { inputManager.ofDragEvent(dragInfo); }
 
-/* mousePressed
-{
-    if ( button == 0)
-    {
-        // Toggle cursor visibility
-        if (isCursorHidden)
-            ofShowCursor();
-        else
-            ofHideCursor();
-
-        isCursorHidden = !isCursorHidden; // Update the state
-    }
-}
-*/
