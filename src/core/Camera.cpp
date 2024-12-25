@@ -43,7 +43,7 @@ void Camera::_input()
 }
 
 
-void Camera::mouseMoved(ofMouseEventArgs& mouseMovement)
+void Camera::_mouseMoved(ofMouseEventArgs& mouseMovement)
 {
     // Reset to a default forward-facing orientation
     camera.setGlobalOrientation(glm::quat());
@@ -55,10 +55,10 @@ void Camera::mouseMoved(ofMouseEventArgs& mouseMovement)
     float sensitivity = .35f;
     camera.panDeg(-sensitivity * 1.4 * deltaX);   // Pan (left-right rotation)
     camera.tiltDeg(-sensitivity * deltaY);   // Tilt (up-down rotation)
+
     // update player orientation
-    if (playersInScene.size()) {
+    if (playersInScene.size())
         playersInScene[currPlayer]->setPlayerOrientation(camera.getLookAtDir());
-    }
 
 }
 

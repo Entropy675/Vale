@@ -7,10 +7,10 @@
 class EnemyBox : public PhysicsEntity
 {
 private:
+    Player* player;
     int health;
     int moveSpeed;
     ofMaterial material;
-    Player* player;
 
     // should not be here
     float lastFrameTime = 0.0f;

@@ -78,3 +78,9 @@ bool PhysicsController::addCam(Camera* cam)
 
     return false;
 }
+
+void PhysicsController::registerInputManager(InputManager* input)
+{
+    inputManager = input;
+    input->setActivePhysicsEntities(&physicsObjects);
+}

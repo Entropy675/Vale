@@ -38,22 +38,33 @@ public:
     Entity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     virtual ~Entity();
 
-    static Entity* getEntityById(int id)                                { return idToEntityMap[id]; };
+    // you must declare an explicit copy for clarity
+    virtual Entity* clone() const = 0;
 
-    void update(); // internal
+    // internal
+    void update();
     void draw();
     void setup();
-    virtual Entity* clone() const = 0; // you must declare an explicit copy for clarity
 
+    // callbacks
     virtual void _update() = 0; // define your entities behaviour
     virtual void _draw() = 0;
     virtual void _setup() = 0;
 
-    virtual void registerInputManager(InputManager* input)              { inputManager = input; };
-    virtual void _input()                                               { return; }; // optional: called before update only when an inputManager is registered.
+    // optional, if your entity needs input
+    virtual void registerInputManager(InputManager* input)              { inputManager = input; }; // everything below is optional and requires a registered input manager
+    virtual void _input()                                               { return; }; // called before update only when an inputManager is registered
+    virtual void _mouseMoved()                                          { return; }; // called whenever mouseMoved event occurs, this and following mouse events are forwarded from open frameworks
+    virtual void _mouseMoved(ofMouseEventArgs& mouse)                   { return; };
+    virtual void _mouseDragged(int x, int y, int button)                { return; };
+    virtual void _mousePressed(int x, int y, int button)                { return; };
+    virtual void _mouseReleased(int x, int y, int button)               { return; };
+    virtual void _mouseEntered(int x, int y)                            { return; };
+    virtual void _mouseExited(int x, int y)                             { return; };
+    virtual void _windowResized(int w, int h)                           { return; };
+    virtual void _gotMessage(ofMessage msg)                             { return; }; // openframeworks arbitrary message string
+    virtual void _dragEvent(ofDragInfo dragInfo)                        { return; }; // of file dragged into window event
 
-    // mesh reference
-    virtual const ofMesh& getMesh() const                               { return mesh; }; // Return a const
 
     // tags
     const vector<std::string>& getTags() const                          { return tags; }
@@ -68,10 +79,12 @@ public:
     }
 
     // getters
-    glm::vec3 getPosition() const                               { return position; };
+    glm::vec3 getPosition() const                                       { return position; };
     ofQuaternion getRotation() const                                    { return rotation; };
     glm::vec3 getScale() const                                          { return scale; };
     glm::vec3 getTranslation() const                                    { return translation + position; };
+    virtual const ofMesh& getMesh() const                               { return mesh; }; // can override for custom or strange meshes
+    static Entity* getEntityById(int id)                                { return idToEntityMap[id]; };
 
     // helpers
     ofMesh copyMesh() const                                             { return mesh; };

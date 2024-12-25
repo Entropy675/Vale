@@ -23,10 +23,10 @@ public:
     void _update() override;
     void _draw() override {};
     void _input() override;
+    void _mouseMoved(ofMouseEventArgs&) override;
     void _collision(PhysicsEntity& ) override {  };
     void camBegin();
     void camEnd();
-    void mouseMoved(ofMouseEventArgs&);
 
     bool setPlayer(std::vector<PhysicsEntity*>* loadedEntities);
 

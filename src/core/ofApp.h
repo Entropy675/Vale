@@ -1,6 +1,7 @@
 #ifndef OFAPP_H__
 #define OFAPP_H__
 
+#include "defs.h"
 #include "ofMain.h"
 #include "ofTexture.h"
 #include "SceneManager.h"
@@ -24,8 +25,8 @@ public:
     void mouseEntered(int x, int y);
     void mouseExited(int x, int y);
     void windowResized(int w, int h);
-    void dragEvent(ofDragInfo dragInfo);
-    void gotMessage(ofMessage msg);
+    void dragEvent(ofDragInfo& dragInfo);
+    void gotMessage(ofMessage& msg);
 
     // light
     ofLight sun;
