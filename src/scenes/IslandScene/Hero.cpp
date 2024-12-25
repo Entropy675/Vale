@@ -77,7 +77,7 @@ void Hero::_update() {
 
     newPosition += getVelocity() * deltaTime;
 
-    std::cout << name << "moving too" << newPosition << std::endl;
+    // std::cout << name << "moving too" << newPosition << std::endl;
     moveTo(newPosition);
 
 }

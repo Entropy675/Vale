@@ -61,7 +61,7 @@ void EnvironmentObject::_collision(PhysicsEntity& target)
         if (totalTime > 1.2f)
         {
             target.moveTo(glm::vec3(0, 200, 0));
-            std::cout << "Drowned" << std::endl;
+            // std::cout << "Drowned" << std::endl;
             totalTime = 0.0f;
         }
     }
@@ -69,7 +69,7 @@ void EnvironmentObject::_collision(PhysicsEntity& target)
     {
         if (distanceToEntity < 40000)
         {
-            std::cout << "COLLISION" << std::endl;
+            // std::cout << "COLLISION" << std::endl;
             glm::vec3 normal = glm::normalize(target.getPosition() - islandPos);
             target.moveTo(islandPos + normal * 40000);
             target.setVelocity(glm::vec3(0, 0, 0));

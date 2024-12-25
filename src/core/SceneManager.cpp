@@ -142,8 +142,3 @@ void SceneManager::registerInputManager(InputManager* input)
     phys.registerInputManager(input);
     input->setActiveEntities(&entities);
 }
-
-
-void SceneManager::mouseMoved(ofMouseEventArgs& mouse) {
-    cam->mouseMoved(mouse);
-}
