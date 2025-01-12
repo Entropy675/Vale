@@ -31,8 +31,8 @@ void Camera::_input()
         // current player position + y offset, and then move backwards (radius + 200) pixels to get ideal third person perspective
         camera.setPosition((playerPos + getPosition()) - (800 * camera.getLookAtDir()));
     }
-
-    else {
+    else
+    {
         if (inputManager->getHeld('w')) camera.dolly(-moveSpeed); // Move forward
         if (inputManager->getHeld('s')) camera.dolly(moveSpeed);  // Move backward
         if (inputManager->getHeld('a')) camera.truck(-moveSpeed); // Move left
@@ -62,11 +62,13 @@ void Camera::_mouseMoved(ofMouseEventArgs& mouseMovement)
 
 }
 
-void Camera::camBegin() {
+void Camera::camBegin()
+{
     camera.begin();
 }
 
-void Camera::camEnd() {
+void Camera::camEnd()
+{
     camera.end();
 }
 

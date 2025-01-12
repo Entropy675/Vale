@@ -1,8 +1,9 @@
 obj/
 bin/
-
+ideas/
 config.make
 .vs/
+Vale.geany
 Vale.vcxproj.filters
 Vale.vcxproj.user
 addons.make

@@ -14,6 +14,7 @@ class SceneManager : public Entity
     private:
     std::vector<Scene*> scenes; // mem managed by this class
     std::vector<Entity*> entities; // mem managed by this class (copies from scene)
+    std::vector<Player*> playersInScene; // not populated yet
     EnvironmentObject aggregateMesh; // Unified mesh for the entire scene
     PhysicsController phys;
     Camera* cam;

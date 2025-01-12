@@ -9,6 +9,18 @@ void EnemyBox::_input()
     // Input logic
 }
 
+// plrs is never nullptr, called whenever plrs is validly set
+void EnemyBox::_setPlayersList(std::vector<Player*>* plrs)
+{
+    if (plrs == nullptr )
+    {
+        std::cout << "_setPlayerList wrongly called on " << getId() << " with nullptr in callback value." << std::endl;
+        return;
+    }
+    if (plrs->size()) player = (*plrs)[getId() % plrs->size()];
+}
+
+
 void EnemyBox::_setup()
 {
     float size = 200; // length of the sides of the cube
@@ -39,9 +51,7 @@ void EnemyBox::_update()
 
 void EnemyBox::_draw()
 {
-    ofPushMatrix();
     material.begin();
     mesh.draw();
     material.end();
-    ofPopMatrix();
 }

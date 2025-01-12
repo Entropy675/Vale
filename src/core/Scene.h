@@ -3,11 +3,14 @@
 
 #include <vector>
 #include "Entity.h"
-#include "PhysicsController.h"
 #include "Player.h"
+#include "SceneManager.h"
+#include "PhysicsController.h"
 
 class Scene // responsible for the mem of its own entities
 {
+    friend SceneManager;
+
 protected:
     std::vector<Entity*> sceneObjects;
     std::vector<PhysicsEntity*> scenePhysicsObjects; // unaltered copy
