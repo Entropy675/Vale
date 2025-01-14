@@ -1,12 +1,11 @@
-#ifndef ENTITYMANAGER__H_
-#define ENTITYMANAGER__H_
+#ifndef SCENEMANAGER__H_
+#define SCENEMANAGER__H_
 
 #include "Entity.h"
-#include "Scene.h"
 #include "PhysicsController.h"
 #include "EnvironmentObject.h"
 #include "Camera.h"
-
+#include "Scene.h"
 
 // entity that holds active entities, and scenes that you can switch to
 class SceneManager : public Entity
