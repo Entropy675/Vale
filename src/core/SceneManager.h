@@ -1,12 +1,11 @@
-#ifndef ENTITYMANAGER__H_
-#define ENTITYMANAGER__H_
+#ifndef SCENEMANAGER__H_
+#define SCENEMANAGER__H_
 
 #include "Entity.h"
-#include "Scene.h"
 #include "PhysicsController.h"
 #include "EnvironmentObject.h"
 #include "Camera.h"
-
+#include "Scene.h"
 
 // entity that holds active entities, and scenes that you can switch to
 class SceneManager : public Entity
@@ -14,6 +13,7 @@ class SceneManager : public Entity
     private:
     std::vector<Scene*> scenes; // mem managed by this class
     std::vector<Entity*> entities; // mem managed by this class (copies from scene)
+    std::vector<Player*> playersInScene; // not populated yet
     EnvironmentObject aggregateMesh; // Unified mesh for the entire scene
     PhysicsController phys;
     Camera* cam;

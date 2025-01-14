@@ -10,6 +10,9 @@ class InputManager;
 
 class Entity
 {
+    friend class InputManager; // for input context direct access
+    friend class TagManager;   // for tags direct access
+
 private:
     bool setupDone = false;
     static long long uniqueCounter;
@@ -29,9 +32,6 @@ protected:
     glm::vec3 scale = glm::vec3(1, 1, 1);
     ofQuaternion rotation;
     glm::vec3 translation = glm::vec3(0, 0, 0); // x, y, z
-
-    friend class InputManager; // for input context direct access
-    friend class TagManager;   // for tags direct access
 public:
     // Constructors
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
@@ -41,12 +41,12 @@ public:
     // you must declare an explicit copy for clarity
     virtual Entity* clone() const = 0;
 
-    // internal
-    void update();
-    void draw();
-    void setup();
+    // internal engine callbacks (DO NOT OVERRIDE UNLESS YOU ARE MODIFYING ENGINE)
+    virtual void update();
+    virtual void draw();
+    virtual void setup();
 
-    // callbacks
+    // user created callbacks
     virtual void _update() = 0; // define your entities behaviour
     virtual void _draw() = 0;
     virtual void _setup() = 0;
@@ -64,7 +64,6 @@ public:
     virtual void _windowResized(int w, int h)                           { return; };
     virtual void _gotMessage(ofMessage msg)                             { return; }; // openframeworks arbitrary message string
     virtual void _dragEvent(ofDragInfo dragInfo)                        { return; }; // of file dragged into window event
-
 
     // tags
     const vector<std::string>& getTags() const                          { return tags; }

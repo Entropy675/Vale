@@ -3,8 +3,10 @@
 
 #include <vector>
 #include "Entity.h"
-#include "PhysicsController.h"
 #include "Player.h"
+#include "PhysicsController.h"
+
+class SceneManager;
 
 class Scene // responsible for the mem of its own entities
 {
@@ -16,6 +18,8 @@ protected:
     // if 'player' tag present in entity, then add to playersInScene.
     std::vector<Player*> playersInScene;
     glm::vec3 defaultCameraOffset = glm::vec3(0.0f, 0.0f, 0.0f);
+
+    friend class SceneManager;
 
 public:
     Scene() {};

@@ -1,29 +1,22 @@
 #ifndef ENEMYBOX_H__
 #define ENEMYBOX_H__
 
-#include "PhysicsEntity.h"
-#include "Player.h"
+#include "Enemy.h"
 
-class EnemyBox : public PhysicsEntity
+class EnemyBox : public Enemy
 {
 private:
-    Player* player;
-    int health;
-    int moveSpeed;
-    ofMaterial material;
+    Player* player = nullptr;
 
-    // should not be here
-    float lastFrameTime = 0.0f;
-    float deltaTime = 0.0f;
 public:
-    EnemyBox(glm::vec3 pos = glm::vec3(0, 0, 0), Player* plr = nullptr, int hp = 100, int ms = 10)
-        : PhysicsEntity(pos), player(plr), health(hp), moveSpeed(ms)
+    EnemyBox(glm::vec3 pos = glm::vec3(0, 0, 0), std::vector<Player*>* plrs = nullptr, int hp = 100, int ms = 1)
+        : Enemy(pos, plrs, hp, ms)
     {
-        addTag("Enemy");
-        addTag("Box");
+        addTag("EnemyBox");
     }
 
-    Entity* clone() const override { return new EnemyBox(position, player, health, moveSpeed); };
+    Entity* clone() const override { return new EnemyBox(position, players, health, moveSpeed); };
+    void _setPlayersList(std::vector<Player*>* plrs) override;
     void _collision(PhysicsEntity& target) override;
     void _input() override;
     void _setup() override;
