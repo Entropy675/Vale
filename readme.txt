@@ -52,3 +52,8 @@ While the server-side narrative engine establishes the broad framework, each pla
 
 - Generative AI based procedural generation: Will use the Dora image to 3D model: https://aruichen.github.io/Dora/
 
+Some more potentially integrated open source models:
+https://tangoflux.github.io/                                    | for relevent audio gen
+https://huggingface.co/Tencent-Hunyuan/HYDiT-LoRA               | for base 2d image gen
+https://m-usamasaleem.github.io/publication/GenHMR/GenHMR.html  | for ingame AI vision
+If these are integrated, the license will likely be changed.
