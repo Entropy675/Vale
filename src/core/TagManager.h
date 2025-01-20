@@ -7,6 +7,7 @@
 
 class Entity;
 class PhysicsEntity;
+class EnvironmentObject;
 
 class TagManager
 {
@@ -18,6 +19,8 @@ private:
 
 public:
     static void initialize(const std::unordered_map<std::string, std::string>& customTags = {}, const std::unordered_map<std::string, PhysicsMetadata>& customPhysicsTags = {});
+
+    static void resolveCollisionTags(EnvironmentObject*);
 
     static bool addTag(const std::string& tag, const std::string& contextInfo = "default");
     static bool addTag(const std::string& tag, const PhysicsMetadata& contextInfo);

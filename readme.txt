@@ -50,6 +50,5 @@ Vale’s narrative system will eventually integrate a generative AI-driven engin
 
 While the server-side narrative engine establishes the broad framework, each player’s local narrative engine (local LLM) brings their world to life, allowing individual story elements to act independently. These elements follow the physical laws within Vale and act according to their own “will” based on their unique interpretation of the player’s interactions and thier own personal story (provided by the server side void, which is the core source of truth when it comes to story). A local LLM will interpret the stories of NPC's provided by the server, and interact with the games API to manipulate the NPC avatars according to their personality. The result is a cohesive yet personalized narrative experience, where each player’s world reflects a distinct, perspective-driven story within a shared mythos.
 
-- Generative AI based procedural generation
-Kind of straight forward (but very hard), an implementation for creating 3d objects based off the 3d voxel denoising paper (https://arxiv.org/abs/2306.07473 or https://github.com/genentech/voxmol)
+- Generative AI based procedural generation: Will use the Dora image to 3D model: https://aruichen.github.io/Dora/
 

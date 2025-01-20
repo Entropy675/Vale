@@ -31,21 +31,14 @@ void SceneManager::updateEnvironmentMesh()
         // Transform each vertex in the entity's mesh
         for (size_t i = 0; i < entityMesh.getNumVertices(); i++)
         {
-
             ofVec3f vertex = entityMesh.getVertex(i);
 
             // Scale
-            vertex.x *= scale.x;
-            vertex.y *= scale.y;
-            vertex.z *= scale.z;
-
+            vertex *= scale;
             // Rotate
             ofVec3f transformedVertex = rotation * vertex;
-
             // Translate
-            transformedVertex.x += translation.x;
-            transformedVertex.y += translation.y;
-            transformedVertex.z += translation.z;
+            transformedVertex += translation;
 
             entityMesh.setVertex(i, ofVec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z)); // Update the vertex
             aggregateMesh.addVertex(entityMesh.getVertex(i), entity->getId());
