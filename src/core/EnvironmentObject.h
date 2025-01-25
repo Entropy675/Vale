@@ -10,10 +10,6 @@ class EnvironmentObject : public PhysicsEntity
 private:
     ofxKDTree kdTree; // KDTree to manage spatial points and IDs
 
-    // for drowning affect
-    float totalTime = 0.0f;
-
-
 public:
     EnvironmentObject();
     ~EnvironmentObject();

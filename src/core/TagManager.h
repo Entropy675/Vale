@@ -7,6 +7,7 @@
 
 class Entity;
 class PhysicsEntity;
+class EnvironmentObject;
 
 class TagManager
 {
@@ -15,9 +16,14 @@ private:
     static std::unordered_map<std::string, std::string> tags; // Tag to string context info
     static std::unordered_map<std::string, PhysicsMetadata> physicsTags; // Tag to PhysicsMetadata context
     static bool initOnce;
+    
+    static float totalTime; // (get rid of this later when implementing tag physics resolver) for drowning affect
+
 
 public:
     static void initialize(const std::unordered_map<std::string, std::string>& customTags = {}, const std::unordered_map<std::string, PhysicsMetadata>& customPhysicsTags = {});
+
+    static void resolveCollisionTags(EnvironmentObject*, PhysicsEntity* target);
 
     static bool addTag(const std::string& tag, const std::string& contextInfo = "default");
     static bool addTag(const std::string& tag, const PhysicsMetadata& contextInfo);

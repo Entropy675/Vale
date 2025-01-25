@@ -52,15 +52,15 @@ public:
     // object properties
     glm::vec3 getFacingDirection() const                        { return rotation * glm::vec3(0, 0, 1); };
     ofQuaternion getFacingRotation() const                      { return rotation; };
-    float getMass() const   
+    float getMass() const
     { return mass; }; // mass
 
 
     // --- Setters ---
     void removeTag(const std::string& tag) override;
-    
+
     // Physics functions
-    void setMass(float massValue)                            { mass = massValue; };
+    void setMass(float massValue)                               { mass = massValue; };
 
     void moveTo(const glm::vec3& newPos)                        { position = newPos; }; // Adjust position
     void translate(const glm::vec3& offset)                     { position += offset; };
