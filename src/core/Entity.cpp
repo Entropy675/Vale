@@ -53,7 +53,8 @@ void Entity::draw()
 
 void Entity::setup()
 {
-    std::cout << "Id: " << getId() << " attempted to call setup... ";
+    // uncomment if tracing setup calls regardless of first time
+    // std::cout << "Id: " << getId() << " attempted to call setup... ";
     if (!setupDone) setupDone = true; // prevent any repeated setup
     else
     {
@@ -61,7 +62,7 @@ void Entity::setup()
         return; // ofLogWarning("Entity") << "Setup has already been called!"; // ignore because who cares
     }
 
-    std::cout << "First Time Pass! Entity setup: " <<  hashId << std::endl;
+    std::cout << "First Time Setup Pass! Entity setup: " <<  hashId << std::endl;
     _setup();
 }
 

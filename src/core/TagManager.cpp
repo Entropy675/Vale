@@ -6,6 +6,7 @@
 std::unordered_map<std::string, std::string> TagManager::tags;
 std::unordered_map<std::string, PhysicsMetadata> TagManager::physicsTags;
 bool TagManager::initOnce = false;
+float TagManager::totalTime = 0.0f;
 
 void TagManager::initialize(const std::unordered_map<std::string, std::string>& customTags, const std::unordered_map<std::string, PhysicsMetadata>& customPhysicsTags)
 {
@@ -39,19 +40,19 @@ void TagManager::resolveCollisionTags(EnvironmentObject* env, PhysicsEntity* tar
     // once we have the list of points/ID's to calculate collision for, we run their collision functions against the target
     // average the normal gotten across all collisions against the points, and apply that force
 
-    int nearestID = nearestNeighbour(target.getPosition());
+    int nearestID = env->nearestNeighbour(target->getPosition());
     Entity* temp = Entity::getEntityById(nearestID);
 
     glm::vec3 islandPos = temp->getPosition();
     islandPos += glm::vec3(0, -39080, 0);
-    float distanceToEntity = glm::distance(target.getPosition(), islandPos);
+    float distanceToEntity = glm::distance(target->getPosition(), islandPos);
 
     if (temp->hasTag("ocean"))
     {
         totalTime += 0.01f;
         if (totalTime > 1.2f)
         {
-            target.moveTo(glm::vec3(0, 200, 0));
+            target->moveTo(glm::vec3(0, 200, 0));
             // std::cout << "Drowned" << std::endl;
             totalTime = 0.0f;
         }
@@ -61,20 +62,20 @@ void TagManager::resolveCollisionTags(EnvironmentObject* env, PhysicsEntity* tar
         if (distanceToEntity < 40000)
         {
             // std::cout << "COLLISION" << std::endl;
-            glm::vec3 normal = glm::normalize(target.getPosition() - islandPos);
-            target.moveTo(islandPos + normal * 40000);
-            target.setVelocity(glm::vec3(0, 0, 0));
-            target.setAcceleration(glm::vec3(0, 0, 0));
+            glm::vec3 normal = glm::normalize(target->getPosition() - islandPos);
+            target->moveTo(islandPos + normal * 40000);
+            target->setVelocity(glm::vec3(0, 0, 0));
+            target->setAcceleration(glm::vec3(0, 0, 0));
 
-            glm::vec3 currentPos = target.getPosition();
+            glm::vec3 currentPos = target->getPosition();
             // Apply slight vertical offset to avoid repetitive collision
 
-            target.moveTo(glm::vec3(currentPos.x, currentPos.y, currentPos.z));
+            target->moveTo(glm::vec3(currentPos.x, currentPos.y, currentPos.z));
 
-            target.addTag("onGround");
+            target->addTag("onGround");
         }
         else
-            target.removeTag("onGround");
+            target->removeTag("onGround");
     }
 }
 
