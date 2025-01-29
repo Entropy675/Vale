@@ -51,6 +51,7 @@ While the server-side narrative engine establishes the broad framework, each pla
 
 - Other AI components
 Some potentially integrated open source models:
+https://github.com/Tencent/Hunyuan3D-2                          | 3D model gen
 https://aruichen.github.io/Dora/                                | for 3D model gen
 https://tangoflux.github.io/                                    | for audio gen
 https://huggingface.co/Tencent-Hunyuan/HYDiT-LoRA               | for base 2d image gen
