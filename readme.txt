@@ -51,6 +51,7 @@ While the server-side narrative engine establishes the broad framework, each pla
 
 Key idea for efficient world simulation:
 The story of an entity only updates when its needed for the local runtime. Each NPC retains its own interpretation of past events, meaning that while historical events remain consistent, individual characters may remember or react to them differently. Understand the following; a story of a location could remain stagnant for many years, and the moment a local model representing the player interacts with it, suddenly the void generates the story missing between when it was last interacted with till now, same applies to individual characters, their lives are recorded as trajectories and histories of internal thought, and when time skips need to occur, the gap is generated from the given information and the story of the world from that moment till the player interaction (or upon loading the entity so that it can be done in the background moments before the player interacts with the NPC). That way if the player massively changes the world between their interactions, the back-generated world of all NPCs will maintain the impact of this disruption and remain internally consistant, all while not needing to simulate all of reality at all times. The goal is to allow absolute player autonomy given an arbitrarily generated world.
+This method is reminiscent of how I run my sandbox D&D games on the fly.
 
 - Other AI components
 Some potentially integrated open source models:
