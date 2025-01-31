@@ -1,5 +1,3 @@
-By Entropy67 (Sibte Kazmi)
-- Contributions by Gurjas Chalana
 This was tested on an Ubuntu Linux system.
 The code should be transferrable to any environment configured to include OpenFrameworks libraries.
 
