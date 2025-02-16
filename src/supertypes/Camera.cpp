@@ -24,12 +24,11 @@ void Camera::_input()
             currPlayer %= playersInScene.size();
             playersInScene[currPlayer]->toggleCameraAssignment();
         }
-        playersInScene[currPlayer]->setPlayerOrientation(camera.getLookAtDir());
-        // third person logic
-        glm::vec3 playerPos = playersInScene[currPlayer]->getPosition();
 
+        // third person logic
         // current player position + y offset, and then move backwards (radius + 200) pixels to get ideal third person perspective
-        camera.setPosition((playerPos + getPosition()) - (800 * camera.getLookAtDir()));
+        playersInScene[currPlayer]->setPlayerOrientation(camera.getLookAtDir());
+        camera.setPosition((playersInScene[currPlayer]->getPosition() + getPosition()) - (800 * camera.getLookAtDir()));
     }
     else
     {
@@ -48,15 +47,14 @@ void Camera::_mouseMoved(ofMouseEventArgs& mouseMovement)
     // Reset to a default forward-facing orientation
     camera.setGlobalOrientation(glm::quat());
 
+    // Rotate the camera based on mouse movement
     float deltaX = mouseMovement.x - ofGetWidth() / 2;
     float deltaY = mouseMovement.y - ofGetHeight() / 2;
-
-    // Rotate the camera based on mouse movement
     float sensitivity = .35f;
+
     camera.panDeg(-sensitivity * 1.4 * deltaX);   // Pan (left-right rotation)
     camera.tiltDeg(-sensitivity * deltaY);   // Tilt (up-down rotation)
 
-    // update player orientation
     if (playersInScene.size())
         playersInScene[currPlayer]->setPlayerOrientation(camera.getLookAtDir());
 
@@ -84,7 +82,7 @@ bool Camera::setPlayer(std::vector<PhysicsEntity*>* physicsObjects)
         if (ptr->hasTag("player"))
         {
             std::cout << "is player id: " << ptr->getId() << std::endl;
-            playersInScene.push_back(static_cast<Player*>(ptr)); // assumes player class if player tag
+            playersInScene.push_back(static_cast<Player*>(ptr));
             success = true;
         }
     }

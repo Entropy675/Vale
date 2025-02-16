@@ -94,7 +94,7 @@ void ofApp::mousePressed(int x, int y, int button)
     inputManager.ofMousePressed(x, y, button);
 
     if ( button == 0)
-    {   // Toggle cursor visibility
+    {
         if (isCursorHidden)
             ofShowCursor();
         else

@@ -13,7 +13,7 @@ class Scene // responsible for the mem of its own entities
 protected:
     std::vector<Entity*> sceneObjects;
     std::vector<PhysicsEntity*> scenePhysicsObjects; // unaltered copy
-    std::vector<std::vector<Entity*>*> allReferences;
+    std::vector<Entity*>* references;
 
     // if 'player' tag present in entity, then add to playersInScene.
     std::vector<Player*> playersInScene;
@@ -27,8 +27,8 @@ public:
 
     void setup();
     void loadScene(PhysicsController& phys, std::vector<Entity*>* list);
-    bool loadSceneFromFile(std::string& path); // TODO not done yet...
-    bool saveSceneToFile(std::string& path);
+    bool loadSceneFromFile(const std::string& path); // TODO not done yet...
+    bool saveSceneToFile(const std::string& path);
 
     std::vector<Player*>* getPlayersInScene() { return &playersInScene; };
 

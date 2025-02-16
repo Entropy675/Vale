@@ -12,7 +12,7 @@ PhysicsController::PhysicsController(EnvironmentObject& environment)
 
 PhysicsController::~PhysicsController()
 {
-    for (PhysicsEntity* obj : physicsObjects) delete obj; // Free memory for each existing object
+    for (PhysicsEntity* obj : physicsObjects) delete obj;
 }
 
 void PhysicsController::clear()
@@ -23,7 +23,7 @@ void PhysicsController::clear()
 
 void PhysicsController::loadScene(std::vector<PhysicsEntity*>& preservedPhysicsObjects)
 {
-    for (PhysicsEntity* obj : physicsObjects) delete obj; // Free memory for each existing object
+    for (PhysicsEntity* obj : physicsObjects) delete obj;
     physicsObjects.clear();
 
     // copy each preserved object in the scene into active physicsObjects
@@ -59,7 +59,7 @@ void PhysicsController::_setup()
 
 void PhysicsController::_update()
 {
-    collisionCheck(); // needs to happen before due to collision checking
+    collisionCheck();
     for (PhysicsEntity* ptr : physicsObjects) ptr->update();
 }
 
@@ -69,14 +69,11 @@ void PhysicsController::_draw()
         ptr->draw();
 }
 
-bool PhysicsController::addCam(Camera* cam)
+void PhysicsController::addCam(Camera* cam)
 {
     if (!cam) std::cout << "!! attempted to add null cam to physics" << std::endl;
     addEntity(cam);
     cam->setPlayer(&physicsObjects);
-
-
-    return false;
 }
 
 void PhysicsController::registerInputManager(InputManager* input)
