@@ -29,19 +29,19 @@ public:
     void gotMessage(ofMessage& msg);
 
     // light
-    ofLight sun;
+    ofLight sun; // light system soon
 
     // objects (entities)
     // std::vector<Entity*> entities; replaced with manager
     SceneManager sceneManager;
 
-    int currentTargetIndex;
-    std::vector<glm::vec3> path;
-    bool followPathBlindly = true;
-
     // controls
     bool isCursorHidden = false;
     InputManager inputManager;
+
+    int currentTargetIndex;
+    std::vector<glm::vec3> path;
+    bool followPathBlindly = true;
 
 private:
     void followPath(std::vector<glm::vec3>& pathPoints);

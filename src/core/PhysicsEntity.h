@@ -52,8 +52,7 @@ public:
     // object properties
     glm::vec3 getFacingDirection() const                        { return rotation * glm::vec3(0, 0, 1); };
     ofQuaternion getFacingRotation() const                      { return rotation; };
-    float getMass() const
-    { return mass; }; // mass
+    float getMass() const                                       { return mass; }; // mass
 
 
     // --- Setters ---

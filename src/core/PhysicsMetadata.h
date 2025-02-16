@@ -15,7 +15,7 @@ struct PhysicsMetadata
     PhysicsMetadata(std::string tg = "invalid",
                     std::function<bool(const glm::vec3&)> boundingEq = [](const glm::vec3&) { return false; },
                     std::function<glm::vec3(const glm::vec3&)> collisionNorm = [](const glm::vec3&) { return glm::vec3(0, 0, 0); },
-                    void* ctx = nullptr)
+                    void* ctx = nullptr) // arbitrary context object - this object must be static across all instances of tag
             : tag(std::move(tg)), context(ctx), boundingEquation(std::move(boundingEq)), collisionNormal(std::move(collisionNorm)) {}
 
 };
