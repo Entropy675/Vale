@@ -68,9 +68,9 @@ public:
         addEntity(new OceanObject());
         addEntity(new IslandObject());
         addEntity(new Hero("Gilbert", glm::vec3(1800.0f, 1000.0f, 300.0f), 10.0f, 1500, ofColor::green));
-        addEntity(new Hero("Filbert", glm::vec3(3000.0f, 1000.0f, 1200.0f), 10.0f, 1000, ofColor::blue));
-        addEntity(new Hero("Tilbert", glm::vec3(300.0f, 1000.0f, 1800.0f), 10.0f, 1000, ofColor::red));
-        addEntity(new Hero("Bilbert", glm::vec3(1200.0f, 1000.0f, 3000.0f), 10.0f, 1000, ofColor::purple));
+        //addEntity(new Hero("Filbert", glm::vec3(3000.0f, 1000.0f, 1200.0f), 10.0f, 1000, ofColor::blue));
+        //addEntity(new Hero("Tilbert", glm::vec3(300.0f, 1000.0f, 1800.0f), 10.0f, 1000, ofColor::red));
+        //addEntity(new Hero("Bilbert", glm::vec3(1200.0f, 1000.0f, 3000.0f), 10.0f, 1000, ofColor::purple));
         for (int i = 0; i < 200; i++)
         {
             glm::vec3 randomVector = generateRandomVector(26000);
@@ -78,8 +78,8 @@ public:
                 randomVector.y = -randomVector.y;
             randomVector.y -= 400;
 
-            EnemyBox* enemyBox = new EnemyBox(randomVector);
-            scenePhysicsObjects.push_back(enemyBox);
+            //EnemyBox* enemyBox = new EnemyBox(randomVector);
+            //scenePhysicsObjects.push_back(enemyBox);
         }
     };
 };
