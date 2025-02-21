@@ -6,8 +6,8 @@ SceneManager::SceneManager() : Entity(glm::vec3(0, 0, 0)), phys(aggregateMesh)
 }
 SceneManager::~SceneManager()
 {
+    if (currentScene) delete currentScene;
     for (Scene* sc : scenes) delete sc;
-    for (Entity* ptr : entities) delete ptr;
 }
 
 void SceneManager::toggleStaticMesh()
@@ -56,23 +56,28 @@ void SceneManager::updateEnvironmentMesh()
 
 void SceneManager::loadScene(size_t index)
 {
-    std::cout << "SCENE: " << currentScene << " -> " << index << std::endl;
+    if (!scenes.size())
+    {
+        std::cout << "Attempted to load a scene when none exist in SceneManager." << std::endl;
+        return;
+    }
     if (index < 0 || index >= scenes.size())
     {
         std::cerr << "Error: Scene index " << index << " is out of bounds." << std::endl;
         return;
     }
+    
+    std::cout << "SCENE: " << currentSceneIndex << " -> " << index << std::endl;
 
-    currentScene = index;
-    for (Entity* ptr : entities) delete ptr;
-    entities.clear();
     phys.clear();
 
-    cam = new Camera(scenes[currentScene]->getDefaultCameraOffset());
-    cam->registerInputManager(inputManager);
-    cam->setup();
+    //cam = new Camera(scenes[currentSceneIndex]->getDefaultCameraOffset());
+    //cam->registerInputManager(inputManager);
+    //cam->setup();
 
-    scenes[currentScene]->loadScene(phys, &entities);
+    scenes[currentSceneIndex]->loadScene(phys, &entities);
+    currentSceneIndex = index;
+    
     std::cout << "adding phys cam... " << std::endl;
     phys.addCam(cam);
     _setup();
@@ -91,7 +96,7 @@ void SceneManager::next()
         std::cout << "Cannot call next(), there are no scenes!" << std::endl;
         return;
     }
-    loadScene((currentScene + 1) % scenes.size());
+    loadScene((currentSceneIndex + 1) % scenes.size());
 }
 
 void SceneManager::prev()
@@ -101,7 +106,7 @@ void SceneManager::prev()
         std::cout << "Cannot call prev(), there are no scenes!" << std::endl;
         return;
     }
-    loadScene((currentScene - 1 + scenes.size()) % scenes.size()); // wrap around making sure its not negative
+    loadScene((currentSceneIndex - 1 + scenes.size()) % scenes.size()); // wrap around making sure its not negative
 }
 
 void SceneManager::_setup()

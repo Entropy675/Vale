@@ -6,27 +6,29 @@
 #include "Player.h"
 #include "PhysicsController.h"
 
-class SceneManager;
-
 class Scene // responsible for the mem of its own entities
 {
+private:
+    bool sceneLoaded = false;
+
 protected:
-    std::vector<Entity*> sceneObjects;
-    std::vector<PhysicsEntity*> scenePhysicsObjects; // unaltered copy
-    std::vector<Entity*>* references;
-
-    // if 'player' tag present in entity, then add to playersInScene.
-    std::vector<Player*> playersInScene;
-    glm::vec3 defaultCameraOffset = glm::vec3(0.0f, 0.0f, 0.0f);
-
-    friend class SceneManager;
+    std::vector<Entity*> entities;
+    PhysicsController phys; // std::vector<PhysicsEntity*> scenePhysicsObjects; // unaltered copy
 
 public:
     Scene() {};
     virtual ~Scene();
-
+    
+    // if 'player' tag present in entity, then add to playersInScene.
+    // this will be replaced by a list of type sorted pointers returned by tag manager
+    std::vector<Player*>* playersInScene;
+    //std::vector<supertype*>* someSuperTypeList
+    // -> will be replaced with map: tags -> std:vector<Entity*>
+    // far better map... or simple list of tuples (tag, std::vector<Entity*>) also possible
+    // std::list<std::tuple<std::string, std::vector<Entity*>>> tagEntityList;
+    
     void setup();
-    void loadScene(PhysicsController& phys, std::vector<Entity*>* list);
+    void loadScene();
     bool loadSceneFromFile(const std::string& path); // TODO not done yet...
     bool saveSceneToFile(const std::string& path);
 
@@ -34,8 +36,6 @@ public:
 
     void addEntity(PhysicsEntity* physEntity);
     void addEntity(Entity* Entity);
-    const glm::vec3& getDefaultCameraOffset() const { return defaultCameraOffset; };
-
 };
 
 

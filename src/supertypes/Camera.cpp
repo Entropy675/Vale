@@ -3,6 +3,8 @@
 
 void Camera::_setup()
 {
+    addTag("camera");
+    addTag("camera_target"); // add "camera_target" tag to desginate an entity as followed
     camera.setPosition(position);
     camera.setFov(60);
     camera.setNearClip(1.0f);
@@ -15,30 +17,28 @@ void Camera::_update()
 }
 void Camera::_input()
 {
+    if (inputManager->getHeld('w')) camera.dolly(-moveSpeed); // Move forward
+    if (inputManager->getHeld('s')) camera.dolly(moveSpeed);  // Move backward
+    if (inputManager->getHeld('a')) camera.truck(-moveSpeed); // Move left
+    if (inputManager->getHeld('d')) camera.truck(moveSpeed);  // Move right
+    if (inputManager->getHeld(' ')) camera.move(0, moveSpeed, 0); // Move Up
+    if (inputManager->getHeld(OF_KEY_SHIFT)) camera.boom(-moveSpeed); // Move Down
+    
+    
+    
     if (playersInScene.size())
     {
-        if (inputManager->getPressedOnce('p'))
-        {
-            playersInScene[currPlayer]->toggleCameraAssignment();
-            currPlayer++;
-            currPlayer %= playersInScene.size();
-            playersInScene[currPlayer]->toggleCameraAssignment();
-        }
-
-        // third person logic
-        // current player position + y offset, and then move backwards (radius + 200) pixels to get ideal third person perspective
         playersInScene[currPlayer]->setPlayerOrientation(camera.getLookAtDir());
         camera.setPosition((playersInScene[currPlayer]->getPosition() + getPosition()) - (800 * camera.getLookAtDir()));
+    
+        if (!inputManager->getPressedOnce('p')) return;
+        
+        playersInScene[currPlayer]->toggleCameraAssignment();
+        currPlayer++;
+        currPlayer %= playersInScene.size();
+        playersInScene[currPlayer]->toggleCameraAssignment();   
     }
-    else
-    {
-        if (inputManager->getHeld('w')) camera.dolly(-moveSpeed); // Move forward
-        if (inputManager->getHeld('s')) camera.dolly(moveSpeed);  // Move backward
-        if (inputManager->getHeld('a')) camera.truck(-moveSpeed); // Move left
-        if (inputManager->getHeld('d')) camera.truck(moveSpeed);  // Move right
-        if (inputManager->getHeld(' ')) camera.move(0, moveSpeed, 0); // Move Up
-        if (inputManager->getHeld(OF_KEY_SHIFT)) camera.boom(-moveSpeed); // Move Down
-    }
+    
 }
 
 

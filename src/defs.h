@@ -7,4 +7,10 @@
 #include <string>
 #include <iostream>
 
+// Core Supertypes
+class Player;
+class Enemy;
+class Entity;
+class Camera;
+
 #endif

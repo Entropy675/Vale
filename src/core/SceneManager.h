@@ -11,14 +11,14 @@
 class SceneManager : public Entity
 {
     private:
+    int currentSceneIndex = 0;
+    Scene* currentScene;
     std::vector<Scene*> scenes; // mem managed by this class
-    std::vector<Entity*> entities; // mem managed by this class (copies from scene)
-    std::vector<Player*> playersInScene; // not populated yet
-    EnvironmentObject aggregateMesh; // Unified mesh for the entire scene
+    
     PhysicsController phys;
+    EnvironmentObject aggregateMesh; // Unified mesh for the entire scene
     Camera* cam;
 
-    int currentScene = 0;
     bool drawStaticMesh = false;
 
     public:

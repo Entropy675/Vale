@@ -7,6 +7,8 @@
 #include "defs.h"
 
 
+
+// Supertype for follower camera
 class Camera : public PhysicsEntity
 {
 
