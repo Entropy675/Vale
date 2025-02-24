@@ -17,12 +17,15 @@ PhysicsEntity::~PhysicsEntity() {}; // each PhysicsEntity manages its own cleanu
 bool PhysicsEntity::addPhysicsMetadata(const std::string& physicsTag, const PhysicsMetadata& context)
 {
     if(!TagManager::getTag(physicsTag, context)) return false;
-    if(context.isLocal) LocalPhysicsMetadata.insert(physicsTag, context);
+    if(context.isLocal) LocalPhysicsMetadata.insert(std::pair<physicsTag, context>);
+    return true;
 }
     
 // Retrieve a PhysicsMetadata by tag index
 bool PhysicsEntity::getPhysicsMetadata(const std::string& physicsTag, PhysicsMetadata& out)
 {
+    if(!TagManager::getTag(physicsTag, out)) return false; // does not exist
+    if(!out.isLocal) return true;
     auto it = LocalPhysicsMetadata.find(physicsTag);
     if (it != tagsIndexToContext.end())
     {
@@ -32,10 +35,19 @@ bool PhysicsEntity::getPhysicsMetadata(const std::string& physicsTag, PhysicsMet
     return false;
 }
 
-void PhysicsEntity::removeTag(const std::string& tag)
+void PhysicsEntity::removeTag(const std::string& tag) 
 {
-    Entity::removeTag(tag);
+    // Due to the nature of the class hierarchy, the position of the supertype is fixed.
+    // Either it is the 2nd or 3rd position, depending on Entity vs PhysicsEntityStart.
+    // So we search from index 2, and check if that index is itself a supertype.
+    // This is because supertypes are a property of the class itself, so they cannot be removed.
+    auto it = std::find(tags.begin() + 2, tags.end(), tag); 
+
+    if (it == tags.end()) return; 
+    if (it == tags.begin() + 2 && TagManager::isSupertypeTag(*it)) return;
     if (TagManager::hasPhysicsTag(tag)) LocalPhysicsMetadata.erase(tag);
+    
+    Entity::removeTag(tag);
 }
 
 void PhysicsEntity::collision(PhysicsEntity& target)

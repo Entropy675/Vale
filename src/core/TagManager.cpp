@@ -1,4 +1,5 @@
 #include "TagManager.h"
+#include "Entity.h"
 #include "PhysicsEntity.h"
 #include "EnvironmentObject.h"
 
@@ -104,4 +105,17 @@ void TagManager::resolveCollisionTags(EnvironmentObject* env, PhysicsEntity* tar
             target->removeTag("onGround");
     }
 }
+
+
+template<typename T>
+static std::vector<T*> TagManager::getEntitiesWithTag(const std::string& tag) 
+{
+    std::vector<T*> result;
+    for(const auto& [id, entity] : Entity::getIdToEntityMap())
+        if(entity->hasTag(tag))
+            if(T* cast = dynamic_cast<T*>(entity))
+                result.push_back(cast);
+    return result;
+}
+
 

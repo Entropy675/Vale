@@ -72,12 +72,12 @@ public:
     const vector<std::string>& getTags() const                          { return tags; }
     void addTag(const std::string& tag)                                 
     { 
-        if(TagManager::applyTag(this, tag))  tags.push_back(tag);
+        if(TagManager::applyTag(this, tag)) tags.push_back(tag);
     };
     bool hasTag(const std::string& tag) const                           { return std::find(tags.begin(), tags.end(), tag) != tags.end(); };
-    void removeTag(const std::string& tag)
+    virtual void removeTag(const std::string& tag) // virtual in case of child supertype cleanup
     {
-        auto it = std::find(tags.begin(), tags.end(), tag);
+        auto it = std::find(tags.begin() + 2, tags.end(), tag);
         if (it != tags.end()) tags.erase(it);
     }
 
@@ -88,6 +88,8 @@ public:
     glm::vec3 getTranslation() const                                    { return translation + position; };
     virtual const ofMesh& getMesh() const                               { return mesh; }; // can override for custom or strange meshes
     static Entity* getEntityById(int id)                                { return idToEntityMap[id]; };
+    static const std::unordered_map<int, Entity*>& getIdToEntityMap()   { return idToEntityMap; }
+    
 
     // helpers
     ofMesh copyMesh() const                                             { return mesh; };
