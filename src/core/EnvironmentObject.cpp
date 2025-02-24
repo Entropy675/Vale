@@ -14,10 +14,17 @@ void EnvironmentObject::clear()
     kdTree.clear();
 }
 
-void EnvironmentObject::addVertex(const glm::vec3& v, int id)
+void EnvironmentObject::addMesh(const ofMesh& m)
+{
+    mesh.addMesh(m);
+    // this is where seed spheres will be calc'd
+    // once solved, add via addSeedPoint function below
+}
+
+void EnvironmentObject::addSeedPoint(const glm::vec3& v, int id, int radius)
 {
     // Add vertex to mesh and KDTree
-    kdTree.addPoint(v, id, 1); // radius is 1 for now, this is where spheres will be calc'd
+    kdTree.addPoint(v, id, radius); 
 }
 
 void EnvironmentObject::setupEnvironment()

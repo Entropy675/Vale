@@ -9,13 +9,15 @@ class EnvironmentObject : public PhysicsEntity
 {
 private:
     ofxKDTree kdTree; // KDTree to manage spatial points and IDs
+    ofMesh mesh;
 
 public:
     EnvironmentObject();
     ~EnvironmentObject();
 
     void clear();
-    void addVertex(const glm::vec3& v, int id);
+    void addMesh(const ofMesh& m);
+    void addSeedPoint(const glm::vec3& v, int id, int radius = 1);
     void setupEnvironment();
     void recomputeMesh(); 
 
@@ -28,7 +30,7 @@ public:
     // Placeholder functions (not currently used)
     void _setup() override {}
     void _update() override {}
-    void _draw() override {};
+    void _draw() override { mesh.draw(); }
 };
 
 #endif

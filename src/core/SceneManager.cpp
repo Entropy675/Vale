@@ -17,27 +17,39 @@ void SceneManager::toggleStaticMesh()
 void SceneManager::updateEnvironmentMesh()
 {
     aggregateMesh.clear();
-    for (Entity* entity : entities)
+    for (const Entity* ent : scenes[currentSceneIndex]->getEntities())
     {
-        ofMesh entityMesh = entity->getMesh();
+        if (!ent->hasTag("physics")) continue;
+        PhysicsEntity* target = static_cast<PhysicsEntity*>(ent);
+        ofMesh transformedMesh = target->getMesh();
+        if (transformedMesh.getNumVertices() == 0) continue;
 
-        // Get individual transformations
-        glm::vec3 scale = entity->getScale();
-        ofQuaternion rotation = entity->getRotation();
-        glm::vec3 translation = entity->getTranslation();
+        ofMatrix4x4 transformationMatrix = target->getTransformationMatrix(); 
+        transformedMesh.transform(transformationMatrix); // transform the copied mesh
 
-        if (entity->getMesh().getNumVertices() == 0) continue;
+        aggregateMesh.addMesh(transformedMesh); // Add the transformed mesh
+        std::cout << "Appended " << transformedMesh.getNumVertices() << " vertices from entity." << std::endl;
+    }
+
+    aggregateMesh.setupEnvironment();
+    std::cout << "updateEnvironmentMesh success" << std::endl;
+    
+    /*
+    for (Entity* ent : entities)
+    {
+        if(!ent->hasTag("physics")) continue;
+        PhysicsEntity* target = static_cast<PhysicsEntity*>(ent);  
+        if (target->getMesh().getNumVertices() == 0) continue;
+        ofMesh entityMesh = target->getMesh();
+
         // Transform each vertex in the entity's mesh
         for (size_t i = 0; i < entityMesh.getNumVertices(); i++)
         {
             ofVec3f vertex = entityMesh.getVertex(i);
-
-            // Scale
-            vertex *= scale;
-            // Rotate
-            ofVec3f transformedVertex = rotation * vertex;
-            // Translate
-            transformedVertex += translation;
+            vertex *= target->getScale();
+            ofVec3f transformedVertex = target->getRotation() * vertex;
+            transformedVertex += target->getTranslation();
+            //ofMatrix4x4 transformationMatrix = target->getTransformationMatrix();
 
             entityMesh.setVertex(i, ofVec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z)); // Update the vertex
             aggregateMesh.addVertex(entityMesh.getVertex(i), entity->getId());
@@ -45,12 +57,10 @@ void SceneManager::updateEnvironmentMesh()
 
         // Append the transformed mesh to the aggregate mesh
         // appended each vertex individually above
-       // aggregateMesh.addVertex(entityMesh);
+        // aggregateMesh.addVertex(entityMesh);
         std::cout << "Appended " << entityMesh.getNumVertices() << " vertices from entity." << std::endl;
 
-    }
-    aggregateMesh.setupEnvironment();
-    std::cout << "updateEnvironmentMesh success" << std::endl;
+    }*/
 }
 
 void SceneManager::loadScene(size_t index)
@@ -68,17 +78,26 @@ void SceneManager::loadScene(size_t index)
     
     std::cout << "SCENE: " << currentSceneIndex << " -> " << index << std::endl;
 
-    phys.clear();
-
-    //cam = new Camera(scenes[currentSceneIndex]->getDefaultCameraOffset());
-    //cam->registerInputManager(inputManager);
-    //cam->setup();
-
-    scenes[currentSceneIndex]->loadScene(phys, &entities);
+    phys.clear(); // TODO: special tag for keeping physics entities across scene transitions 
     currentSceneIndex = index;
     
+    // TODO: change to searching supertype to class list managed by TagManager (not done yet)
+    Camera* cam = nullptr;
+    Entity* camTarget = nullptr;
+    for (const Entity* ent : scenes[currentSceneIndex]->getEntities())
+    {
+        if(ent->hasTag("camera_target")
+            camTarget = ent;
+        if(ent->hasTag("camera")
+            cam = static_cast<Camera*>(ent);
+    }
+    if(camTarget) cam = new Camera(camTarget->getPosition());
+    else cam = new Camera();
+    cam->registerInputManager(inputManager);
+    cam->setup();
     std::cout << "adding phys cam... " << std::endl;
     phys.addCam(cam);
+    
     _setup();
 }
 

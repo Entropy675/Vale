@@ -2,7 +2,6 @@
 #define CAMERA_H__
 
 #include "PhysicsEntity.h"
-#include "IslandScene.h"
 #include "InputManager.h"
 #include "defs.h"
 

@@ -62,9 +62,10 @@ bool TagManager::applyTag(Entity* target, const std::string& tag)
     if (target->hasTag(tag)) return false;
     if (!hasPhysicsTag(tag))
     {
-        target->addTag(tag);
+        target->tags.push_back(tag);
         return true;
     }
+    
     PhysicsEntity* physicsTarget = dynamic_cast<PhysicsEntity*>(target);
     physicsTarget->addPhysicsMetadata(tag, physicsTags[tag]);
     return true;

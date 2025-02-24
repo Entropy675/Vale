@@ -29,9 +29,7 @@ bool Entity::hasTag(const std::string& tag) const
 
 bool Entity::addTag(const std::string& tag)
 { 
-    if(!TagManager::applyTag(this, tag)) return false;
-    tags.push_back(tag); 
-    return true;
+    return TagManager::applyTag(this, tag);
 };
 
 void Entity::removeTag(const std::string& tag) 

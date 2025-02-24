@@ -45,7 +45,7 @@ public:
     static void resolveCollisionTags(EnvironmentObject*, PhysicsEntity* target);
 
     template<typename T>
-    std::vector<T*> getEntitiesWithTag(const std::string& tag);
+    std::vector<T*> getEntitiesWithTag(const std::string& tag); // global across scenes
 };
 
 
