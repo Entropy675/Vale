@@ -20,6 +20,20 @@ void TagManager::initialize(const std::unordered_map<std::string, std::string>& 
         addTag(tag, contextInfo);
 }
 
+bool TagManager::addTag(const std::string& tag, const PhysicsMetadata& contextInfo)
+{ 
+    if (physicsTags.find(tag) != physicsTags.end()) return false; 
+    physicsTags[tag] = contextInfo; 
+    return true; 
+}
+
+bool TagManager::addTag(const std::string& tag, const std::string& contextInfo)              
+{ 
+    if (tags.find(tag) != tags.end()) return false; 
+    tags.insert({tag, contextInfo}); 
+    return true; 
+}
+
 bool TagManager::getTag(const std::string& tag, std::string& contextOut)
 {
     auto it = tags.find(tag);
@@ -44,17 +58,18 @@ bool TagManager::getTag(const std::string& tag, PhysicsMetadata& contextOut)
 
 bool TagManager::applyTag(Entity* target, const std::string& tag)
 {
+    if (!target) return false;
     if (target->hasTag(tag)) return false;
-    if (hasPhysicsTag(tag)) target->addPhysicsMetadata(tag, physicsTags[tag]);
+    if (!hasPhysicsTag(tag))
+    {
+        target->addTag(tag);
+        return true;
+    }
+    PhysicsEntity* physicsTarget = dynamic_cast<PhysicsEntity*>(target);
+    physicsTarget->addPhysicsMetadata(tag, physicsTags[tag]);
     return true;
 }
 
-bool TagManager::applyTag(PhysicsEntity* target, const std::string& tag)
-{
-    if (target->hasTag(tag)) return false; // don't add duplicates
-    if (hasPhysicsTag(tag)) target->addPhysicsMetadata(tag, physicsTags[tag]);
-    return true;
-}
 
 void TagManager::resolveCollisionTags(EnvironmentObject* env, PhysicsEntity* target)
 {
@@ -108,7 +123,7 @@ void TagManager::resolveCollisionTags(EnvironmentObject* env, PhysicsEntity* tar
 
 
 template<typename T>
-static std::vector<T*> TagManager::getEntitiesWithTag(const std::string& tag) 
+std::vector<T*> TagManager::getEntitiesWithTag(const std::string& tag) 
 {
     std::vector<T*> result;
     for(const auto& [id, entity] : Entity::getIdToEntityMap())

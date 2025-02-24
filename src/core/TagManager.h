@@ -28,20 +28,19 @@ public:
     static void registerSupertype(const std::string& supertypeTag)                          { supertypes.push_back(supertypeTag); }
     static bool isSupertypeTag(const std::string& tag)                                      { return std::find(supertypes.begin(), supertypes.end(), tag) != supertypes.end(); }
 
-    static bool addTag(const std::string& tag, const PhysicsMetadata& contextInfo)          { if (physicsTags.find(tag) != physicsTags.end()) return false; physicsTags[tag] = contextInfo; return true; };
-    static bool addTag(const std::string& tag, const std::string& contextInfo)              { if (tags.find(tag) != tags.end()) return false; tags.insert(tag, contextInfo); return true; };
-
     // Check if a tag context exists
     static bool hasTag(const std::string& tag)                                              { return hasDefaultTag(tag) || hasPhysicsTag(tag); };
     static bool hasDefaultTag(const std::string& tag)                                       { return tags.find(tag) != tags.end(); };
     static bool hasPhysicsTag(const std::string& tag)                                       { return physicsTags.find(tag) != physicsTags.end(); };
     
+    static bool addTag(const std::string& tag, const PhysicsMetadata& contextInfo);
+    static bool addTag(const std::string& tag, const std::string& contextInfo);
+    
     // Get context information for a tag (or false if it doesn't exist)
     static bool getTag(const std::string& tag, std::string& contextOut);
     static bool getTag(const std::string& tag, PhysicsMetadata& contextOut);
     
-    static bool applyTag(Entity*, const std::string& tag);
-    static bool applyTag(PhysicsEntity*, const std::string& tag);
+    static bool applyTag(Entity*, const std::string& tag); // works for physics tags as well
     
     static void resolveCollisionTags(EnvironmentObject*, PhysicsEntity* target);
 

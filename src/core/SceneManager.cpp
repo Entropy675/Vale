@@ -6,7 +6,6 @@ SceneManager::SceneManager() : Entity(glm::vec3(0, 0, 0)), phys(aggregateMesh)
 }
 SceneManager::~SceneManager()
 {
-    if (currentScene) delete currentScene;
     for (Scene* sc : scenes) delete sc;
 }
 
@@ -83,9 +82,10 @@ void SceneManager::loadScene(size_t index)
     _setup();
 }
 
-void SceneManager::addScene(Scene* scene)
+template <typename T>
+void SceneManager::addScene()
 {
-    scenes.push_back(scene);
+    scenes.push_back(new T(aggregateMesh));
     if (scenes.size() == 1) loadScene(0);
 }
 

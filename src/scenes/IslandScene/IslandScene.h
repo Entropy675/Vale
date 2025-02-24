@@ -63,7 +63,7 @@ class IslandScene : public Scene
 
 public:
     // cleanup is handled in parent
-    IslandScene()
+    IslandScene(EnvironmentObject& env) : Scene(env)
     {
         addEntity(new OceanObject());
         addEntity(new IslandObject());

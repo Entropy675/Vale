@@ -59,16 +59,12 @@ class PopperScene : public Scene
 {
 public:
     // cleanup is handled in parent
-    PopperScene()
+    PopperScene(EnvironmentObject& env) : Scene(env)
     {
         defaultCameraOffset = glm::vec3(0.0f, -500.0f, 0.0f);
-        TagManager::addTag("ball");
-        sceneObjects.push_back(new ContainerObject());
+        addEntity(new ContainerObject());
         for (int i = 0; i < 12; i++)
-        {
-            BallObject* ball = new BallObject(generateRandomVector(600));
-            scenePhysicsObjects.push_back(ball);
-        }
+            addEntity(new BallObject(generateRandomVector(600)));
     };
 };
 

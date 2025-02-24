@@ -9,9 +9,18 @@
 
 class PhysicsEntity : public Entity
 {
+    friend class TagManager;
+    
 protected:
-    // Newtonian physics (use glm::length(vec) for calculating magnitude)
+    // properties
+    ofMesh mesh;
     float mass = 1.0f;
+    bool drawDefaultMaterial = false;
+    glm::vec3 scale = glm::vec3(1, 1, 1);
+    ofQuaternion rotation;
+    glm::vec3 translation = glm::vec3(0, 0, 0);
+    
+    // physics
     glm::vec3 velocity = glm::vec3(0, 0, 0);
     glm::vec3 acceleration = glm::vec3(0, 0, 0);
 
@@ -21,36 +30,40 @@ protected:
     std::unordered_map<std::string, PhysicsMetadata> LocalPhysicsMetadata; // Map from tag index to PhysicsMetadata
 
     // Check if a context exists for a given tag index
-    bool hasPhysicsMetadata(const std::string& physicsTag) const                                { return tagsIndexToContext.find(tagIndex) != tagsIndexToContext.end(); }
+    bool hasPhysicsMetadata(const std::string& physicsTag) const                                { return LocalPhysicsMetadata.find(physicsTag) != LocalPhysicsMetadata.end(); }
     const std::unordered_map<std::string, PhysicsMetadata>& getLocalPhysicsMetadata() const     { return LocalPhysicsMetadata; }; // may be empty if all physics tags use static context
 
     bool addPhysicsMetadata(const std::string& physicsTag, const PhysicsMetadata& context); // returns false if tag doesn't exist
     bool getPhysicsMetadata(const std::string& physicsTag, PhysicsMetadata& out); // Retrieve a PhysicsMetadata by tag index
     bool removePhysicsMetadata(const std::string& physicsTag);
-
-    friend class TagManager;
+    
 public:
     // Constructors
     PhysicsEntity(glm::vec3 dimension = glm::vec3(0, 0, 0));
     PhysicsEntity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     virtual ~PhysicsEntity();
+    
+    void draw() override; // for automatic transformation logic
 
     void collision(PhysicsEntity& target); // internal
     virtual void _collision(PhysicsEntity& target) {}; // define your collision behavior
 
     // --- Getters ---
 
-    // physics
+    // physics & properties
+    ofMatrix4x4 getTransformationMatrix() const;
+    bool getPhysicsMetadata(const std::string& physicsTag, PhysicsMetadata& out) const;
+    virtual const ofMesh& getMesh() const                                                       { return mesh; };
+    
+    glm::vec3 getScale() const                                                                  { return scale; };
+    ofQuaternion getRotation() const                                                            { return rotation; };
+    glm::vec3 getTranslation() const                                                            { return translation + position; };
+
     glm::vec3 getVelocity() const                                                               { return velocity; };
     glm::vec3 getAcceleration() const                                                           { return acceleration; };
-
     glm::vec3 getAngularVelocity() const                                                        { return angularVelocity; };
     glm::vec3 getAngularAcceleration() const                                                    { return angularAcceleration; };
 
-    bool getPhysicsMetadata(int entityId, PhysicsMetadata& out) const;
-
-
-    // object properties
     glm::vec3 getFacingDirection() const                                                        { return rotation * glm::vec3(0, 0, 1); };
     ofQuaternion getFacingRotation() const                                                      { return rotation; };
     float getMass() const                                                                       { return mass; }; // mass
@@ -71,13 +84,11 @@ public:
     void setAcceleration(const glm::vec3& accel)                                                { acceleration = accel; };
     void applyForce(const glm::vec3& direction, float power)                                    { acceleration += direction * power / mass; }; // Apply force (accel)
 
-    // Angular velocity and acceleration
     void setAngularVelocity(const glm::vec3& angVel)                                            { angularVelocity = angVel; };
     void addAngularVelocity(const glm::vec3& delta)                                             { angularVelocity += delta; };
 
     // All in one:
     void setPhysicsState(const glm::vec3& newPosition, const glm::vec3& newVelocity, const glm::vec3& newAcceleration);
-
 };
 
 #endif

@@ -9,6 +9,7 @@ PhysicsEntity::PhysicsEntity(glm::vec3 dim) : Entity(dim)
 PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(meshRef, dim)
 {
     rotation = ofQuaternion(0, 0, 0, 1);
+    addTag("physics");
 }
 
 PhysicsEntity::~PhysicsEntity() {}; // each PhysicsEntity manages its own cleanup in its dtor
@@ -17,7 +18,7 @@ PhysicsEntity::~PhysicsEntity() {}; // each PhysicsEntity manages its own cleanu
 bool PhysicsEntity::addPhysicsMetadata(const std::string& physicsTag, const PhysicsMetadata& context)
 {
     if(!TagManager::getTag(physicsTag, context)) return false;
-    if(context.isLocal) LocalPhysicsMetadata.insert(std::pair<physicsTag, context>);
+    if(context.isLocal) LocalPhysicsMetadata.insert({physicsTag, context});
     return true;
 }
     
@@ -27,7 +28,7 @@ bool PhysicsEntity::getPhysicsMetadata(const std::string& physicsTag, PhysicsMet
     if(!TagManager::getTag(physicsTag, out)) return false; // does not exist
     if(!out.isLocal) return true;
     auto it = LocalPhysicsMetadata.find(physicsTag);
-    if (it != tagsIndexToContext.end())
+    if (it != LocalPhysicsMetadata.end())
     {
         out = it->second;
         return true;
@@ -50,6 +51,14 @@ void PhysicsEntity::removeTag(const std::string& tag)
     Entity::removeTag(tag);
 }
 
+void PhysicsEntity::draw()
+{
+    ofPushMatrix();
+    ofMultMatrix(getTransformationMatrix());
+    _draw();
+    ofPopMatrix();
+}
+
 void PhysicsEntity::collision(PhysicsEntity& target)
 {
     _collision(target);
@@ -61,4 +70,16 @@ void PhysicsEntity::setPhysicsState(const glm::vec3& newPosition, const glm::vec
     position = newPosition;
     velocity = newVelocity;
     acceleration = newAcceleration;
+}
+
+ofMatrix4x4 PhysicsEntity::getTransformationMatrix() const
+{
+    ofMatrix4x4 transformation;
+    transformation.scale(scale.x, scale.y, scale.z);
+
+    ofMatrix4x4 rotationMatrix;
+    rotation.get(rotationMatrix);
+    transformation.preMult(rotationMatrix);
+    transformation.translate(position + translation);
+    return transformation;
 }

@@ -30,8 +30,10 @@ class SceneManager : public Entity
 
     void toggleStaticMesh();
     void updateEnvironmentMesh();
+    
+    template <typename T>
+    void addScene();
     void loadScene(size_t index);
-    void addScene(Scene* scene);
 
     // use this to change scenes in order (if you don't want to specify the # with loadScene)
     void next();

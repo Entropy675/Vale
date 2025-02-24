@@ -76,6 +76,16 @@ void PhysicsController::addCam(Camera* cam)
     cam->setPlayer(&physicsObjects);
 }
 
+void PhysicsController::removeEntity(PhysicsEntity* physEntity)
+{
+    auto it = std::find(physicsObjects.begin(), physicsObjects.end(), physEntity);
+    if (it != physicsObjects.end()) 
+    {
+        physicsObjects.erase(it);
+        delete physEntity; 
+    }
+}
+
 void PhysicsController::registerInputManager(InputManager* input)
 {
     inputManager = input;

@@ -22,6 +22,26 @@ Entity::~Entity()
     idToEntityMap.erase(hashId);
 }; // each entity manages its own cleanup in its dtor
 
+bool Entity::hasTag(const std::string& tag) const                           
+{ 
+    return std::find(tags.begin(), tags.end(), tag) != tags.end(); 
+};
+
+bool Entity::addTag(const std::string& tag)
+{ 
+    if(!TagManager::applyTag(this, tag)) return false;
+    tags.push_back(tag); 
+    return true;
+};
+
+void Entity::removeTag(const std::string& tag) 
+{
+    auto it = std::find(tags.begin() + 2, tags.end(), tag); // first two are always reserved
+    if (it == tags.end()) return;
+    if (it == tags.begin() + 2 && TagManager::isSupertypeTag(*it)) return;
+    tags.erase(it); 
+}
+
 void Entity::update()
 {
     if(inputManager != nullptr) _input();
@@ -36,45 +56,17 @@ void Entity::update()
 
 void Entity::draw()
 {
-    ofPushMatrix();
-    /* SRT
-    ofScale(scale);
-    ofMatrix4x4 rotationMatrix;
-    rotation.get(rotationMatrix);
-    ofMultMatrix(rotationMatrix);
-    ofTranslate(translation);
-    */
-    ofMultMatrix(getTransformationMatrix());
-
     _draw();
-
-    ofPopMatrix();
 }
 
 void Entity::setup()
 {
     // uncomment if tracing setup calls regardless of first time
     // std::cout << "Id: " << getId() << " attempted to call setup... ";
-    if (!setupDone) setupDone = true; // prevent any repeated setup
-    else
-    {
-        std::cout << std::endl;
-        return; // ofLogWarning("Entity") << "Setup has already been called!"; // ignore because who cares
-    }
+    if (!setupDone) setupDone = true;
+    else return;
 
     std::cout << "First Time Setup Pass! Entity setup: " <<  hashId << std::endl;
     _setup();
 }
 
-// strongly considering moving this logic to physics entity and just not drawing non physics entities by default
-ofMatrix4x4 Entity::getTransformationMatrix() const
-{
-    ofMatrix4x4 transformation;
-    transformation.scale(scale.x, scale.y, scale.z);
-
-    ofMatrix4x4 rotationMatrix;
-    rotation.get(rotationMatrix);
-    transformation.preMult(rotationMatrix);
-    transformation.translate(position + translation);
-    return transformation;
-}

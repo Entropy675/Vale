@@ -8,6 +8,7 @@
 // #define PRINTALLENTITIES
 class InputManager;
 
+// an entity is simply a valid tag/id combo + potential input handling, kept track of by idToEntityMap. 
 class Entity
 {
     friend class InputManager; // for input context direct access
@@ -22,16 +23,9 @@ private:
 protected:
     glm::vec3 position = glm::vec3(0, 0, 0);
     const long long hashId;
-    ofMesh mesh;
-    bool drawDefaultMaterial = false;
-
     std::vector<std::string> tags;
     InputManager* inputManager = nullptr;
-
-    // object level transformations applied
-    glm::vec3 scale = glm::vec3(1, 1, 1);
-    ofQuaternion rotation;
-    glm::vec3 translation = glm::vec3(0, 0, 0); // x, y, z
+    
 public:
     // Constructors
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
@@ -52,7 +46,7 @@ public:
     virtual void _setup() = 0;
 
     // ------
-    // optional, if your entity needs input
+    // optional, if your entity or its children need input
     virtual void registerInputManager(InputManager* input)              { inputManager = input; }; // everything below is optional and requires a registered input manager
     virtual void _input()                                               { return; }; // called before update only when an inputManager is registered
     virtual void _mouseMoved()                                          { return; }; // called whenever mouseMoved event occurs, this and following mouse events are forwarded from open frameworks
@@ -68,35 +62,19 @@ public:
 
     // ------
     
-    // tags
-    const vector<std::string>& getTags() const                          { return tags; }
-    void addTag(const std::string& tag)                                 
-    { 
-        if(TagManager::applyTag(this, tag)) tags.push_back(tag);
-    };
-    bool hasTag(const std::string& tag) const                           { return std::find(tags.begin(), tags.end(), tag) != tags.end(); };
-    virtual void removeTag(const std::string& tag) // virtual in case of child supertype cleanup
-    {
-        auto it = std::find(tags.begin() + 2, tags.end(), tag); // first two are always reserved
-        if (it == tags.end()) return;
-        if (it == tags.begin() + 2 && TagManager::isSupertypeTag(*it)) return;
-        tags.erase(it); 
-    }
-
-    // getters (not sure if these should be moved to physics entity.... considering it. Lightweight entity is better.)
-    glm::vec3 getPosition() const                                       { return position; };
-    ofQuaternion getRotation() const                                    { return rotation; };
-    glm::vec3 getScale() const                                          { return scale; };
-    glm::vec3 getTranslation() const                                    { return translation + position; };
-    virtual const ofMesh& getMesh() const                               { return mesh; }; // can override for custom or strange meshes
-    static Entity* getEntityById(int id)                                { return idToEntityMap[id]; };
-    static const std::unordered_map<int, Entity*>& getIdToEntityMap()   { return idToEntityMap; }
+    // Tags
+    bool hasTag(const std::string& tag) const;
+    bool addTag(const std::string& tag);
+    virtual void removeTag(const std::string& tag); 
+    // virtual in case of child supertype special cleanup (remember to call parent removeTag) 
+    // (TODO: reconsider this, might be only PhysicsEntity that needs this)
     
-
-    // helpers
-    ofMesh copyMesh() const                                             { return mesh; };
+    // getters
+    const std::vector<std::string>& getTags() const                     { return tags; };
     long long getId() const                                             { return hashId; };
-    ofMatrix4x4 getTransformationMatrix() const;
+    glm::vec3 getPosition() const                                       { return position; };
+    static Entity* getEntityById(int id)                                { return idToEntityMap[id]; };
+    static const std::unordered_map<int, Entity*>& getIdToEntityMap()   { return idToEntityMap; };
 };
 
 #endif

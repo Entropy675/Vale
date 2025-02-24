@@ -46,9 +46,9 @@ void ofApp::setup()
 
     // add scenes / scene setups
     sceneManager.registerInputManager(&inputManager);
-    sceneManager.addScene(new IslandScene());
-    sceneManager.addScene(new PopperScene());
-    sceneManager.addScene(new JolfBaseScene());
+    sceneManager.addScene<IslandScene>();
+    sceneManager.addScene<PopperScene>();
+    sceneManager.addScene<JolfBaseScene>();
     sceneManager.setup();
 
     /// map these keys so that shift works properly

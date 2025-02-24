@@ -16,7 +16,7 @@ protected:
     PhysicsController phys; // std::vector<PhysicsEntity*> scenePhysicsObjects; // unaltered copy
 
 public:
-    Scene() {};
+    Scene(EnvironmentObject& env) : phys(env) {};
     virtual ~Scene();
     
     // if 'player' tag present in entity, then add to playersInScene.
@@ -28,14 +28,15 @@ public:
     // std::list<std::tuple<std::string, std::vector<Entity*>>> tagEntityList;
     
     void setup();
+    
     void loadScene();
     bool loadSceneFromFile(const std::string& path); // TODO not done yet...
     bool saveSceneToFile(const std::string& path);
 
     std::vector<Player*>* getPlayersInScene() { return playersInScene; };
 
-    void addEntity(PhysicsEntity* physEntity);
     void addEntity(Entity* Entity);
+    void removeEntity(Entity* ent);
 };
 
 

@@ -28,6 +28,7 @@ public:
 
     void addCam(Camera* camEntity);
     void addEntity(PhysicsEntity* physEntity) { return physicsObjects.push_back(physEntity); }
+    void removeEntity(PhysicsEntity* physEntity);
 };
 
 #endif

@@ -35,9 +35,9 @@ class JolfBaseScene : public Scene
 {
 public:
     // cleanup is handled in parent
-    JolfBaseScene()
+    JolfBaseScene(EnvironmentObject& env) : Scene(env)
     {
-        sceneObjects.push_back(new JolfOceanObject());
+        addEntity(new JolfOceanObject());
         //sceneObjects.push_back(new IslandObject());
     };
 };
