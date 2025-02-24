@@ -44,26 +44,14 @@ bool TagManager::getTag(const std::string& tag, PhysicsMetadata& contextOut)
 bool TagManager::applyTag(Entity* target, const std::string& tag)
 {
     if (target->hasTag(tag)) return false;
-
-    if (hasPhysicsTag(tag))
-    {
-        std::cout << "TagManager applyTag error: physics tag " << tag <<
-        " cannot be applied to non physics entity: " << target->getId() << std::endl;
-        return false;
-    }
-
-    if (!hasDefaultTag(tag)) addTag(tag, "ephemeral"); // add even if doesn't exist
-    target->tags.push_back(tag);
-
+    if (hasPhysicsTag(tag)) target->addPhysicsMetadata(tag, physicsTags[tag]);
     return true;
 }
 
 bool TagManager::applyTag(PhysicsEntity* target, const std::string& tag)
 {
     if (target->hasTag(tag)) return false; // don't add duplicates
-
-    target->tags.push_back(tag);
-    if (hasPhysicsTag(tag)) target->tagsIndexToContext[target->tags.size() - 1] = physicsTags[tag];
+    if (hasPhysicsTag(tag)) target->addPhysicsMetadata(tag, physicsTags[tag]);
     return true;
 }
 

@@ -14,16 +14,16 @@ PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(mesh
 PhysicsEntity::~PhysicsEntity() {}; // each PhysicsEntity manages its own cleanup in its dtor
 
 
-void PhysicsEntity::addPhysicsMetadata(size_t tagIndex, const PhysicsMetadata& context)
+bool PhysicsEntity::addPhysicsMetadata(const std::string& physicsTag, const PhysicsMetadata& context)
 {
-    if (tagsIndexToContext.find(tagIndex) != tagsIndexToContext.end()) { return; }
-    tagsIndexToContext[tagIndex] = context;
+    if(!TagManager::getTag(physicsTag, context)) return false;
+    if(context.isLocal) LocalPhysicsMetadata.insert(physicsTag, context);
 }
-
+    
 // Retrieve a PhysicsMetadata by tag index
-bool PhysicsEntity::getPhysicsMetadata(size_t tagIndex, PhysicsMetadata& out)
+bool PhysicsEntity::getPhysicsMetadata(const std::string& physicsTag, PhysicsMetadata& out)
 {
-    auto it = tagsIndexToContext.find(tagIndex);
+    auto it = LocalPhysicsMetadata.find(physicsTag);
     if (it != tagsIndexToContext.end())
     {
         out = it->second;
@@ -32,24 +32,10 @@ bool PhysicsEntity::getPhysicsMetadata(size_t tagIndex, PhysicsMetadata& out)
     return false;
 }
 
-bool PhysicsEntity::removePhysicsMetadata(size_t tagIndex)
-{
-    auto it = tagsIndexToContext.find(tagIndex);
-    if (it != tagsIndexToContext.end())
-    {
-        tagsIndexToContext.erase(it);
-        return true; // Successfully removed
-    }
-    return false; // No metadata found for the given tag index
-}
-
 void PhysicsEntity::removeTag(const std::string& tag)
 {
-    auto it = std::find(tags.begin(), tags.end(), tag);
-    if (it != tags.end())
-        tags.erase(it);
-    if (TagManager::hasPhysicsTag(tag))
-        removePhysicsMetadata(std::distance(tags.begin(), it));
+    Entity::removeTag(tag);
+    if (TagManager::hasPhysicsTag(tag)) LocalPhysicsMetadata.erase(tag);
 }
 
 void PhysicsEntity::collision(PhysicsEntity& target)

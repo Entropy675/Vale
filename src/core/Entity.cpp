@@ -66,7 +66,7 @@ void Entity::setup()
     _setup();
 }
 
-// helpers
+// strongly considering moving this logic to physics entity and just not drawing non physics entities by default
 ofMatrix4x4 Entity::getTransformationMatrix() const
 {
     ofMatrix4x4 transformation;

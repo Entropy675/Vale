@@ -7,6 +7,7 @@
 struct PhysicsMetadata
 {
     std::string tag;
+    std::bool isLocal = true; // false for static PhysicsMetadata across all of type
     void* context = nullptr; // optional personal or privately shared & mutable version of below (what handles this ones mem?)
 
     std::function<bool(const glm::vec3&)> boundingEquation; // Checks for collision

@@ -17,15 +17,15 @@ protected:
     glm::vec3 angularVelocity = glm::vec3(0, 0, 0);
     glm::vec3 angularAcceleration = glm::vec3(0, 0, 0);
 
-    std::unordered_map<size_t, PhysicsMetadata> tagsIndexToContext; // Map from tag index to PhysicsMetadata
+    std::unordered_map<const std::string physicsTag, PhysicsMetadata> LocalPhysicsMetadata; // Map from tag index to PhysicsMetadata
 
     // Check if a context exists for a given tag index
-    bool hasPhysicsMetadata(size_t tagIndex) const { return tagsIndexToContext.find(tagIndex) != tagsIndexToContext.end(); }
-    const std::unordered_map<size_t, PhysicsMetadata>& getAllPhysicsMetadata() const { return tagsIndexToContext; };
+    bool hasPhysicsMetadata(const std::string& physicsTag) const { return tagsIndexToContext.find(tagIndex) != tagsIndexToContext.end(); }
+    const std::unordered_map<const std::string& physicsTag, PhysicsMetadata>& getAllPhysicsMetadata() const { return LocalPhysicsMetadata; };
 
-    void addPhysicsMetadata(size_t tagIndex, const PhysicsMetadata& context);
-    bool getPhysicsMetadata(size_t tagIndex, PhysicsMetadata& out); // Retrieve a PhysicsMetadata by tag index
-    bool removePhysicsMetadata(size_t tagIndex);
+    bool addPhysicsMetadata(const std::string& physicsTag, const PhysicsMetadata& context); // returns false if tag doesn't exist
+    bool getPhysicsMetadata(const std::string& physicsTag, PhysicsMetadata& out); // Retrieve a PhysicsMetadata by tag index
+    bool removePhysicsMetadata(const std::string& physicsTag);
 
     friend class TagManager;
 public:

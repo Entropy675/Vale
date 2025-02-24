@@ -11,12 +11,12 @@ class InputManager;
 class Entity
 {
     friend class InputManager; // for input context direct access
-    friend class TagManager;   // for tags direct access
+    friend class TagManager;   // for apply tags direct access
 
 private:
     bool setupDone = false;
     static long long uniqueCounter;
-    static std::unordered_map<int, Entity*> idToEntityMap;
+    static std::unordered_map<int, Entity*> idToEntityMap; // consider replacing with tuple for low values
     bool inputContext[NUM_KEYS] = {};
 
 protected:
@@ -25,7 +25,7 @@ protected:
     ofMesh mesh;
     bool drawDefaultMaterial = false;
 
-    vector<std::string> tags;
+    std::vector<std::string> tags;
     InputManager* inputManager = nullptr;
 
     // object level transformations applied
@@ -51,6 +51,7 @@ public:
     virtual void _draw() = 0;
     virtual void _setup() = 0;
 
+    // ------
     // optional, if your entity needs input
     virtual void registerInputManager(InputManager* input)              { inputManager = input; }; // everything below is optional and requires a registered input manager
     virtual void _input()                                               { return; }; // called before update only when an inputManager is registered
@@ -65,19 +66,22 @@ public:
     virtual void _gotMessage(ofMessage msg)                             { return; }; // openframeworks arbitrary message string
     virtual void _dragEvent(ofDragInfo dragInfo)                        { return; }; // of file dragged into window event
 
+    // ------
+    
     // tags
     const vector<std::string>& getTags() const                          { return tags; }
-    virtual void addTag(const std::string& tag)                         { TagManager::applyTag(this, tag); };
-            // { if (!hasTag(tag)) tags.push_back(tag); };
-    virtual bool hasTag(const std::string& tag) const                   { return std::find(tags.begin(), tags.end(), tag) != tags.end(); };
-    virtual void removeTag(const std::string& tag)
+    void addTag(const std::string& tag)                                 
+    { 
+        if(TagManager::applyTag(this, tag))  tags.push_back(tag);
+    };
+    bool hasTag(const std::string& tag) const                           { return std::find(tags.begin(), tags.end(), tag) != tags.end(); };
+    void removeTag(const std::string& tag)
     {
         auto it = std::find(tags.begin(), tags.end(), tag);
-        if (it != tags.end())
-            tags.erase(it);
+        if (it != tags.end()) tags.erase(it);
     }
 
-    // getters
+    // getters (not sure if these should be moved to physics entity.... considering it. Lightweight entity is better.)
     glm::vec3 getPosition() const                                       { return position; };
     ofQuaternion getRotation() const                                    { return rotation; };
     glm::vec3 getScale() const                                          { return scale; };
