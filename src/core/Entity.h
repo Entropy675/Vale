@@ -77,8 +77,10 @@ public:
     bool hasTag(const std::string& tag) const                           { return std::find(tags.begin(), tags.end(), tag) != tags.end(); };
     virtual void removeTag(const std::string& tag) // virtual in case of child supertype cleanup
     {
-        auto it = std::find(tags.begin() + 2, tags.end(), tag);
-        if (it != tags.end()) tags.erase(it);
+        auto it = std::find(tags.begin() + 2, tags.end(), tag); // first two are always reserved
+        if (it == tags.end()) return;
+        if (it == tags.begin() + 2 && TagManager::isSupertypeTag(*it)) return;
+        tags.erase(it); 
     }
 
     // getters (not sure if these should be moved to physics entity.... considering it. Lightweight entity is better.)

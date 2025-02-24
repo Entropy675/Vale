@@ -1,6 +1,15 @@
 What is a supertype?
 A supertype is a class attributed to a tag.
 Tags normally only have an associated tag-wide context object. But each supertype has this object and also determines the class of the entity instance itself.
-The first supertype tag on an entity determines its class, if there are more then the others are treated as regular tags (no supertpe class, context object etc still aplies).
+The first supertype tag on an entity determines its class, if there are more then the others are treated as regular tags.
+
+PhysicsEntity/Entity are virtual, so an entity MUST have a supertype class.
+That means that the class heirarchy and the order of tags in an entity are always the following:
+Class: Entity <- PhysicsEntity <- Determining Supertype
+tags = ["entity", "physics", "Hero"]
+
+Class: Entity <- Determining Supertype
+tags = ["entity", "Hero"]
+
 This allows us to statically determine types in runtime, and allows entities to be composed of classes.
 This system may be subject to further change and refinement going forward.
