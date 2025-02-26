@@ -14,53 +14,12 @@ void SceneManager::toggleStaticMesh()
     drawStaticMesh = !drawStaticMesh;
 }
 
-void SceneManager::updateEnvironmentMesh()
+void SceneManager::initializeEnvironmentMesh()
 {
     aggregateMesh.clear();
-    for (const Entity* ent : scenes[currentSceneIndex]->getEntities())
-    {
-        if (!ent->hasTag("physics")) continue;
-        PhysicsEntity* target = static_cast<PhysicsEntity*>(ent);
-        ofMesh transformedMesh = target->getMesh();
-        if (transformedMesh.getNumVertices() == 0) continue;
-
-        ofMatrix4x4 transformationMatrix = target->getTransformationMatrix(); 
-        transformedMesh.transform(transformationMatrix); // transform the copied mesh
-
-        aggregateMesh.addMesh(transformedMesh); // Add the transformed mesh
-        std::cout << "Appended " << transformedMesh.getNumVertices() << " vertices from entity." << std::endl;
-    }
-
+    aggregateMesh.addMesh(scenes[currentSceneIndex]->getAggregateMesh());
     aggregateMesh.setupEnvironment();
-    std::cout << "updateEnvironmentMesh success" << std::endl;
-    
-    /*
-    for (Entity* ent : entities)
-    {
-        if(!ent->hasTag("physics")) continue;
-        PhysicsEntity* target = static_cast<PhysicsEntity*>(ent);  
-        if (target->getMesh().getNumVertices() == 0) continue;
-        ofMesh entityMesh = target->getMesh();
-
-        // Transform each vertex in the entity's mesh
-        for (size_t i = 0; i < entityMesh.getNumVertices(); i++)
-        {
-            ofVec3f vertex = entityMesh.getVertex(i);
-            vertex *= target->getScale();
-            ofVec3f transformedVertex = target->getRotation() * vertex;
-            transformedVertex += target->getTranslation();
-            //ofMatrix4x4 transformationMatrix = target->getTransformationMatrix();
-
-            entityMesh.setVertex(i, ofVec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z)); // Update the vertex
-            aggregateMesh.addVertex(entityMesh.getVertex(i), entity->getId());
-        }
-
-        // Append the transformed mesh to the aggregate mesh
-        // appended each vertex individually above
-        // aggregateMesh.addVertex(entityMesh);
-        std::cout << "Appended " << entityMesh.getNumVertices() << " vertices from entity." << std::endl;
-
-    }*/
+    std::cout << "initializeEnvironmentMesh success" << std::endl;
 }
 
 void SceneManager::loadScene(size_t index)
@@ -78,34 +37,16 @@ void SceneManager::loadScene(size_t index)
     
     std::cout << "SCENE: " << currentSceneIndex << " -> " << index << std::endl;
 
-    phys.clear(); // TODO: special tag for keeping physics entities across scene transitions 
     currentSceneIndex = index;
-    
-    // TODO: change to searching supertype to class list managed by TagManager (not done yet)
-    Camera* cam = nullptr;
-    Entity* camTarget = nullptr;
-    for (const Entity* ent : scenes[currentSceneIndex]->getEntities())
-    {
-        if(ent->hasTag("camera_target")
-            camTarget = ent;
-        if(ent->hasTag("camera")
-            cam = static_cast<Camera*>(ent);
-    }
-    if(camTarget) cam = new Camera(camTarget->getPosition());
-    else cam = new Camera();
-    cam->registerInputManager(inputManager);
-    cam->setup();
-    std::cout << "adding phys cam... " << std::endl;
-    phys.addCam(cam);
-    
-    _setup();
+    scenes[currentSceneIndex]->setup();
+    initializeEnvironmentMesh();
 }
 
 template <typename T>
 void SceneManager::addScene()
 {
     scenes.push_back(new T(aggregateMesh));
-    if (scenes.size() == 1) loadScene(0);
+    loadScene(0);
 }
 
 void SceneManager::next()
@@ -130,33 +71,24 @@ void SceneManager::prev()
 
 void SceneManager::_setup()
 {
-    phys.setup();
-    for (Entity* ptr : entities)
-    {
-        ptr->registerInputManager(inputManager);
-        ptr->setup();
-    }
-    updateEnvironmentMesh();
+    if (scenes.size()) loadScene(currentSceneIndex);
+    else std::cout << "SceneManager setup called with no scenes added..." << std::endl; 
 }
 
 void SceneManager::_update()
 {
-    phys.update();
-    for (Entity* ptr : entities) ptr->update();
+    scenes[currentSceneIndex]->update();
 }
 
 void SceneManager::_draw()
 {
-    cam->camBegin();
-    phys.draw();
-    for (Entity* ptr : entities) ptr->draw();
-    if (drawStaticMesh) aggregateMesh.getMesh().drawWireframe();
-    cam->camEnd();
+    scenes[currentSceneIndex]->draw();
+    //if (drawStaticMesh) aggregateMesh.getMesh().drawWireframe(); // maybe wireframe instead so you can see better...
+    if (drawStaticMesh) aggregateMesh.draw();
 }
 
 void SceneManager::registerInputManager(InputManager* input)
 {
     inputManager = input;
     phys.registerInputManager(input);
-    input->setActiveEntities(&entities);
 }

@@ -13,4 +13,6 @@ class Enemy;
 class Entity;
 class Camera;
 
+#define class_string(x) #x
+
 #endif

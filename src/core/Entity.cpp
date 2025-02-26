@@ -10,13 +10,6 @@ Entity::Entity(glm::vec3 pos)
     idToEntityMap.insert({hashId, this});
 }
 
-Entity::Entity(const ofMesh& meshRef, glm::vec3 pos)
-    : position(pos), hashId(++uniqueCounter), mesh(meshRef)
-{
-    addTag("entity");
-    idToEntityMap.insert({hashId, this});
-}
-
 Entity::~Entity()
 {
     idToEntityMap.erase(hashId);

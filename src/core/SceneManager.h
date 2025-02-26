@@ -15,7 +15,6 @@ class SceneManager : public Entity
 {
     private:
     int currentSceneIndex = 0;
-    Scene* currentScene;
     std::vector<Scene*> scenes; // mem managed by this class
     
     PhysicsController phys;
@@ -29,7 +28,7 @@ class SceneManager : public Entity
     ~SceneManager();
 
     void toggleStaticMesh();
-    void updateEnvironmentMesh();
+    void initializeEnvironmentMesh();
     
     template <typename T>
     void addScene();

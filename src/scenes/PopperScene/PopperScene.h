@@ -61,7 +61,6 @@ public:
     // cleanup is handled in parent
     PopperScene(EnvironmentObject& env) : Scene(env)
     {
-        defaultCameraOffset = glm::vec3(0.0f, -500.0f, 0.0f);
         addEntity(new ContainerObject());
         for (int i = 0; i < 12; i++)
             addEntity(new BallObject(generateRandomVector(600)));

@@ -31,7 +31,6 @@ public:
     float getPlayerSpeed() const                        { return moveSpeed; };
 
     void toggleCameraAssignment() { cameraAssigned = !cameraAssigned; }
-
-    void setPlayerOrientation(glm::vec3 facingDirection) { playerOrientation = facingDirection; }
+        // use setFacingDirection
 };
 #endif

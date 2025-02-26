@@ -36,7 +36,7 @@ private:
     glm::vec3 computeLighting(const glm::vec3& point, const glm::vec3& normal, const glm::vec3& viewDir, const Sphere& sphere);
 
 public:
-    RaytracingObject(glm::vec3 position = glm::vec3(-50, -1, 300), int width = 800, int height = 600)
+    RaytracingObject(glm::vec3 position = glm::vec3(-50, -1, 300), int width = 800, int height = 600);
     ~RaytracingObject();
 
     void _setup() override;

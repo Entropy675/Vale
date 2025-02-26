@@ -6,7 +6,8 @@ PhysicsEntity::PhysicsEntity(glm::vec3 dim) : Entity(dim)
     addTag("physics");
 }
 
-PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(meshRef, dim)
+PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) 
+    : Entity(dim), mesh(meshRef)
 {
     rotation = ofQuaternion(0, 0, 0, 1);
     addTag("physics");
@@ -15,7 +16,7 @@ PhysicsEntity::PhysicsEntity(const ofMesh& meshRef, glm::vec3 dim) : Entity(mesh
 PhysicsEntity::~PhysicsEntity() {}; // each PhysicsEntity manages its own cleanup in its dtor
 
 
-bool PhysicsEntity::addPhysicsMetadata(const std::string& physicsTag, const PhysicsMetadata& context)
+bool PhysicsEntity::addPhysicsMetadata(const std::string& physicsTag, PhysicsMetadata& context)
 {
     if(!TagManager::getTag(physicsTag, context)) return false;
     if(context.isLocal) LocalPhysicsMetadata.insert({physicsTag, context});

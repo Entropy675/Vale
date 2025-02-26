@@ -19,6 +19,7 @@ protected:
     glm::vec3 scale = glm::vec3(1, 1, 1);
     ofQuaternion rotation;
     glm::vec3 translation = glm::vec3(0, 0, 0);
+    glm::vec3 facing =  glm::vec3(0, 0, 1);
     
     // physics
     glm::vec3 velocity = glm::vec3(0, 0, 0);
@@ -33,7 +34,7 @@ protected:
     bool hasPhysicsMetadata(const std::string& physicsTag) const                                { return LocalPhysicsMetadata.find(physicsTag) != LocalPhysicsMetadata.end(); }
     const std::unordered_map<std::string, PhysicsMetadata>& getLocalPhysicsMetadata() const     { return LocalPhysicsMetadata; }; // may be empty if all physics tags use static context
 
-    bool addPhysicsMetadata(const std::string& physicsTag, const PhysicsMetadata& context); // returns false if tag doesn't exist
+    bool addPhysicsMetadata(const std::string& physicsTag, PhysicsMetadata& context); // returns false if tag doesn't exist
     bool getPhysicsMetadata(const std::string& physicsTag, PhysicsMetadata& out); // Retrieve a PhysicsMetadata by tag index
     bool removePhysicsMetadata(const std::string& physicsTag);
     
@@ -64,7 +65,7 @@ public:
     glm::vec3 getAngularVelocity() const                                                        { return angularVelocity; };
     glm::vec3 getAngularAcceleration() const                                                    { return angularAcceleration; };
 
-    glm::vec3 getFacingDirection() const                                                        { return rotation * glm::vec3(0, 0, 1); };
+    glm::vec3 getFacingDirection() const                                                        { return rotation * facing; };
     ofQuaternion getFacingRotation() const                                                      { return rotation; };
     float getMass() const                                                                       { return mass; }; // mass
 
@@ -87,6 +88,8 @@ public:
     void setAngularVelocity(const glm::vec3& angVel)                                            { angularVelocity = angVel; };
     void addAngularVelocity(const glm::vec3& delta)                                             { angularVelocity += delta; };
 
+    void setFacingDirection(glm::vec3 facingDirection)                                          { facing = facingDirection; };
+    
     // All in one:
     void setPhysicsState(const glm::vec3& newPosition, const glm::vec3& newVelocity, const glm::vec3& newAcceleration);
 };

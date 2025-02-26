@@ -1,6 +1,5 @@
 #include "Camera.h"
 
-
 void Camera::_setup()
 {
     addTag("camera");
@@ -24,21 +23,17 @@ void Camera::_input()
     if (inputManager->getHeld(' ')) camera.move(0, moveSpeed, 0); // Move Up
     if (inputManager->getHeld(OF_KEY_SHIFT)) camera.boom(-moveSpeed); // Move Down
     
+    if (!playersInScene.size()) return;
     
+    playersInScene[currPlayer]->setFacingDirection(camera.getLookAtDir());
+    camera.setPosition((playersInScene[currPlayer]->getPosition() + getPosition()) - (800 * camera.getLookAtDir()));
+
+    if (!inputManager->getPressedOnce('p')) return;
     
-    if (playersInScene.size())
-    {
-        playersInScene[currPlayer]->setPlayerOrientation(camera.getLookAtDir());
-        camera.setPosition((playersInScene[currPlayer]->getPosition() + getPosition()) - (800 * camera.getLookAtDir()));
-    
-        if (!inputManager->getPressedOnce('p')) return;
-        
-        playersInScene[currPlayer]->toggleCameraAssignment();
-        currPlayer++;
-        currPlayer %= playersInScene.size();
-        playersInScene[currPlayer]->toggleCameraAssignment();   
-    }
-    
+    playersInScene[currPlayer]->toggleCameraAssignment();
+    currPlayer++;
+    currPlayer %= playersInScene.size();
+    playersInScene[currPlayer]->toggleCameraAssignment();
 }
 
 
@@ -56,7 +51,7 @@ void Camera::_mouseMoved(ofMouseEventArgs& mouseMovement)
     camera.tiltDeg(-sensitivity * deltaY);   // Tilt (up-down rotation)
 
     if (playersInScene.size())
-        playersInScene[currPlayer]->setPlayerOrientation(camera.getLookAtDir());
+        playersInScene[currPlayer]->setFacingDirection(camera.getLookAtDir());
 
 }
 

@@ -29,49 +29,83 @@ void Scene::loadScene(std::vector<Entity*>* list)
 
 void Scene::setup()
 {
-    _setup();
+    inputManager->setActiveEntities(&entities); // activates its entities input callbacks whenever setup is called
+    if (setupDone) return;
+    _setup(); // scene sets up its objects here
+    for (Entity* ptr : entities)
+    {
+        ptr->registerInputManager(inputManager);
+        ptr->setup();
+    }
     phys.setup();
     
-    // TODO: change to searching supertype to class list managed by TagManager (not done yet)
+    // TODO: change to searching supertype to setting up tag type map managed by TagManager (not done yet)
     Camera* cam = nullptr;
     PhysicsEntity* camTarget = nullptr;
     for (Entity* ptr : entities)
     {
         ptr->registerInputManager(inputManager);
         ptr->setup();
-        if(ent->hasTag("camera_target")
-            camTarget = static_cast<PhysicsEntity*>(ent);
-        if(ent->hasTag("camera")
-            cam = static_cast<Camera*>(ent);
+        if(ptr->hasTag("camera_target"))
+            camTarget = static_cast<PhysicsEntity*>(ptr);
+        if(ptr->hasTag("camera"))
+            cam = static_cast<Camera*>(ptr);
     }
     
     if(!cam && camTarget) cam = new Camera(camTarget->getPosition());
-    else if(!cam) cam = new Camera();
+    else if(!cam) cam = new Camera(glm::vec3(0));
     cam->registerInputManager(inputManager);
     cam->setup();
     std::cout << "adding phys cam... " << std::endl;
     phys.addCam(cam);
     
-    updateEnvironmentMesh();
+    setupDone = true;
 }
 
 void Scene::update()
 {
-    _update();
+    _update(); // every scene update call
     phys.update();
     for (Entity* ptr : entities) ptr->update();
 }
 
 void Scene::draw()
 {
-    cam->camBegin();
-    _draw();
+    if(!camsInScene.size())
+    {
+        std::cout << "!! Error: No camera found in scene!" << std::endl;
+        return; // in case no camera in the scenes camera array (maybe the entity isn't being added to its taglist)??
+    }
+    camsInScene[currentCam]->camBegin();
+    _draw(); // every scene draw call
     phys.draw();
     for (Entity* ptr : entities) ptr->draw();
-    if (drawStaticMesh) aggregateMesh.getMesh().drawWireframe(); // TODO maybe remove this?
-    cam->camEnd();
+    camsInScene[currentCam]->camEnd();
 }
 
+ofMesh Scene::getAggregateMesh()
+{
+    ofMesh aggregateMesh;
+    for (Entity* ent : entities)
+    {
+        if (!ent->hasTag("physics")) continue;
+        PhysicsEntity* target = static_cast<PhysicsEntity*>(ent);
+        ofMesh transformedMesh = target->getMesh();
+        if (transformedMesh.getNumVertices() == 0) continue;
+
+        ofMatrix4x4 transformationMatrix = target->getTransformationMatrix();         
+        for (size_t i = 0; i < transformedMesh.getNumVertices(); i++)
+        {
+            ofVec3f transformedVertex = transformationMatrix.preMult((ofVec3f)transformedMesh.getVertex(i));
+            transformedMesh.setVertex(i, transformedVertex); // glm::vec3(transformedVertex.x, transformedVertex.y, transformedVertex.z)
+        }
+        aggregateMesh.append(transformedMesh); // Add the transformed mesh
+        std::cout << "Appended " << transformedMesh.getNumVertices() << " vertices from entity." << std::endl;
+    }
+    return aggregateMesh;
+}
+
+    
 void Scene::addEntity(Entity* ent)
 {
     if (!ent->hasTag("physics")) 
@@ -97,7 +131,6 @@ void Scene::addEntity(Entity* ent)
     
     
     phys.addEntity(static_cast<PhysicsEntity*>(ent));
-    return;
 }
 
 

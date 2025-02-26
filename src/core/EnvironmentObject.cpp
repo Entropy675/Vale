@@ -16,7 +16,7 @@ void EnvironmentObject::clear()
 
 void EnvironmentObject::addMesh(const ofMesh& m)
 {
-    mesh.addMesh(m);
+    mesh.append(m);
     // this is where seed spheres will be calc'd
     // once solved, add via addSeedPoint function below
 }
@@ -32,10 +32,10 @@ void EnvironmentObject::setupEnvironment()
     std::cout << "Constructing KDTree with points " << kdTree.getAllPoints().size() << "... " << std::endl;
     if (kdTree.getAllPoints().size() == 0) kdTree.addPoint(glm::vec3(0,0,0), 0, 1);
     kdTree.constructKDTree(); // Build the KDTree after all points are added
-    if (kdTree.getAllPoints().size() != mesh.getNumVertices()) recomputeMesh();
+    //if (kdTree.getAllPoints().size() != mesh.getNumVertices()) recomputeMesh();
 }
 
-void EnvironmentObject::recomputeMesh()
+void EnvironmentObject::recomputeMesh() // replace with compue sphere set
 {
     std::cout << "Environment Mesh Computing: kdtree - " << kdTree.getAllPoints().size() << " | -> | mesh - " << mesh.getNumVertices() << std::endl;
     mesh.clear();

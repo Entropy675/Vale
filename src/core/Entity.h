@@ -15,12 +15,12 @@ class Entity
     friend class TagManager;   // for apply tags direct access
 
 private:
-    bool setupDone = false;
     static long long uniqueCounter;
     static std::unordered_map<int, Entity*> idToEntityMap; // consider replacing with tuple for low values
     bool inputContext[NUM_KEYS] = {};
 
 protected:
+    bool setupDone = false;
     glm::vec3 position = glm::vec3(0, 0, 0);
     const long long hashId;
     std::vector<std::string> tags;
@@ -29,7 +29,6 @@ protected:
 public:
     // Constructors
     Entity(glm::vec3 position = glm::vec3(0, 0, 0));
-    Entity(const ofMesh& meshRef, glm::vec3 dimension = glm::vec3(0, 0, 0));
     virtual ~Entity();
 
     // you must declare an explicit copy for clarity

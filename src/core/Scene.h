@@ -22,8 +22,9 @@ public:
     
     // if 'player' tag present in entity, then add to playersInScene.
     // this will eventually be replaced by a list of type sorted pointers returned by tag manager
-    std::vector<Player*> playersInScene;
-    std::vector<Camera*> camsInScene;
+    std::vector<Player*> playersInScene = {};
+    std::vector<Camera*> camsInScene = {};
+    Camera* getCurrentCam() { return camsInScene[currentCam]; };
     int currentCam = 0;
     //std::vector<supertype*>* someSuperTypeList
     // -> will be replaced with map: tags -> std:vector<Entity*>
@@ -38,6 +39,8 @@ public:
     void update() override;
     void draw() override;
  
+    ofMesh getAggregateMesh();
+    
     void loadScene();
     bool loadSceneFromFile(const std::string& path); // TODO not done yet...
     bool saveSceneToFile(const std::string& path);
