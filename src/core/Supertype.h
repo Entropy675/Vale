@@ -6,14 +6,15 @@
 #include "defs.h"
 
 
-class Supertype
+class Supertype : public Entity
 {
 
 private:
     std::string tag;
     
 public:
-    
+    Supertype();
+    ~Supertype();
 
 };
 

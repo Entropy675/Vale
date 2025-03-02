@@ -31,32 +31,27 @@ void Scene::setup()
 {
     inputManager->setActiveEntities(&entities); // activates its entities input callbacks whenever setup is called
     if (setupDone) return;
-    _setup(); // scene sets up its objects here
     for (Entity* ptr : entities)
     {
         ptr->registerInputManager(inputManager);
         ptr->setup();
     }
     phys.setup();
+    _setup(); // user defined optional extra scene set up here (called first time scene is set up, use for setup thats not entity related)
     
-    // TODO: change to searching supertype to setting up tag type map managed by TagManager (not done yet)
+    // TODO: change to searching supertype / setting up tag type map managed by TagManager (not done yet)
+    currentCam = 0;
     Camera* cam = nullptr;
     PhysicsEntity* camTarget = nullptr;
-    for (Entity* ptr : entities)
+
+    if (camsInScene.size() == 0)
     {
-        ptr->registerInputManager(inputManager);
-        ptr->setup();
-        if(ptr->hasTag("camera_target"))
-            camTarget = static_cast<PhysicsEntity*>(ptr);
-        if(ptr->hasTag("camera"))
-            cam = static_cast<Camera*>(ptr);
+        std::cout << "!!!!!      <  No cameras found in loaded scene??  >      !!!!!";
+        cam = new Camera(glm::vec3(0)); // make a default cam
     }
-    
-    if(!cam && camTarget) cam = new Camera(camTarget->getPosition());
-    else if(!cam) cam = new Camera(glm::vec3(0));
+    else cam = camsInScene[currentCam];
     cam->registerInputManager(inputManager);
     cam->setup();
-    std::cout << "adding phys cam... " << std::endl;
     phys.addCam(cam);
     
     setupDone = true;
@@ -64,9 +59,9 @@ void Scene::setup()
 
 void Scene::update()
 {
-    _update(); // every scene update call
-    phys.update();
     for (Entity* ptr : entities) ptr->update();
+    phys.update();
+    _update(); // user defined optional scene update call (for behaviour not associated with entities but the scene itself)
 }
 
 void Scene::draw()
@@ -77,9 +72,9 @@ void Scene::draw()
         return; // in case no camera in the scenes camera array (maybe the entity isn't being added to its taglist)??
     }
     camsInScene[currentCam]->camBegin();
-    _draw(); // every scene draw call
-    phys.draw();
     for (Entity* ptr : entities) ptr->draw();
+    phys.draw();
+    _draw(); // user defined optional scene draw call (for non entity related drawing)
     camsInScene[currentCam]->camEnd();
 }
 
@@ -127,6 +122,7 @@ void Scene::addEntity(Entity* ent)
     {
         camsInScene.push_back(static_cast<Camera*>(ent));
         std::cout << "Added existing cam in scene to camsInScene" << std::endl;
+        return; // cam is handled specially when a scene is setup
     }
     
     

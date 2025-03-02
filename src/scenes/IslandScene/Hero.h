@@ -10,6 +10,8 @@ private:
     const glm::vec3 gravity = glm::vec3(0, -59.6f, 0);
     float lastFrameTime = 0.0f;
     float deltaTime = 0.0f;
+    float radius = 600; // for now is a sphere
+    int resolution = 24;
     ofColor heroColor;  // Member variable to store the color
 
 public:

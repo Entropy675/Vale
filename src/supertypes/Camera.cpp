@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Player.h"
 
 void Camera::_setup()
 {

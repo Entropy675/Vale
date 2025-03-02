@@ -24,14 +24,14 @@ private:
 public:
     static void initialize(const std::unordered_map<std::string, std::string>& customTags = {}, const std::unordered_map<std::string, PhysicsMetadata>& customPhysicsTags = {});
 
-    // TODO restricting access to registerSupertype so that only the parent of supertypes ctor can call it (prevent memory issues by wrong use) 
-    static void registerSupertype(const std::string& supertypeTag)                          { supertypes.push_back(supertypeTag); }
-    static bool isSupertypeTag(const std::string& tag)                                      { return std::find(supertypes.begin(), supertypes.end(), tag) != supertypes.end(); }
+    // TODO restricting access to registerSupertype so that only the parent of Supertypes ctor can call it (prevent memory issues by wrong use)
+    static void registerSupertype(const std::string& supertypeTag);
+    static bool isSupertypeTag(const std::string& tag);
 
     // Check if a tag context exists
-    static bool hasTag(const std::string& tag)                                              { return hasDefaultTag(tag) || hasPhysicsTag(tag); };
-    static bool hasDefaultTag(const std::string& tag)                                       { return tags.find(tag) != tags.end(); };
-    static bool hasPhysicsTag(const std::string& tag)                                       { return physicsTags.find(tag) != physicsTags.end(); };
+    static bool hasTag(const std::string& tag)              { return hasDefaultTag(tag) || hasPhysicsTag(tag); };
+    static bool hasDefaultTag(const std::string& tag)       { return tags.find(tag) != tags.end(); };
+    static bool hasPhysicsTag(const std::string& tag)       { return physicsTags.find(tag) != physicsTags.end(); };
     
     static bool addTag(const std::string& tag, const PhysicsMetadata& contextInfo);
     static bool addTag(const std::string& tag, const std::string& contextInfo);

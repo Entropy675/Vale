@@ -6,6 +6,7 @@
 // Define static members
 std::unordered_map<std::string, std::string> TagManager::tags;
 std::unordered_map<std::string, PhysicsMetadata> TagManager::physicsTags;
+std::vector<std::string> supertypes;
 bool TagManager::initOnce = false;
 float TagManager::totalTime = 0.0f;
 
@@ -18,6 +19,16 @@ void TagManager::initialize(const std::unordered_map<std::string, std::string>& 
     // Add custom PhysicsMetadata tags
     for (const auto& [tag, contextInfo] : customPhysicsTags)
         addTag(tag, contextInfo);
+}
+
+void TagManager::registerSupertype(const std::string& supertypeTag)
+{
+    supertypes.push_back(supertypeTag);
+}
+
+bool TagManager::isSupertypeTag(const std::string& tag)
+{
+    return std::find(supertypes.begin(), supertypes.end(), tag) != supertypes.end();
 }
 
 bool TagManager::addTag(const std::string& tag, const PhysicsMetadata& contextInfo)
@@ -74,7 +85,6 @@ bool TagManager::applyTag(Entity* target, const std::string& tag)
 
 void TagManager::resolveCollisionTags(EnvironmentObject* env, PhysicsEntity* target)
 {
-
     // Placeholder for environment collision logic
     // Called by environment against all physics entities
     // !! Assumes target is not self !!
@@ -126,6 +136,7 @@ void TagManager::resolveCollisionTags(EnvironmentObject* env, PhysicsEntity* tar
 template<typename T>
 std::vector<T*> TagManager::getEntitiesWithTag(const std::string& tag) 
 {
+    static_assert(std::is_base_of<Entity, T>::value, "Tag must be a supertype derived from Entity!");
     std::vector<T*> result;
     for(const auto& [id, entity] : Entity::getIdToEntityMap())
         if(entity->hasTag(tag))

@@ -1,7 +1,7 @@
 #include "JolfBaseScene.h"
 
 JolfOceanObject::JolfOceanObject(glm::vec3 pos, float nScale, float sp)
-    : Entity(pos), noiseScale(nScale), spread(sp)
+    : PhysicsEntity(pos), noiseScale(nScale), spread(sp)
 {
     noiseZ = 0.0f;
     addTag("ocean");
@@ -10,9 +10,11 @@ JolfOceanObject::JolfOceanObject(glm::vec3 pos, float nScale, float sp)
 JolfOceanObject::~JolfOceanObject() {}
 
 
-Entity* JolfOceanObject::clone() const {
+Entity* JolfOceanObject::clone() const
+{
     return new JolfOceanObject(position, noiseScale, spread);
 }
+
 void JolfOceanObject::updateNormals()
 {
     // Clear previous normals
@@ -57,6 +59,11 @@ void JolfOceanObject::updateNormals()
             mesh.addNormal(glm::normalize(shadedNormal));
         }
     }
+}
+
+void JolfOceanObject::_collision(PhysicsEntity& target)
+{
+    // if(!target.hasTag("ball")) // use tags to determine behaviour when needed
 }
 
 void JolfOceanObject::_setup()

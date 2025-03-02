@@ -1,7 +1,7 @@
 #include "IslandScene.h"
 
 OceanObject::OceanObject(glm::vec3 pos, float nScale, float sp)
-    : Entity(pos), noiseScale(nScale), spread(sp)
+    : PhysicsEntity(pos), noiseScale(nScale), spread(sp)
 {
     noiseZ = 0.0f;
     addTag("ocean");

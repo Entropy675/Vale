@@ -9,7 +9,7 @@
 
 
 // ----------  Scene objects  ----------
-class ContainerObject : public Entity
+class ContainerObject : public PhysicsEntity
 {
 private:
     float radius;
@@ -20,6 +20,8 @@ public:
     ~ContainerObject();
 
     Entity* clone() const override;
+    void _collision(PhysicsEntity& target) override;
+
     void _setup() override;
     void _update() override;
     void _draw() override;

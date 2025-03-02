@@ -5,7 +5,7 @@
 #include "Scene.h"
 
 // ----------  Scene objects  ----------
-class JolfOceanObject : public Entity
+class JolfOceanObject : public PhysicsEntity
 {
     float noiseScale; // how big is noise
     float spread; // how far apart is each node
@@ -25,6 +25,8 @@ public:
     ~JolfOceanObject();
 
     Entity* clone() const override;
+    void _collision(PhysicsEntity& target) override;
+
     void _setup() override;
     void _update() override;
     void _draw() override;

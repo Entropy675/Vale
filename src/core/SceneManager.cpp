@@ -42,13 +42,6 @@ void SceneManager::loadScene(size_t index)
     initializeEnvironmentMesh();
 }
 
-template <typename T>
-void SceneManager::addScene()
-{
-    scenes.push_back(new T(aggregateMesh));
-    loadScene(0);
-}
-
 void SceneManager::next()
 {
     if(scenes.size() == 0)

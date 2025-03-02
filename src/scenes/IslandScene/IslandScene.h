@@ -9,7 +9,7 @@
 glm::vec3 generateRandomVector(float totalDistance);
 
 // ----------  Scene objects  ----------
-class OceanObject : public Entity
+class OceanObject : public PhysicsEntity
 {
     float noiseScale; // how big is noise
     float spread; // how far apart is each node
@@ -30,12 +30,14 @@ public:
     ~OceanObject();
 
     Entity* clone() const override;
+    void _collision(PhysicsEntity& target) override;
+
     void _setup() override;
     void _update() override;
     void _draw() override;
 };
 
-class IslandObject : public Entity
+class IslandObject : public PhysicsEntity
 {
     ofSpherePrimitive stone;
     ofMaterial stoneMaterial;
@@ -51,6 +53,8 @@ public:
     ~IslandObject();
 
     Entity* clone() const override;
+    void _collision(PhysicsEntity& target) override;
+
     void _setup() override;
     void _update() override;
     void _draw() override;

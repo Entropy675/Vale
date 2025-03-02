@@ -31,7 +31,11 @@ class SceneManager : public Entity
     void initializeEnvironmentMesh();
     
     template <typename T>
-    void addScene();
+    void addScene()
+    {
+        scenes.push_back(new T(aggregateMesh));
+        loadScene(0);
+    }
     void loadScene(size_t index);
 
     // use this to change scenes in order (if you don't want to specify the # with loadScene)
