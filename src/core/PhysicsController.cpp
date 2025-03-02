@@ -73,7 +73,6 @@ void PhysicsController::addCam(Camera* cam)
 {
     if (!cam) std::cout << "!! attempted to add null cam to physics" << std::endl;
     addEntity(cam);
-    cam->setPlayer(&physicsObjects);
 }
 
 void PhysicsController::removeEntity(PhysicsEntity* physEntity)
@@ -89,5 +88,5 @@ void PhysicsController::removeEntity(PhysicsEntity* physEntity)
 void PhysicsController::registerInputManager(InputManager* input)
 {
     inputManager = input;
-    input->setActivePhysicsEntities(&physicsObjects);
+    input->setActivePhysicsEntities(physicsObjects);
 }

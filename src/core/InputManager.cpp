@@ -77,86 +77,86 @@ void InputManager::ofMouseMoved(ofMouseEventArgs& mouse)
         << " " << mouse.button << " " << mouse.modifiers << " " << mouse.type << std::endl;
     }
 
-    if (!activeEntities) return;
-    for (Entity* entity : *activeEntities)
-        entity->_mouseMoved(mouse);
-    if (!activePhysicsEntities) return;
-    for (PhysicsEntity* entity : *activePhysicsEntities)
-        entity->_mouseMoved(mouse);
+    if (activeEntities.size())
+        for (Entity* entity : activeEntities)
+            entity->_mouseMoved(mouse);
+    if (activePhysicsEntities.size())
+        for (PhysicsEntity* entity : activePhysicsEntities)
+            entity->_mouseMoved(mouse);
 }
 
 void InputManager::ofMouseDragged(int x, int y, int button)
 {
     if(debugInput) std::cout << "Input manager detected mouse dragged window at position: (" << x << ", " << y << ") with button: " << button << "." << std::endl;
 
-    if (!activeEntities) return;
-    for (Entity* entity : *activeEntities)
-        entity->_mouseDragged(x, y, button);
-    if (!activePhysicsEntities) return;
-    for (PhysicsEntity* entity : *activePhysicsEntities)
-        entity->_mouseDragged(x, y, button);
+    if (activeEntities.size())
+        for (Entity* entity : activeEntities)
+            entity->_mouseDragged(x, y, button);
+    if (activePhysicsEntities.size())
+        for (PhysicsEntity* entity : activePhysicsEntities)
+            entity->_mouseDragged(x, y, button);
 }
 
 void InputManager::ofMousePressed(int x, int y, int button)
 {
     if(debugInput) std::cout << "Input manager detected mouse pressed window at position: (" << x << ", " << y << ") with button: " << button << "." << std::endl;
 
-    if (!activeEntities) return;
-    for (Entity* entity : *activeEntities)
-        entity->_mousePressed(x, y, button);
-    if (!activePhysicsEntities) return;
-    for (PhysicsEntity* entity : *activePhysicsEntities)
-        entity->_mousePressed(x, y, button);
+    if (activeEntities.size())
+        for (Entity* entity : activeEntities)
+            entity->_mousePressed(x, y, button);
+    if (activePhysicsEntities.size())
+        for (PhysicsEntity* entity : activePhysicsEntities)
+            entity->_mousePressed(x, y, button);
 }
 
 void InputManager::ofMouseReleased(int x, int y, int button)
 {
     if(debugInput) std::cout << "Input manager detected mouse released window at position: (" << x << ", " << y << ") with button: " << button << "." << std::endl;
 
-    if (!activeEntities) return;
-    for (Entity* entity : *activeEntities)
-        entity->_mouseReleased(x, y, button);
-    if (!activePhysicsEntities) return;
-    for (PhysicsEntity* entity : *activePhysicsEntities)
-        entity->_mouseReleased(x, y, button);
+    if (activeEntities.size())
+        for (Entity* entity : activeEntities)
+            entity->_mouseReleased(x, y, button);
+    if (activePhysicsEntities.size())
+        for (PhysicsEntity* entity : activePhysicsEntities)
+            entity->_mouseReleased(x, y, button);
 }
 
 void InputManager::ofMouseEntered(int x, int y)
 {
     if(debugInput) std::cout << "Input manager detected mouse entering window at position: (" << x << ", " << y << ")." << std::endl;
 
-    if (!activeEntities) return;
-    for (Entity* entity : *activeEntities)
-        entity->_mouseEntered(x, y);
-    if (!activePhysicsEntities) return;
-    for (PhysicsEntity* entity : *activePhysicsEntities)
-        entity->_mouseEntered(x, y);
+    if (activeEntities.size())
+        for (Entity* entity : activeEntities)
+            entity->_mouseEntered(x, y);
+    if (activePhysicsEntities.size())
+        for (PhysicsEntity* entity : activePhysicsEntities)
+            entity->_mouseEntered(x, y);
 }
 
 void InputManager::ofMouseExited(int x, int y)
 {
     if(debugInput) std::cout << "Input manager detected mouse leaving window at position: (" << x << ", " << y << ")." << std::endl;
 
-    if (!activeEntities) return;
-    for (Entity* entity : *activeEntities)
-        entity->_mouseExited(x, y);
-    if (!activePhysicsEntities) return;
-    for (PhysicsEntity* entity : *activePhysicsEntities)
-        entity->_mouseExited(x, y);
+    if (activeEntities.size())
+        for (Entity* entity : activeEntities)
+            entity->_mouseExited(x, y);
+    if (activePhysicsEntities.size())
+        for (PhysicsEntity* entity : activePhysicsEntities)
+            entity->_mouseExited(x, y);
 }
 
 void InputManager::ofWindowResized(int w, int h)
 {
-    if (!activeEntities || !activePhysicsEntities) return;
+    if (!activeEntities.size() || !activePhysicsEntities.size()) return;
 
     if(debugInput) std::cout << "Input manager recieved window resized event, new width: " << w << " new height: " << h;
 
-    if (!activeEntities) return;
-    for (Entity* entity : *activeEntities)
-        entity->_windowResized(w, h);
-    if (!activePhysicsEntities) return;
-    for (PhysicsEntity* entity : *activePhysicsEntities)
-        entity->_windowResized(w, h);
+    if (activeEntities.size())
+        for (Entity* entity : activeEntities)
+            entity->_windowResized(w, h);
+    if (activePhysicsEntities.size())
+        for (PhysicsEntity* entity : activePhysicsEntities)
+            entity->_windowResized(w, h);
 }
 
 void InputManager::ofDragEvent(ofDragInfo dragInfo)
@@ -169,17 +169,17 @@ void InputManager::ofDragEvent(ofDragInfo dragInfo)
         std::cout << "At position: " << dragInfo.position << std::endl;
     }
 
-    if (!activeEntities) return;
-    for (Entity* entity : *activeEntities)
-        entity->_dragEvent(dragInfo);
-    if (!activePhysicsEntities) return;
-    for (PhysicsEntity* entity : *activePhysicsEntities)
-        entity->_dragEvent(dragInfo);
+    if (activeEntities.size())
+        for (Entity* entity : activeEntities)
+            entity->_dragEvent(dragInfo);
+    if (activePhysicsEntities.size())
+        for (PhysicsEntity* entity : activePhysicsEntities)
+            entity->_dragEvent(dragInfo);
 }
 
 void InputManager::ofGotMessage(ofMessage msg)
 {
-    if (!activeEntities || !activePhysicsEntities) return;
+    if (!activeEntities.size() || !activePhysicsEntities.size()) return;
 
     if(debugInput)
     {
@@ -187,11 +187,11 @@ void InputManager::ofGotMessage(ofMessage msg)
         std::cout <<  msg.message << std::endl;
     }
 
-    if (!activeEntities) return;
-    for (Entity* entity : *activeEntities)
-        entity->_gotMessage(msg);
-    if (!activePhysicsEntities) return;
-    for (PhysicsEntity* entity : *activePhysicsEntities)
-        entity->_gotMessage(msg);
+    if (activeEntities.size())
+        for (Entity* entity : activeEntities)
+            entity->_gotMessage(msg);
+    if (activePhysicsEntities.size())
+        for (PhysicsEntity* entity : activePhysicsEntities)
+            entity->_gotMessage(msg);
 }
 

@@ -20,7 +20,7 @@ public:
     ~ContainerObject();
 
     Entity* clone() const override;
-    void _collision(PhysicsEntity& target) override;
+    void _collision(PhysicsEntity& target) override {}; // might want one if normal force is to be applied properly
 
     void _setup() override;
     void _update() override;

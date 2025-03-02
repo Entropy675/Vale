@@ -66,7 +66,7 @@ void Camera::camEnd()
     camera.end();
 }
 
-bool Camera::setPlayer(std::vector<PhysicsEntity*>* physicsObjects)
+bool Camera::setTargets(std::vector<PhysicsEntity*>* physicsObjects)
 {
     bool success = false;
     currPlayer = 0;

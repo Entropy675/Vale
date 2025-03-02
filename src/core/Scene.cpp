@@ -29,8 +29,16 @@ void Scene::loadScene(std::vector<Entity*>* list)
 
 void Scene::setup()
 {
-    inputManager->setActiveEntities(&entities); // activates its entities input callbacks whenever setup is called
-    if (setupDone) return;
+    std::cout << "Entering scene setup... " << std::endl;
+    inputManager->flushActiveEntities();
+
+    if (setupDone)
+    {
+        inputManager->setActiveEntities(entities); // activates its entities input callbacks whenever setup is called
+        return;
+    }
+
+    std::cout << "first time setup... " << std::endl;
     for (Entity* ptr : entities)
     {
         ptr->registerInputManager(inputManager);
@@ -41,19 +49,19 @@ void Scene::setup()
     
     // TODO: change to searching supertype / setting up tag type map managed by TagManager (not done yet)
     currentCam = 0;
-    Camera* cam = nullptr;
-    PhysicsEntity* camTarget = nullptr;
-
     if (camsInScene.size() == 0)
     {
-        std::cout << "!!!!!      <  No cameras found in loaded scene??  >      !!!!!";
-        cam = new Camera(glm::vec3(0)); // make a default cam
+        std::cout << "!!!!!      <  No cameras found in loaded scene?? > < Loading default camera >      !!!!!" << std::endl;
+        camsInScene.push_back(new Camera(glm::vec3(0)));
     }
-    else cam = camsInScene[currentCam];
+    Camera* cam = camsInScene[currentCam];
+
     cam->registerInputManager(inputManager);
+    cam->setTargets(&camTargetsInScene);
     cam->setup();
     phys.addCam(cam);
-    
+
+    inputManager->setActiveEntities(entities);
     setupDone = true;
 }
 
@@ -113,6 +121,7 @@ void Scene::addEntity(Entity* ent)
     // keep track of current players in Scene
     if (ent->hasTag("player")) 
     {
+        camTargetsInScene.push_back(static_cast<PhysicsEntity*>(ent));
         Player* playerPtr = static_cast<Player*>(ent);
         playersInScene.push_back(playerPtr);
         std::cout << "Added to players in scene: " << playerPtr->getPlayerName() << std::endl;
@@ -157,6 +166,20 @@ void Scene::removeEntity(Entity* ent)
     phys.removeEntity(static_cast<PhysicsEntity*>(ent));
     return;
 }
+
+
+template<typename T>
+std::vector<T*> Scene::getEntitiesWithTag(const std::string& tag)
+{ // switch to storing a map in tag manager when loading scene its better, runtime dictionary?
+    static_assert(std::is_base_of<Entity, T>::value, "Return type and tag must be a supertype derived from Entity!");
+    std::vector<T*> result;
+    for(const auto& entity : entities)
+        if(entity->hasTag(tag))
+            if(T* cast = dynamic_cast<T*>(entity))
+                result.push_back(cast);
+    return result;
+}
+
 
 // TODO: make a format for loading entities from a file.
 bool Scene::loadSceneFromFile(const std::string& path)

@@ -29,7 +29,7 @@ public:
     void camBegin();
     void camEnd();
 
-    bool setPlayer(std::vector<PhysicsEntity*>* loadedEntities);
+    bool setTargets(std::vector<PhysicsEntity*>* loadedEntities);
 
 };
 

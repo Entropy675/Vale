@@ -6,7 +6,7 @@
 // Define static members
 std::unordered_map<std::string, std::string> TagManager::tags;
 std::unordered_map<std::string, PhysicsMetadata> TagManager::physicsTags;
-std::vector<std::string> supertypes;
+std::vector<std::string> TagManager::supertypes;
 bool TagManager::initOnce = false;
 float TagManager::totalTime = 0.0f;
 

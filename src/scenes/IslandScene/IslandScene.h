@@ -30,7 +30,7 @@ public:
     ~OceanObject();
 
     Entity* clone() const override;
-    void _collision(PhysicsEntity& target) override;
+    void _collision(PhysicsEntity& target) override {};
 
     void _setup() override;
     void _update() override;
@@ -53,7 +53,7 @@ public:
     ~IslandObject();
 
     Entity* clone() const override;
-    void _collision(PhysicsEntity& target) override;
+    void _collision(PhysicsEntity& target) override {};
 
     void _setup() override;
     void _update() override;

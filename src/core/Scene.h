@@ -24,6 +24,7 @@ public:
     // this will eventually be replaced by a list of type sorted pointers returned by tag manager
     std::vector<Player*> playersInScene = {};
     std::vector<Camera*> camsInScene = {};
+    std::vector<PhysicsEntity*> camTargetsInScene = {};
     Camera* getCurrentCam() { return camsInScene[currentCam]; };
     int currentCam = 0;
     //std::vector<supertype*>* someSuperTypeList
@@ -54,6 +55,9 @@ public:
 
     void addEntity(Entity* Entity);
     void removeEntity(Entity* ent);
+
+    template<typename T>
+    std::vector<T*> getEntitiesWithTag(const std::string& tag);
 };
 
 

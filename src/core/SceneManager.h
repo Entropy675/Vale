@@ -33,7 +33,9 @@ class SceneManager : public Entity
     template <typename T>
     void addScene()
     {
-        scenes.push_back(new T(aggregateMesh));
+        T* sp = new T(aggregateMesh);
+        sp->registerInputManager(inputManager);
+        scenes.push_back(sp);
         loadScene(0);
     }
     void loadScene(size_t index);

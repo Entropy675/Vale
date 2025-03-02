@@ -45,7 +45,7 @@ void ofApp::setup()
     sun.enable();
 
     // add scenes / scene setups
-    sceneManager.registerInputManager(&inputManager);
+    sceneManager.registerInputManager(&inputManager); // always do before adding scenes otherwise it doesn't propogate...
     sceneManager.addScene<IslandScene>();
     sceneManager.addScene<PopperScene>();
     sceneManager.addScene<JolfBaseScene>();
