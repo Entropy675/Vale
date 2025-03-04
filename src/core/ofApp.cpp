@@ -46,8 +46,8 @@ void ofApp::setup()
 
     // add scenes / scene setups
     sceneManager.registerInputManager(&inputManager); // always do before adding scenes otherwise it doesn't propogate...
-    sceneManager.addScene<IslandScene>();
-    sceneManager.addScene<PopperScene>();
+    //sceneManager.addScene<IslandScene>();
+    //sceneManager.addScene<PopperScene>();
     sceneManager.addScene<JolfBaseScene>();
     sceneManager.setup();
 
@@ -70,8 +70,8 @@ void ofApp::update()
 {
     sceneManager.update();
 
-    if (inputManager.getPressedOnce('1')) sceneManager.prev();
-    if (inputManager.getPressedOnce('2')) sceneManager.next();
+    //if (inputManager.getPressedOnce('1')) sceneManager.prev();
+    //if (inputManager.getPressedOnce('2')) sceneManager.next();
     if (inputManager.getPressedOnce('t')) sceneManager.toggleStaticMesh();
     if (inputManager.getPressedOnce('e')) followPathBlindly = !followPathBlindly;
 }

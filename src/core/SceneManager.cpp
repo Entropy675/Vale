@@ -64,8 +64,8 @@ void SceneManager::prev()
 
 void SceneManager::_setup()
 {
-    if (scenes.size()) loadScene(currentSceneIndex);
-    else std::cout << "SceneManager setup called with no scenes added..." << std::endl; 
+    // if (scenes.size()) loadScene(currentSceneIndex);
+    if (!scenes.size()) std::cout << "SceneManager setup called with no scenes added..." << std::endl;
 }
 
 void SceneManager::_update()

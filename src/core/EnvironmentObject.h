@@ -1,6 +1,7 @@
 #ifndef ENVIRONMENTOBJECT_H__
 #define ENVIRONMENTOBJECT_H__
 
+// #include "SpherePackingExperiment.h"
 #include "PhysicsEntity.h"
 #include "ofxKDTree.h"
 #include <iostream>

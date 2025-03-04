@@ -35,7 +35,7 @@ void EnvironmentObject::setupEnvironment()
     //if (kdTree.getAllPoints().size() != mesh.getNumVertices()) recomputeMesh();
 }
 
-void EnvironmentObject::recomputeMesh() // replace with compue sphere set
+void EnvironmentObject::recomputeMesh() // replace with comptue sphere set
 {
     std::cout << "Environment Mesh Computing: kdtree - " << kdTree.getAllPoints().size() << " | -> | mesh - " << mesh.getNumVertices() << std::endl;
     mesh.clear();
