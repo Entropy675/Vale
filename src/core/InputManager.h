@@ -34,6 +34,7 @@ private:
 public:
     InputManager();
     ~InputManager();
+
     void setActiveEntities(std::vector<Entity*>* entities) { activeEntities = entities; }
     void setActivePhysicsEntities(std::vector<PhysicsEntity*>* physicsEntities) { activePhysicsEntities = physicsEntities; }
 

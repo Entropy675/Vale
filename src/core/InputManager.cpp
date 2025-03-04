@@ -147,7 +147,7 @@ void InputManager::ofMouseExited(int x, int y)
 
 void InputManager::ofWindowResized(int w, int h)
 {
-    if (!activeEntities.size() || !activePhysicsEntities.size()) return;
+    if (!activeEntities || !activePhysicsEntities) return;
 
     if(debugInput) std::cout << "Input manager recieved window resized event, new width: " << w << " new height: " << h;
 
@@ -179,7 +179,7 @@ void InputManager::ofDragEvent(ofDragInfo dragInfo)
 
 void InputManager::ofGotMessage(ofMessage msg)
 {
-    if (!activeEntities.size() || !activePhysicsEntities.size()) return;
+    if (!activeEntities || !activePhysicsEntities) return;
 
     if(debugInput)
     {
