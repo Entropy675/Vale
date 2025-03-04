@@ -60,6 +60,8 @@ void ofApp::setup()
     // Setup terrain object variables
     ofEnableLighting();
     ofEnableDepthTest();
+
+    std::cout << "done ofApp setup " << std::endl;
 }
 
 //--------------------------------------------------------------
@@ -68,7 +70,9 @@ void ofApp::setup()
 
 void ofApp::update()
 {
+    std::cout << "start ofApp update " << std::endl;
     sceneManager.update();
+    std::cout << "end ofApp update " << std::endl;
 
     //if (inputManager.getPressedOnce('1')) sceneManager.prev();
     //if (inputManager.getPressedOnce('2')) sceneManager.next();

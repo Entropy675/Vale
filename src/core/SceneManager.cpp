@@ -22,6 +22,7 @@ void SceneManager::initializeEnvironmentMesh()
     std::cout << "initializeEnvironmentMesh success" << std::endl;
 }
 
+
 void SceneManager::loadScene(size_t index)
 {
     if (!scenes.size())
@@ -64,12 +65,13 @@ void SceneManager::prev()
 
 void SceneManager::_setup()
 {
-    // if (scenes.size()) loadScene(currentSceneIndex);
+    if (scenes.size()) loadScene(currentSceneIndex);
     if (!scenes.size()) std::cout << "SceneManager setup called with no scenes added..." << std::endl;
 }
 
 void SceneManager::_update()
 {
+    std::cout << "scenes size: " << scenes.size() << " current index: " << currentSceneIndex << std::endl;
     scenes[currentSceneIndex]->update();
 }
 

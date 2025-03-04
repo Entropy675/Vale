@@ -28,7 +28,7 @@ public:
     void registerInputManager(InputManager* input) override;
 
     void addCam(Camera* camEntity);
-    void addEntity(PhysicsEntity* physEntity) { return physicsObjects.push_back(physEntity); }
+    void addEntity(PhysicsEntity* physEntity) { if (physEntity) physicsObjects.push_back(physEntity); }
     void removeEntity(PhysicsEntity* physEntity);
 };
 

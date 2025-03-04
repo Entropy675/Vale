@@ -41,6 +41,7 @@ void PhysicsController::loadScene(std::vector<PhysicsEntity*>& preservedPhysicsO
 
 void PhysicsController::collisionCheck()
 {
+    std::cout << physicsObjects.size() << std::endl;
     for (PhysicsEntity* obj : physicsObjects)
     {
         env.collision(*obj);
@@ -75,10 +76,16 @@ void PhysicsController::addCam(Camera* cam)
     addEntity(cam);
 }
 
+
+void PhysicsController::addEntity(PhysicsEntity* physEntity)
+{
+    if (physEntity) physicsObjects.push_back(physEntity);
+}
+
 void PhysicsController::removeEntity(PhysicsEntity* physEntity)
 {
     auto it = std::find(physicsObjects.begin(), physicsObjects.end(), physEntity);
-    if (it != physicsObjects.end()) 
+    if (it != physicsObjects.end())
     {
         physicsObjects.erase(it);
         delete physEntity; 
@@ -88,5 +95,5 @@ void PhysicsController::removeEntity(PhysicsEntity* physEntity)
 void PhysicsController::registerInputManager(InputManager* input)
 {
     inputManager = input;
-    input->setActivePhysicsEntities(physicsObjects);
+    input->setActivePhysicsEntities(&physicsObjects);
 }

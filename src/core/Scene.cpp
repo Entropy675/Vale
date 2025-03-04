@@ -30,11 +30,9 @@ void Scene::loadScene(std::vector<Entity*>* list)
 void Scene::setup()
 {
     std::cout << "Entering scene setup... " << std::endl;
-    inputManager->flushActiveEntities();
-
     if (setupDone)
     {
-        inputManager->setActiveEntities(entities); // activates its entities input callbacks whenever setup is called
+        inputManager->setActiveEntities(&entities); // activates its entities input callbacks whenever setup is called
         return;
     }
 
@@ -61,15 +59,19 @@ void Scene::setup()
     cam->setup();
     phys.addCam(cam);
 
-    inputManager->setActiveEntities(entities);
+    inputManager->setActiveEntities(&entities); // activates entities input callbacks after setup is done
     setupDone = true;
 }
 
 void Scene::update()
 {
+    std::cout << "entering scene update... " << std::endl;
     for (Entity* ptr : entities) ptr->update();
+    std::cout << "checkpoint1... " << std::endl;
     phys.update();
+    std::cout << "checkpoint2... " << std::endl;
     _update(); // user defined optional scene update call (for behaviour not associated with entities but the scene itself)
+    std::cout << "exiting scene update... " << std::endl;
 }
 
 void Scene::draw()

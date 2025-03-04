@@ -33,10 +33,10 @@ class SceneManager : public Entity
     template <typename T>
     void addScene()
     {
-        T* sp = new T(aggregateMesh);
+        Scene* sp = (Scene*)(new T(aggregateMesh)); // something wrong with this - segfaulting?
+        if(!sp) std::cout << "scene pointer is null????" << std::endl;
         sp->registerInputManager(inputManager);
         scenes.push_back(sp);
-        loadScene(0);
     }
     void loadScene(size_t index);
 
