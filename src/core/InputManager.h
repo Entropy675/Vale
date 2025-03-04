@@ -25,8 +25,8 @@ private:
 
     int mapKeys[NUM_KEYS] = {};
 
-    std::vector<Entity*> activeEntities = {}; // for callbacks
-    std::vector<PhysicsEntity*> activePhysicsEntities = {};
+    std::vector<Entity*>* activeEntities = nullptr; // for callbacks
+    std::vector<PhysicsEntity*>* activePhysicsEntities = nullptr;
 
     bool debugInput = false;
     ofMouseEventArgs mouseArgs;
@@ -34,10 +34,8 @@ private:
 public:
     InputManager();
     ~InputManager();
-
-    void flushActiveEntities() { activeEntities.clear(); activePhysicsEntities.clear(); }
-    void setActiveEntities(const std::vector<Entity*>& entities) { activeEntities.insert(activeEntities.end(), entities.begin(), entities.end()); }
-    void setActivePhysicsEntities(const std::vector<PhysicsEntity*>& physicsEntities) { activePhysicsEntities.insert(activePhysicsEntities.end(), physicsEntities.begin(), physicsEntities.end()); }
+    void setActiveEntities(std::vector<Entity*>* entities) { activeEntities = entities; }
+    void setActivePhysicsEntities(std::vector<PhysicsEntity*>* physicsEntities) { activePhysicsEntities = physicsEntities; }
 
     // another way of accessing input... a very raw way...
     const bool (&getInputArray() const)[NUM_KEYS]   { return keys; }
