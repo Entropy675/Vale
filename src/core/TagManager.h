@@ -13,13 +13,12 @@ class TagManager
 {
 private:
     // Static - master list of all tags and their associated context information
-    static std::unordered_map<std::string, std::string> tags; // Tag to string context info (description of tag)
+    static std::unordered_map<std::string, std::string> tags; // Tag to string context info
     static std::unordered_map<std::string, PhysicsMetadata> physicsTags; // Tag to PhysicsMetadata context
     static std::vector<std::string> supertypes; // Store registered supertypes
     static bool initOnce;
-    
-    static float totalTime; // (get rid of this later when implementing tag physics resolver) for drowning affect
 
+    static float totalTime; // (get rid of this later when implementing tag physics resolver) for drowning affect
 
 public:
     static void initialize(const std::unordered_map<std::string, std::string>& customTags = {}, const std::unordered_map<std::string, PhysicsMetadata>& customPhysicsTags = {});
