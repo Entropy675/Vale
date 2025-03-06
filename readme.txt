@@ -1,3 +1,6 @@
+!!! NOTE: due to a lack of community interest, I've decided to work on this engine in private from now onwards. This is the old/outdated version of this project. !!!
+!!! I keep coming up with too many good ideas to give them all away for free! If I have more money in the future, I will make the source available again. !!!
+
 This was tested on an Ubuntu Linux system.
 The code should be transferrable to any environment configured to include OpenFrameworks libraries.
 
